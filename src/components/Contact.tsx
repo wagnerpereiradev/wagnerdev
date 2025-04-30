@@ -1,10 +1,24 @@
 'use client';
 
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 import { useRef, useState, useEffect, useMemo } from 'react';
+import Image from 'next/image';
+
+type ContactMethod = {
+    id: number;
+    name: string;
+    value: string;
+    icon: React.ReactNode;
+    url: string;
+    color: string;
+    gradient: string;
+    hoverGradient: string;
+    description?: string;
+};
 
 export default function Contact() {
     const containerRef = useRef<HTMLDivElement>(null);
+    const formRef = useRef<HTMLFormElement>(null);
     const { scrollYProgress } = useScroll({
         target: containerRef,
         offset: ["start end", "end start"]
@@ -14,15 +28,23 @@ export default function Contact() {
     const y = useTransform(scrollYProgress, [0, 0.1, 0.9, 1], [50, 0, 0, -50]);
 
     const [hoveredItem, setHoveredItem] = useState<number | null>(null);
+    const [activeTab, setActiveTab] = useState<'social' | 'form'>('social');
     const [progress, setProgress] = useState<number>(0);
     const [isOpening, setIsOpening] = useState<boolean>(false);
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+    const [formStatus, setFormStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
+    const [formData, setFormData] = useState({
+        name: '',
+        email: '',
+        message: ''
+    });
 
     const contactInfo = useMemo(() => [
         {
             id: 1,
             name: 'WhatsApp',
             value: '+55 11 94352-7017',
+            description: 'Resposta rápida para mensagens de texto, áudio e chamadas de vídeo',
             icon: (
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -42,6 +64,7 @@ export default function Contact() {
             id: 2,
             name: 'Instagram',
             value: '@wagner.mi6',
+            description: 'Acompanhe projetos, snippets de código e atualizações',
             icon: (
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -65,6 +88,7 @@ export default function Contact() {
             id: 3,
             name: 'LinkedIn',
             value: '/in/owrp',
+            description: 'Conecte-se profissionalmente e acompanhe minha trajetória',
             icon: (
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -84,6 +108,47 @@ export default function Contact() {
             gradient: 'from-[#0A66C2]/80 to-[#004182]/80',
             hoverGradient: 'from-[#0A66C2] to-[#004182]'
         },
+        {
+            id: 4,
+            name: 'Email',
+            value: 'wagnerpereiradev@gmail.com',
+            description: 'Comunicação formal para propostas e parcerias',
+            icon: (
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    className="w-8 h-8"
+                >
+                    <path d="M1.5 8.67v8.58a3 3 0 003 3h15a3 3 0 003-3V8.67l-8.928 5.493a3 3 0 01-3.144 0L1.5 8.67z" />
+                    <path d="M22.5 6.908V6.75a3 3 0 00-3-3h-15a3 3 0 00-3 3v.158l9.714 5.978a1.5 1.5 0 001.572 0L22.5 6.908z" />
+                </svg>
+            ),
+            url: 'mailto:wagnerpereiradev@gmail.com',
+            color: '#6366f1',
+            gradient: 'from-[#6366f1]/80 to-[#3d43dd]/80',
+            hoverGradient: 'from-[#6366f1] to-[#3d43dd]'
+        },
+        {
+            id: 5,
+            name: 'GitHub',
+            value: 'wagnerpereiradev',
+            description: 'Explore repositórios e contribuições open source',
+            icon: (
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    className="w-8 h-8"
+                >
+                    <path fillRule="evenodd" d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" clipRule="evenodd" />
+                </svg>
+            ),
+            url: 'https://github.com/wagnerpereiradev',
+            color: '#333',
+            gradient: 'from-[#333]/80 to-[#24292e]/80',
+            hoverGradient: 'from-[#333] to-[#24292e]'
+        }
     ], []);
 
     const handleMouseMove = (e: React.MouseEvent<HTMLAnchorElement>) => {
@@ -126,6 +191,50 @@ export default function Contact() {
         }
     }, [isOpening, hoveredItem, contactInfo]);
 
+    // Form handlers
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({
+            ...prev,
+            [name]: value
+        }));
+    };
+
+    const handleFormSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+
+        // Validation
+        if (!formData.name || !formData.email || !formData.message) {
+            alert('Por favor, preencha todos os campos.');
+            return;
+        }
+
+        // Submit form logic (mock for now)
+        setFormStatus('submitting');
+
+        try {
+            // Simulating API call with timeout
+            await new Promise(resolve => setTimeout(resolve, 1500));
+
+            // Success!
+            setFormStatus('success');
+            setFormData({ name: '', email: '', message: '' });
+
+            // Reset form after 3 seconds
+            setTimeout(() => {
+                setFormStatus('idle');
+            }, 3000);
+        } catch (error) {
+            console.error('Error submitting form:', error);
+            setFormStatus('error');
+
+            // Reset error state after 3 seconds
+            setTimeout(() => {
+                setFormStatus('idle');
+            }, 3000);
+        }
+    };
+
     return (
         <section id="contact" className="relative py-32 px-4 sm:px-6 lg:px-8 overflow-hidden">
             {/* Fundo com gradiente refinado */}
@@ -147,7 +256,7 @@ export default function Contact() {
             <div className="max-w-7xl mx-auto relative z-10" ref={containerRef}>
                 <motion.div
                     style={{ opacity, y }}
-                    className="mb-20"
+                    className="mb-16"
                 >
                     {/* Tag decorativa */}
                     <motion.div
@@ -198,87 +307,249 @@ export default function Contact() {
                     </motion.p>
                 </motion.div>
 
-                {/* Grid de contatos */}
+                {/* Tabs para escolher entre redes sociais e formulário */}
                 <motion.div
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    transition={{ duration: 0.5 }}
-                    className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-10 max-w-4xl mx-auto"
+                    transition={{ duration: 0.5, delay: 0.3 }}
+                    className="flex justify-center mb-12"
                 >
-                    {contactInfo.map((item, index) => (
-                        <motion.a
-                            key={item.id}
-                            href={item.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="group relative overflow-hidden rounded-3xl bg-neutral-900/50 backdrop-blur-sm border border-neutral-800/30 hover:border-neutral-700/50 transition-all duration-500"
-                            onMouseEnter={() => setHoveredItem(item.id)}
-                            onMouseLeave={() => setHoveredItem(null)}
-                            onMouseMove={handleMouseMove}
-                            initial={{ opacity: 0, y: 30 }}
-                            whileInView={{
-                                opacity: 1,
-                                y: 0,
-                                transition: { delay: index * 0.1, duration: 0.5 }
-                            }}
-                            viewport={{ once: true }}
-                            whileHover={{
-                                y: -8,
-                                transition: { duration: 0.3, ease: [0.33, 1, 0.68, 1] }
-                            }}
-                            whileTap={{ scale: 0.95 }}
+                    <div className="inline-flex p-1 bg-neutral-900/50 backdrop-blur-sm rounded-full border border-neutral-800/30">
+                        <button
+                            onClick={() => setActiveTab('social')}
+                            className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 ${activeTab === 'social'
+                                ? 'bg-[#3d43dd] text-white'
+                                : 'text-neutral-400 hover:text-white'
+                                }`}
                         >
-                            {/* Gradiente de fundo */}
-                            <div className={`absolute inset-0 bg-gradient-to-br ${hoveredItem === item.id ? item.hoverGradient : item.gradient} opacity-0 group-hover:opacity-10 transition-all duration-500 z-0`}></div>
-
-                            {/* Conteúdo do card */}
-                            <div className="relative flex flex-col items-center p-8 h-full z-20">
-                                {/* Ícone com efeito de rotação */}
-                                <div className={`text-white bg-gradient-to-br ${item.gradient} p-5 rounded-2xl mb-6 transform transition-all duration-500 group-hover:rotate-6 group-hover:scale-110`}>
-                                    {item.icon}
-                                </div>
-
-                                {/* Nome da rede social */}
-                                <motion.h3
-                                    className="text-2xl font-bold mb-3 text-white"
-                                    initial={{ opacity: 0, y: 20 }}
-                                    whileInView={{ opacity: 1, y: 0 }}
-                                    transition={{ delay: 0.3 + index * 0.1 }}
-                                    viewport={{ once: true }}
-                                >
-                                    {item.name}
-                                </motion.h3>
-
-                                {/* Valor do contato */}
-                                <motion.p
-                                    className="text-neutral-400 group-hover:text-neutral-300 transition-colors duration-300"
-                                    initial={{ opacity: 0 }}
-                                    whileInView={{ opacity: 1 }}
-                                    transition={{ delay: 0.4 + index * 0.1 }}
-                                    viewport={{ once: true }}
-                                >
-                                    {item.value}
-                                </motion.p>
-
-                                {/* Barra de progresso elegante */}
-                                {hoveredItem === item.id && (
-                                    <motion.div
-                                        className="absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-transparent via-white/50 to-transparent rounded-full"
-                                        style={{
-                                            width: `${progress}%`,
-                                            left: `${mousePosition.x}px`,
-                                            transform: 'translateX(-50%)',
-                                            transition: 'width 0.03s linear, left 0.1s ease-out'
-                                        }}
-                                    />
-                                )}
-                            </div>
-                        </motion.a>
-                    ))}
+                            Redes Sociais
+                        </button>
+                        <button
+                            onClick={() => setActiveTab('form')}
+                            className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 ${activeTab === 'form'
+                                ? 'bg-[#3d43dd] text-white'
+                                : 'text-neutral-400 hover:text-white'
+                                }`}
+                        >
+                            Formulário
+                        </button>
+                    </div>
                 </motion.div>
 
-                {/* Seção de email */}
+                {/* Content Container */}
+                <AnimatePresence mode="wait">
+                    {/* Redes Sociais */}
+                    {activeTab === 'social' && (
+                        <motion.div
+                            key="social"
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -20 }}
+                            transition={{ duration: 0.3 }}
+                            className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 max-w-5xl mx-auto"
+                        >
+                            {contactInfo.map((item, index) => (
+                                <motion.a
+                                    key={item.id}
+                                    href={item.url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="group relative overflow-hidden rounded-3xl bg-neutral-900/50 backdrop-blur-sm border border-neutral-800/30 hover:border-neutral-700/50 transition-all duration-500"
+                                    onMouseEnter={() => setHoveredItem(item.id)}
+                                    onMouseLeave={() => setHoveredItem(null)}
+                                    onMouseMove={handleMouseMove}
+                                    initial={{ opacity: 0, y: 30 }}
+                                    animate={{
+                                        opacity: 1,
+                                        y: 0,
+                                        transition: { delay: index * 0.1, duration: 0.5 }
+                                    }}
+                                    whileHover={{
+                                        y: -8,
+                                        transition: { duration: 0.3, ease: [0.33, 1, 0.68, 1] }
+                                    }}
+                                    whileTap={{ scale: 0.95 }}
+                                >
+                                    {/* Gradiente de fundo */}
+                                    <div className={`absolute inset-0 bg-gradient-to-br ${hoveredItem === item.id ? item.hoverGradient : item.gradient} opacity-0 group-hover:opacity-10 transition-all duration-500 z-0`}></div>
+
+                                    {/* Conteúdo do card */}
+                                    <div className="relative flex flex-col items-center p-8 h-full z-20">
+                                        {/* Ícone com efeito de rotação */}
+                                        <div className={`text-white bg-gradient-to-br ${item.gradient} p-5 rounded-2xl mb-6 transform transition-all duration-500 group-hover:rotate-6 group-hover:scale-110`}>
+                                            {item.icon}
+                                        </div>
+
+                                        {/* Nome da rede social */}
+                                        <motion.h3
+                                            className="text-2xl font-bold mb-2 text-white"
+                                            initial={{ opacity: 0, y: 20 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            transition={{ delay: 0.3 + index * 0.1 }}
+                                        >
+                                            {item.name}
+                                        </motion.h3>
+
+                                        {/* Valor do contato */}
+                                        <motion.p
+                                            className="text-neutral-400 group-hover:text-neutral-300 transition-colors duration-300 mb-3"
+                                            initial={{ opacity: 0 }}
+                                            animate={{ opacity: 1 }}
+                                            transition={{ delay: 0.4 + index * 0.1 }}
+                                        >
+                                            {item.value}
+                                        </motion.p>
+
+                                        {/* Descrição */}
+                                        {item.description && (
+                                            <motion.p
+                                                className="text-neutral-500 text-sm text-center group-hover:text-neutral-400 transition-colors duration-300"
+                                                initial={{ opacity: 0 }}
+                                                animate={{ opacity: 1 }}
+                                                transition={{ delay: 0.5 + index * 0.1 }}
+                                            >
+                                                {item.description}
+                                            </motion.p>
+                                        )}
+
+                                        {/* Barra de progresso elegante */}
+                                        {hoveredItem === item.id && (
+                                            <motion.div
+                                                className="absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-transparent via-white/50 to-transparent rounded-full"
+                                                style={{
+                                                    width: `${progress}%`,
+                                                    left: `${mousePosition.x}px`,
+                                                    transform: 'translateX(-50%)',
+                                                    transition: 'width 0.03s linear, left 0.1s ease-out'
+                                                }}
+                                            />
+                                        )}
+                                    </div>
+                                </motion.a>
+                            ))}
+                        </motion.div>
+                    )}
+
+                    {/* Formulário */}
+                    {activeTab === 'form' && (
+                        <motion.div
+                            key="form"
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -20 }}
+                            transition={{ duration: 0.3 }}
+                            className="max-w-2xl mx-auto"
+                        >
+                            <div className="bg-neutral-900/50 backdrop-blur-sm rounded-3xl p-8 border border-neutral-800/30">
+                                <motion.form
+                                    ref={formRef}
+                                    onSubmit={handleFormSubmit}
+                                    className="space-y-6"
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    transition={{ delay: 0.2 }}
+                                >
+                                    <div className="space-y-4">
+                                        <div>
+                                            <label htmlFor="name" className="block text-sm font-medium text-neutral-300 mb-1">
+                                                Nome
+                                            </label>
+                                            <input
+                                                type="text"
+                                                id="name"
+                                                name="name"
+                                                value={formData.name}
+                                                onChange={handleInputChange}
+                                                className="w-full px-4 py-3 bg-neutral-800/50 rounded-xl border border-neutral-700/50 text-white focus:border-[#3d43dd]/50 focus:ring-1 focus:ring-[#3d43dd]/30 transition-colors"
+                                                placeholder="Seu nome completo"
+                                                disabled={formStatus === 'submitting'}
+                                            />
+                                        </div>
+
+                                        <div>
+                                            <label htmlFor="email" className="block text-sm font-medium text-neutral-300 mb-1">
+                                                Email
+                                            </label>
+                                            <input
+                                                type="email"
+                                                id="email"
+                                                name="email"
+                                                value={formData.email}
+                                                onChange={handleInputChange}
+                                                className="w-full px-4 py-3 bg-neutral-800/50 rounded-xl border border-neutral-700/50 text-white focus:border-[#3d43dd]/50 focus:ring-1 focus:ring-[#3d43dd]/30 transition-colors"
+                                                placeholder="seu.email@exemplo.com"
+                                                disabled={formStatus === 'submitting'}
+                                            />
+                                        </div>
+
+                                        <div>
+                                            <label htmlFor="message" className="block text-sm font-medium text-neutral-300 mb-1">
+                                                Mensagem
+                                            </label>
+                                            <textarea
+                                                id="message"
+                                                name="message"
+                                                value={formData.message}
+                                                onChange={handleInputChange}
+                                                rows={5}
+                                                className="w-full px-4 py-3 bg-neutral-800/50 rounded-xl border border-neutral-700/50 text-white focus:border-[#3d43dd]/50 focus:ring-1 focus:ring-[#3d43dd]/30 transition-colors resize-none"
+                                                placeholder="Descreva seu projeto ou ideia..."
+                                                disabled={formStatus === 'submitting'}
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <motion.button
+                                            type="submit"
+                                            disabled={formStatus === 'submitting'}
+                                            className="w-full relative group overflow-hidden"
+                                            whileHover={{ scale: 1.02 }}
+                                            whileTap={{ scale: 0.98 }}
+                                        >
+                                            <div className="absolute -inset-2 bg-gradient-to-r from-[#3d43dd] to-[#6366f1] rounded-full blur opacity-30 group-hover:opacity-50 transition-opacity duration-500"></div>
+                                            <div className={`relative inline-flex items-center justify-center w-full gap-2 px-6 py-3 ${formStatus === 'success' ? 'bg-green-600' : formStatus === 'error' ? 'bg-red-600' : 'bg-[#3d43dd]'} rounded-full text-white font-medium transition-all duration-300`}>
+                                                {formStatus === 'submitting' ? (
+                                                    <>
+                                                        <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                                        </svg>
+                                                        Enviando...
+                                                    </>
+                                                ) : formStatus === 'success' ? (
+                                                    <>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                                                        </svg>
+                                                        Mensagem Enviada!
+                                                    </>
+                                                ) : formStatus === 'error' ? (
+                                                    <>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                                            <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                                                        </svg>
+                                                        Erro ao enviar. Tente novamente.
+                                                    </>
+                                                ) : (
+                                                    <>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                                            <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
+                                                        </svg>
+                                                        Enviar Mensagem
+                                                    </>
+                                                )}
+                                            </div>
+                                        </motion.button>
+                                    </div>
+                                </motion.form>
+                            </div>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+
+                {/* Ícones de redes sociais rodapé */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -292,40 +563,47 @@ export default function Contact() {
                             whileInView={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.7 }}
                             viewport={{ once: true }}
-                            className="text-xl font-medium mb-6 bg-gradient-to-r from-white to-neutral-300 bg-clip-text text-transparent"
+                            className="text-xl font-medium mb-4 bg-gradient-to-r from-white to-neutral-300 bg-clip-text text-transparent"
                         >
-                            Prefere um contato mais formal?
+                            Vamos transformar suas ideias em realidade
                         </motion.h3>
-
-                        <motion.div
-                            initial={{ opacity: 0, scale: 0.9 }}
-                            whileInView={{ opacity: 1, scale: 1 }}
-                            transition={{ delay: 0.8 }}
-                            viewport={{ once: true }}
-                            className="relative group"
-                        >
-                            <div className="absolute -inset-1 bg-gradient-to-r from-[#3d43dd] to-[#6366f1] rounded-full blur opacity-30 group-hover:opacity-50 transition duration-500"></div>
-                            <a
-                                href="mailto:wagnerpereiradev@gmail.com"
-                                className="relative inline-flex items-center gap-2 px-6 py-3 bg-neutral-900 rounded-full text-white font-medium transition-all duration-300 hover:bg-neutral-800"
-                            >
-                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                                    <polyline points="22,6 12,13 2,6"></polyline>
-                                </svg>
-                                Me envie um email
-                            </a>
-                        </motion.div>
 
                         <motion.p
                             initial={{ opacity: 0 }}
                             whileInView={{ opacity: 1 }}
+                            transition={{ delay: 0.8 }}
+                            viewport={{ once: true }}
+                            className="text-neutral-400 max-w-xl mb-6"
+                        >
+                            Estou ansioso para colaborar em projetos desafiadores e inovadores.
+                            Juntos, podemos criar soluções digitais que se destacam.
+                        </motion.p>
+
+                        <motion.div
+                            className="flex flex-wrap justify-center gap-3"
+                            initial={{ opacity: 0 }}
+                            whileInView={{ opacity: 1 }}
                             transition={{ delay: 0.9 }}
                             viewport={{ once: true }}
-                            className="mt-4 text-sm text-neutral-500"
                         >
-                            Responderei sua mensagem o mais breve possível
-                        </motion.p>
+                            {contactInfo.map((item, index) => (
+                                <motion.a
+                                    key={`footer-${item.id}`}
+                                    href={item.url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    whileHover={{ scale: 1.1, rotate: 5 }}
+                                    whileTap={{ scale: 0.9 }}
+                                    transition={{ duration: 0.2 }}
+                                    className="w-10 h-10 flex items-center justify-center rounded-full"
+                                    style={{ backgroundColor: item.color }}
+                                >
+                                    <div className="text-white w-5 h-5">
+                                        {item.icon}
+                                    </div>
+                                </motion.a>
+                            ))}
+                        </motion.div>
                     </div>
                 </motion.div>
             </div>
