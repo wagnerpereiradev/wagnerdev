@@ -1,31 +1,40 @@
 'use client';
 
 import Image from 'next/image';
-import { motion } from 'framer-motion';
-import { useEffect, useState, useRef } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { useEffect, useState, useRef, useCallback } from 'react';
 
 export default function Profile() {
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
     const [cursorVariant, setCursorVariant] = useState('default');
     const [typingText, setTypingText] = useState('');
     const fullText = 'Desenvolvedor Full Stack especializado em criar experiências digitais modernas e eficientes. Apaixonado por solucionar problemas complexos através de código limpo e interfaces intuitivas.';
-    const ref = useRef(null);
+    const ref = useRef<HTMLDivElement>(null);
+    const sectionRef = useRef<HTMLElement>(null);
 
-    // Efeito para rastrear a posição do mouse
+    // Efeito de scroll para animações baseadas na posição da tela
+    const { scrollYProgress } = useScroll({
+        target: sectionRef,
+        offset: ["start end", "end start"]
+    });
+
+    const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0]);
+    const y = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [100, 0, 0, -100]);
+
+    // Efeito para rastrear a posição do mouse - otimizado com useCallback
+    const mouseMove = useCallback((e: MouseEvent) => {
+        setMousePosition({
+            x: e.clientX,
+            y: e.clientY
+        });
+    }, []);
+
     useEffect(() => {
-        const mouseMove = (e: MouseEvent) => {
-            setMousePosition({
-                x: e.clientX,
-                y: e.clientY
-            });
-        };
-
         window.addEventListener('mousemove', mouseMove);
-
         return () => {
             window.removeEventListener('mousemove', mouseMove);
         };
-    }, []);
+    }, [mouseMove]);
 
     // Efeito de digitação
     useEffect(() => {
@@ -61,8 +70,8 @@ export default function Profile() {
     };
 
     // Funções para mudar o estado do cursor
-    const textEnter = () => setCursorVariant('hover');
-    const textLeave = () => setCursorVariant('default');
+    const textEnter = useCallback(() => setCursorVariant('hover'), []);
+    const textLeave = useCallback(() => setCursorVariant('default'), []);
 
     const socialLinks = [
         {
@@ -155,7 +164,9 @@ export default function Profile() {
     ];
 
     return (
-        <section id="profile" className="py-32 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+        <section id="profile"
+            ref={sectionRef}
+            className="py-20 md:py-32 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
             {/* Cursor personalizado */}
             <motion.div
                 className="cursor hidden md:block fixed top-0 left-0 w-8 h-8 bg-[#3d43dd] rounded-full pointer-events-none z-50"
@@ -167,7 +178,7 @@ export default function Profile() {
             {/* Fundo com gradiente refinado */}
             <div className="absolute inset-0">
                 <div className="absolute inset-0 bg-gradient-to-b from-neutral-950 via-black to-neutral-950">
-                    <div className="absolute inset-0 opacity-30 mix-blend-overlay bg-[url('/grid-pattern.svg')]"></div>
+                    <div className="absolute inset-0 opacity-30 mix-blend-overlay bg-[url('/images/grid-pattern.svg')]"></div>
                 </div>
                 <div className="absolute inset-0 bg-gradient-to-r from-[#3d43dd]/5 via-transparent to-[#3d43dd]/5"></div>
                 <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#3d43dd]/20 to-transparent"></div>
@@ -175,16 +186,20 @@ export default function Profile() {
             </div>
 
             {/* Elementos decorativos */}
-            <div className="absolute top-20 left-[10%] w-64 h-64 rounded-full bg-[#3d43dd]/5 blur-[100px] animate-pulse"
+            <div className="absolute top-20 left-[10%] w-40 h-40 sm:w-64 sm:h-64 rounded-full bg-[#3d43dd]/5 blur-[100px] animate-pulse"
                 style={{ animationDuration: '8s' }} />
-            <div className="absolute bottom-20 right-[10%] w-96 h-96 rounded-full bg-[#3d43dd]/5 blur-[120px] animate-pulse"
+            <div className="absolute bottom-20 right-[10%] w-64 h-64 sm:w-96 sm:h-96 rounded-full bg-[#3d43dd]/5 blur-[120px] animate-pulse"
                 style={{ animationDuration: '10s' }} />
 
-            <div className="max-w-7xl mx-auto relative z-10">
-                {/* Card principal do perfil */}
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-                    {/* Coluna da esquerda */}
-                    <div className="lg:col-span-5 flex flex-col items-center">
+            {/* Conteúdo principal com animação de fade-in e slide-up */}
+            <motion.div
+                style={{ opacity, y }}
+                className="max-w-7xl mx-auto relative z-10">
+
+                {/* Card principal do perfil - layout atualizado */}
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+                    {/* Coluna da esquerda - foto e redes sociais */}
+                    <div className="lg:col-span-5 flex flex-col items-center lg:sticky lg:top-32">
                         <motion.div
                             className="relative"
                             initial={{ opacity: 0, scale: 0.8 }}
@@ -197,7 +212,7 @@ export default function Profile() {
                                 delay: 0.2
                             }}
                         >
-                            {/* Círculo decorativo externo */}
+                            {/* Círculo decorativo externo com efeito de pulsação */}
                             <motion.div
                                 className="absolute -inset-6 rounded-full bg-gradient-to-r from-[#3d43dd]/10 to-[#6366f1]/10 blur-xl"
                                 animate={{
@@ -211,9 +226,37 @@ export default function Profile() {
                                 }}
                             />
 
-                            {/* Imagem de perfil */}
+                            {/* Anéis orbitais ao redor da foto de perfil */}
+                            {[...Array(3)].map((_, i) => (
+                                <motion.div
+                                    key={i}
+                                    className="absolute rounded-full border border-[#3d43dd]/20"
+                                    style={{
+                                        inset: `-${(i + 1) * 8}px`,
+                                    }}
+                                    animate={{
+                                        rotate: [0, 360],
+                                        opacity: [0.1, 0.3, 0.1]
+                                    }}
+                                    transition={{
+                                        rotate: {
+                                            duration: 15 + i * 5,
+                                            repeat: Infinity,
+                                            ease: "linear"
+                                        },
+                                        opacity: {
+                                            duration: 3,
+                                            repeat: Infinity,
+                                            repeatType: "reverse",
+                                            ease: "easeInOut"
+                                        }
+                                    }}
+                                />
+                            ))}
+
+                            {/* Imagem de perfil com efeitos visuais aprimorados */}
                             <motion.div
-                                className="relative w-64 h-64 lg:w-80 lg:h-80 overflow-hidden rounded-full border-2 border-[#3d43dd]/30 shadow-xl cursor-pointer"
+                                className="relative w-56 h-56 sm:w-64 sm:h-64 lg:w-80 lg:h-80 overflow-hidden rounded-full border-2 border-[#3d43dd]/30 shadow-xl cursor-pointer"
                                 whileHover={{
                                     scale: 1.03,
                                     boxShadow: "0 0 30px rgba(61, 67, 221, 0.3)"
@@ -221,16 +264,18 @@ export default function Profile() {
                                 onMouseEnter={textEnter}
                                 onMouseLeave={textLeave}
                             >
+                                <div className="absolute inset-0 bg-gradient-to-tl from-[#3d43dd]/20 via-transparent to-transparent mix-blend-overlay z-10" />
                                 <Image
                                     src="https://avatars.githubusercontent.com/u/99822078?v=4"
                                     alt="Foto do perfil"
                                     fill
-                                    sizes="(max-width: 768px) 256px, 320px"
+                                    sizes="(max-width: 640px) 224px, (max-width: 768px) 256px, 320px"
                                     className="object-cover"
                                     priority
+                                    fetchPriority="high"
                                 />
 
-                                {/* Efeito de brilho */}
+                                {/* Efeito de brilho com movimento */}
                                 <motion.div
                                     className="absolute inset-0 bg-gradient-to-tr from-[#3d43dd]/40 via-transparent to-transparent mix-blend-overlay"
                                     animate={{
@@ -245,7 +290,7 @@ export default function Profile() {
                                 />
                             </motion.div>
 
-                            {/* Linha decorativa */}
+                            {/* Linha decorativa abaixo da foto */}
                             <motion.div
                                 className="absolute -bottom-2 left-1/2 w-40 h-1 bg-gradient-to-r from-[#3d43dd]/0 via-[#3d43dd] to-[#3d43dd]/0 rounded-full transform -translate-x-1/2"
                                 initial={{ width: 0, opacity: 0 }}
@@ -255,13 +300,29 @@ export default function Profile() {
                             />
                         </motion.div>
 
-                        {/* Redes sociais */}
+                        {/* Status "Disponível para Projetos" */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: 0.5, duration: 0.5 }}
+                            className="mt-6 mb-8"
+                        >
+                            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-500/10 border border-green-500/20 backdrop-blur-sm">
+                                <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                                <span className="text-sm font-medium text-green-500">
+                                    Disponível para Projetos
+                                </span>
+                            </div>
+                        </motion.div>
+
+                        {/* Redes sociais com efeitos aprimorados */}
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ delay: 0.6, duration: 0.5 }}
-                            className="flex gap-6 mt-12 justify-center"
+                            className="flex flex-wrap justify-center gap-4 sm:gap-6 mt-4"
                         >
                             {socialLinks.map((link, index) => (
                                 <motion.a
@@ -288,26 +349,35 @@ export default function Profile() {
                                     <span className="relative">
                                         {link.icon}
                                     </span>
+                                    <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full mt-2 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap text-xs bg-neutral-900 px-2 py-1 rounded pointer-events-none">
+                                        {link.name}
+                                    </span>
                                 </motion.a>
                             ))}
                         </motion.div>
                     </div>
 
-                    {/* Coluna da direita */}
+                    {/* Coluna da direita - informações do perfil */}
                     <div className="lg:col-span-7">
-                        <div className="bg-neutral-900/30 backdrop-blur-sm rounded-3xl p-8 lg:p-10 border border-neutral-800/30">
-                            {/* Tag decorativa */}
+                        <div className="bg-neutral-900/30 backdrop-blur-sm rounded-3xl p-6 sm:p-8 lg:p-10 border border-neutral-800/30">
+                            {/* Tag de destaque */}
                             <motion.div
                                 initial={{ opacity: 0, y: 20 }}
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
                                 transition={{ duration: 0.5 }}
-                                className="mb-6"
+                                className="mb-6 flex flex-wrap gap-3"
                             >
                                 <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#3d43dd]/10 border border-[#3d43dd]/20 backdrop-blur-sm">
                                     <span className="w-2 h-2 rounded-full bg-[#3d43dd] animate-pulse"></span>
                                     <span className="text-sm font-medium bg-gradient-to-r from-white to-neutral-300 bg-clip-text text-transparent">
                                         Desenvolvedor Full Stack
+                                    </span>
+                                </div>
+                                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-purple-500/10 border border-purple-500/20 backdrop-blur-sm">
+                                    <span className="w-2 h-2 rounded-full bg-purple-500 animate-pulse"></span>
+                                    <span className="text-sm font-medium text-purple-300">
+                                        UX/UI Designer
                                     </span>
                                 </div>
                             </motion.div>
@@ -318,7 +388,7 @@ export default function Profile() {
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
                                 transition={{ delay: 0.2, duration: 0.5 }}
-                                className="text-4xl lg:text-6xl font-bold mb-4 cursor-pointer"
+                                className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold mb-4 cursor-pointer"
                                 onMouseEnter={textEnter}
                                 onMouseLeave={textLeave}
                             >
@@ -326,7 +396,7 @@ export default function Profile() {
                                     Wagner Pereira
                                 </span>
                                 <motion.span
-                                    className="inline-block h-9 lg:h-12 w-[3px] ml-2 bg-white/70"
+                                    className="inline-block h-8 sm:h-9 lg:h-10 w-[3px] ml-2 bg-white/70"
                                     animate={{ opacity: [1, 0, 1] }}
                                     transition={{ duration: 0.8, repeat: Infinity }}
                                 />
@@ -347,47 +417,109 @@ export default function Profile() {
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
                                 transition={{ delay: 0.4, duration: 0.5 }}
-                                className="text-lg text-neutral-300 mb-8 leading-relaxed"
+                                className="text-base sm:text-lg text-neutral-300 mb-8 leading-relaxed"
                                 onMouseEnter={textEnter}
                                 onMouseLeave={textLeave}
                             >
                                 {typingText}
                             </motion.p>
 
-                            {/* Botão de contato */}
-                            <motion.a
-                                href="#contact"
+                            {/* Estatísticas chave */}
+                            <motion.div
                                 initial={{ opacity: 0, y: 20 }}
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
                                 transition={{ delay: 0.5, duration: 0.5 }}
-                                className="group rounded-2xl relative inline-flex items-center gap-2 px-8 py-4 overflow-hidden"
-                                whileHover={{ scale: 1.02 }}
-                                whileTap={{ scale: 0.98 }}
-                                onMouseEnter={textEnter}
-                                onMouseLeave={textLeave}
+                                className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10"
                             >
-                                <div className="absolute -inset-2 bg-gradient-to-r from-[#3d43dd] to-[#6366f1] rounded-full opacity-70 blur-md group-hover:opacity-100 transition-opacity duration-500"></div>
-                                <div className="relative inline-flex items-center gap-2 px-6 py-3 bg-neutral-900 rounded-full text-white font-medium">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                        <path d="M14 9a2 2 0 0 1-2 2H6l-4 4V4c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2v5Z" />
-                                        <path d="M18 9h2a2 2 0 0 1 2 2v11l-4-4h-6a2 2 0 0 1-2-2v-1" />
-                                    </svg>
-                                    Entre em contato
+                                {[
+                                    { value: "30+", label: "Projetos" },
+                                    { value: "2020+", label: "Atuando com dev/design" },
+                                    { value: "25+", label: "Clientes Satisfeitos" },
+                                    { value: "100%", label: "Foco em código limpo e UX" }
+                                ].map((stat, i) => (
+                                    <motion.div
+                                        key={`stat-${i}`}
+                                        className="bg-neutral-800/40 backdrop-blur-sm rounded-xl p-4 border border-neutral-700/20"
+                                        whileHover={{
+                                            y: -5,
+                                            backgroundColor: "rgba(61, 67, 221, 0.1)",
+                                            borderColor: "rgba(61, 67, 221, 0.3)"
+                                        }}
+                                    >
+                                        <div className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-[#3d43dd] via-[#6366f1] to-[#818cf8] bg-clip-text text-transparent">
+                                            {stat.value}
+                                        </div>
+                                        <div className="text-sm text-neutral-400">
+                                            {stat.label}
+                                        </div>
+                                    </motion.div>
+                                ))}
+                            </motion.div>
+
+                            {/* Áreas de atuação */}
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ delay: 0.6, duration: 0.5 }}
+                                className="mb-8"
+                            >
+                                <h3 className="text-lg font-medium text-white mb-4">Áreas de Atuação</h3>
+                                <div className="flex flex-wrap gap-2">
+                                    {[
+                                        "Desenvolvimento Web", "Mobile Apps", "UX/UI Design",
+                                        "APIs RESTful", "Arquitetura de Software", "Inteligência Artificial",
+                                        "Consultorias", "DevOps"
+                                    ].map((area) => (
+                                        <span
+                                            key={area}
+                                            className="px-3 py-1.5 bg-neutral-800/30 text-neutral-300 rounded-full text-sm border border-neutral-700/20"
+                                        >
+                                            {area}
+                                        </span>
+                                    ))}
                                 </div>
-                            </motion.a>
+                            </motion.div>
+
+                            {/* Botões de Ação */}
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ delay: 0.7, duration: 0.5 }}
+                                className="flex flex-wrap gap-4"
+                            >
+                                <motion.a
+                                    href="#contact"
+                                    className="group rounded-full relative inline-flex items-center gap-2 p-1 overflow-hidden"
+                                    whileHover={{ scale: 1.02 }}
+                                    whileTap={{ scale: 0.98 }}
+                                    onMouseEnter={textEnter}
+                                    onMouseLeave={textLeave}
+                                >
+                                    <div className="absolute -inset-2 bg-gradient-to-r from-[#3d43dd] to-[#6366f1] rounded-full opacity-70 blur-md group-hover:opacity-100 transition-opacity duration-500"></div>
+                                    <div className="relative inline-flex items-center gap-2 px-6 py-3 bg-neutral-900 rounded-full text-white font-medium">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                            <path d="M14 9a2 2 0 0 1-2 2H6l-4 4V4c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2v5Z" />
+                                            <path d="M18 9h2a2 2 0 0 1 2 2v11l-4-4h-6a2 2 0 0 1-2-2v-1" />
+                                        </svg>
+                                        Entre em contato
+                                    </div>
+                                </motion.a>
+                            </motion.div>
                         </div>
                     </div>
                 </div>
 
-                {/* Seção de tecnologias */}
+                {/* Seção de tecnologias - versão com carrossel aprimorado */}
                 <motion.div
                     ref={ref}
                     initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.7 }}
-                    className="mt-24"
+                    className="mt-16 sm:mt-24"
                 >
                     {/* Título da seção */}
                     <motion.div
@@ -397,7 +529,7 @@ export default function Profile() {
                         transition={{ duration: 0.5, delay: 0.1 }}
                         className="text-center mb-12"
                     >
-                        <h2 className="text-3xl font-bold text-white">
+                        <h2 className="text-3xl font-bold text-white mb-4">
                             <span className="bg-gradient-to-r from-[#3d43dd] to-[#6366f1] bg-clip-text text-transparent">
                                 Tecnologias
                             </span>
@@ -407,56 +539,148 @@ export default function Profile() {
                                 <div className="absolute -bottom-2 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#3d43dd]/50 to-transparent"></div>
                             </span>
                         </h2>
+                        <p className="text-neutral-400 max-w-2xl mx-auto">
+                            Habilidades técnicas e ferramentas que fazem parte do meu arsenal para desenvolvimento de soluções digitais.
+                        </p>
                     </motion.div>
 
                     {/* Carrossel de tecnologias */}
-                    <div className="relative w-full h-40 overflow-hidden rounded-2xl backdrop-blur-sm border border-neutral-800/30 bg-black/20">
-                        {/* Gradiente esquerdo */}
-                        <div className="absolute left-0 top-0 h-full w-40 bg-gradient-to-r from-black via-black/80 to-transparent z-10" />
+                    <div className="overflow-hidden py-8 relative">
+                        {/* Gradientes laterais para efeito de fade */}
+                        <div className="absolute top-0 bottom-0 left-0 w-20 bg-gradient-to-r from-black to-transparent z-10"></div>
+                        <div className="absolute top-0 bottom-0 right-0 w-20 bg-gradient-to-l from-black to-transparent z-10"></div>
 
-                        {/* Gradiente direito */}
-                        <div className="absolute right-0 top-0 h-full w-40 bg-gradient-to-l from-black via-black/80 to-transparent z-10" />
-
+                        {/* Framer Motion Carousel - Primeira linha - animação para direita */}
                         <motion.div
-                            className="absolute top-0 left-0 h-full flex items-center gap-12 px-6"
-                            animate={{ x: [0, -1200] }}
+                            className="flex gap-8 py-4 mb-8"
+                            animate={{ x: [0, -1920] }}
                             transition={{
-                                duration: 40,
-                                repeat: Infinity,
-                                ease: "linear",
-                                repeatType: "loop"
+                                x: {
+                                    repeat: Infinity,
+                                    repeatType: "loop",
+                                    duration: 50,
+                                    ease: "linear",
+                                }
                             }}
                         >
-                            {/* Primeira renderização */}
-                            {technologies.concat(technologies).concat(technologies).map((tech, index) => (
+                            {/* Duplicamos as tecnologias para um loop contínuo */}
+                            {[...technologies, ...technologies].map((tech, index) => (
                                 <motion.div
                                     key={`${tech.name}-${index}`}
-                                    className="flex flex-col items-center justify-center group"
-                                    initial={{ opacity: 0, scale: 0.8 }}
-                                    animate={{ opacity: 1, scale: 1 }}
-                                    transition={{ duration: 0.5, delay: index * 0.05 }}
-                                    whileHover={{ scale: 1.1, y: -5 }}
+                                    className="flex-shrink-0 w-32 h-32 bg-neutral-900/30 backdrop-blur-sm border border-neutral-800/30 rounded-xl flex flex-col items-center justify-center p-4 relative group"
+                                    whileHover={{
+                                        y: -10,
+                                        scale: 1.05,
+                                        transition: { duration: 0.2 }
+                                    }}
                                 >
-                                    <div className="w-20 h-20 relative rounded-xl bg-neutral-900/50 p-4 backdrop-blur-sm border border-neutral-800/50 group-hover:border-[#3d43dd]/30 transition-all duration-300 flex items-center justify-center">
+                                    {/* Efeito de brilho ao passar o mouse */}
+                                    <motion.div
+                                        className="absolute inset-0 bg-gradient-to-r from-[#3d43dd]/0 via-[#3d43dd]/30 to-[#3d43dd]/0 rounded-xl opacity-0 group-hover:opacity-100"
+                                        animate={{
+                                            background: [
+                                                "linear-gradient(to right, rgba(61, 67, 221, 0), rgba(61, 67, 221, 0.3), rgba(61, 67, 221, 0))",
+                                                "linear-gradient(to right, rgba(99, 102, 241, 0), rgba(99, 102, 241, 0.3), rgba(99, 102, 241, 0))",
+                                                "linear-gradient(to right, rgba(61, 67, 221, 0), rgba(61, 67, 221, 0.3), rgba(61, 67, 221, 0))"
+                                            ]
+                                        }}
+                                        transition={{
+                                            duration: 2,
+                                            repeat: Infinity,
+                                            repeatType: "reverse"
+                                        }}
+                                    />
+
+                                    <div className="h-16 w-16 mb-3 flex items-center justify-center relative z-10">
                                         <Image
                                             src={tech.logo}
                                             alt={tech.name}
-                                            fill
-                                            sizes="(max-width: 768px) 80px, 80px"
-                                            className="object-contain p-2.5"
-                                            priority={index < 5}
-                                        />
-                                        <motion.div
-                                            className="absolute inset-0 bg-[#3d43dd]/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                                            width={50}
+                                            height={50}
+                                            className="object-contain max-h-16 group-hover:scale-110 transition-transform"
                                         />
                                     </div>
-                                    <span className="mt-3 text-sm text-neutral-400 group-hover:text-white transition-colors duration-300">{tech.name}</span>
+                                    <p className="text-sm font-medium text-neutral-300 group-hover:text-white transition-colors text-center relative z-10">{tech.name}</p>
                                 </motion.div>
                             ))}
                         </motion.div>
+
+                        {/* Framer Motion Carousel - Segunda linha - animação para esquerda (direção oposta) */}
+                        <motion.div
+                            className="flex gap-8 py-4"
+                            animate={{ x: [-1920, 0] }}
+                            transition={{
+                                x: {
+                                    repeat: Infinity,
+                                    repeatType: "loop",
+                                    duration: 60,
+                                    ease: "linear",
+                                }
+                            }}
+                        >
+                            {/* Tecnologias em ordem reversa para variedade visual */}
+                            {[...technologies, ...technologies].reverse().map((tech, index) => (
+                                <motion.div
+                                    key={`${tech.name}-reverse-${index}`}
+                                    className="flex-shrink-0 w-32 h-32 bg-neutral-900/30 backdrop-blur-sm border border-neutral-800/30 rounded-xl flex flex-col items-center justify-center p-4 relative group"
+                                    whileHover={{
+                                        y: -10,
+                                        scale: 1.05,
+                                        transition: { duration: 0.2 }
+                                    }}
+                                >
+                                    {/* Efeito de brilho ao passar o mouse */}
+                                    <motion.div
+                                        className="absolute inset-0 bg-gradient-to-r from-[#3d43dd]/0 via-[#3d43dd]/30 to-[#3d43dd]/0 rounded-xl opacity-0 group-hover:opacity-100"
+                                        animate={{
+                                            background: [
+                                                "linear-gradient(to left, rgba(61, 67, 221, 0), rgba(61, 67, 221, 0.3), rgba(61, 67, 221, 0))",
+                                                "linear-gradient(to left, rgba(99, 102, 241, 0), rgba(99, 102, 241, 0.3), rgba(99, 102, 241, 0))",
+                                                "linear-gradient(to left, rgba(61, 67, 221, 0), rgba(61, 67, 221, 0.3), rgba(61, 67, 221, 0))"
+                                            ]
+                                        }}
+                                        transition={{
+                                            duration: 2,
+                                            repeat: Infinity,
+                                            repeatType: "reverse"
+                                        }}
+                                    />
+
+                                    <div className="h-16 w-16 mb-3 flex items-center justify-center relative z-10">
+                                        <Image
+                                            src={tech.logo}
+                                            alt={tech.name}
+                                            width={50}
+                                            height={50}
+                                            className="object-contain max-h-16 group-hover:scale-110 transition-transform"
+                                        />
+                                    </div>
+                                    <p className="text-sm font-medium text-neutral-300 group-hover:text-white transition-colors text-center relative z-10">{tech.name}</p>
+                                </motion.div>
+                            ))}
+                        </motion.div>
+
+                        {/* Indicadores de deslizamento */}
+                        <div className="mt-8 flex justify-center gap-1">
+                            <motion.div
+                                className="w-12 h-1 bg-[#3d43dd]/50 rounded-full"
+                                animate={{ opacity: [0.3, 1, 0.3] }}
+                                transition={{ duration: 2, repeat: Infinity }}
+                            />
+                            <motion.div
+                                className="w-12 h-1 bg-[#3d43dd]/50 rounded-full"
+                                animate={{ opacity: [0.3, 1, 0.3] }}
+                                transition={{ duration: 2, repeat: Infinity, delay: 0.6 }}
+                            />
+                            <motion.div
+                                className="w-12 h-1 bg-[#3d43dd]/50 rounded-full"
+                                animate={{ opacity: [0.3, 1, 0.3] }}
+                                transition={{ duration: 2, repeat: Infinity, delay: 1.2 }}
+                            />
+                        </div>
                     </div>
                 </motion.div>
-            </div>
+            </motion.div>
         </section>
     );
 } 

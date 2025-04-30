@@ -51,9 +51,9 @@ export default function Projects() {
             ],
             logo: 'https://lajeai.vercel.app/assets/img/laje-ai-icon.svg',
             demoUrl: 'https://lajeai.vercel.app',
-            primaryColor: '#3d43dd',
+            primaryColor: '#FF3102',
             category: 'Inteligência Artificial',
-            year: '2023'
+            year: '2025'
         },
         {
             id: 2,
@@ -70,9 +70,9 @@ export default function Projects() {
             highlight: 'Automações de conteúdo dinâmico via cloud, sistema de estruturação geolocalizada (estado/cidade/empresa/ponto)',
             logo: 'https://anlin.com.br/wp-content/uploads/2025/04/anlin-logo-vertical-white.png',
             demoUrl: 'https://anlin.vercel.app',
-            primaryColor: '#ff5722',
+            primaryColor: '#555555',
             category: 'Mídia Digital',
-            year: '2022'
+            year: '2025'
         },
         {
             id: 3,
@@ -94,9 +94,9 @@ export default function Projects() {
             ],
             logo: 'https://agentedoclima.com/app/assets/img/logo_chat.png',
             demoUrl: 'https://agentedoclima.com',
-            primaryColor: '#2196f3',
+            primaryColor: '#6352b9',
             category: 'Sustentabilidade',
-            year: '2023'
+            year: '2024'
         },
         {
             id: 4,
@@ -118,9 +118,9 @@ export default function Projects() {
             highlight: 'Especialização de profissionais para atuação na área de proteção de dados em conformidade com a LGPD e regulamentações internacionais.',
             logo: 'https://bcicursos.com.br/wp-content/uploads/2023/09/favicon.png',
             demoUrl: 'https://bcicursos.com.br',
-            primaryColor: '#8bc34a',
+            primaryColor: '#000AFF',
             category: 'Educação',
-            year: '2021'
+            year: '2023'
         }
     ], []);
 
@@ -149,7 +149,7 @@ export default function Projects() {
             {/* Fundo com gradiente refinado */}
             <div className="absolute inset-0">
                 <div className="absolute inset-0 bg-gradient-to-b from-neutral-950 via-black to-neutral-950">
-                    <div className="absolute inset-0 opacity-30 mix-blend-overlay bg-[url('/grid-pattern.svg')]"></div>
+                    <div className="absolute inset-0 opacity-30 mix-blend-overlay bg-[url('/images/grid-pattern.svg')]"></div>
                 </div>
                 <div className="absolute inset-0 bg-gradient-to-r from-[#3d43dd]/5 via-transparent to-[#3d43dd]/5"></div>
                 <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#3d43dd]/20 to-transparent"></div>

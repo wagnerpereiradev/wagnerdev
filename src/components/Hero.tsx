@@ -1,21 +1,68 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import Image from 'next/image';
+import { TypeAnimation } from 'react-type-animation';
 
 export default function Hero() {
     const videoRef = useRef<HTMLIFrameElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
+    const cursorRef = useRef<HTMLDivElement>(null);
+    const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+    const [cursorVariant, setCursorVariant] = useState("default");
     const { scrollY } = useScroll();
     const y = useTransform(scrollY, [0, 500], [0, -150]);
     const opacity = useTransform(scrollY, [0, 300], [1, 0]);
+    const parallaxRotate = useTransform(scrollY, [0, 300], [0, 15]);
+    const parallaxScale = useTransform(scrollY, [0, 300], [1, 0.9]);
 
-    // Spring for smooth title animation
+    // Spring para animações suaves do título
     const titleSpring = useSpring(0, { stiffness: 70, damping: 15 });
     useEffect(() => {
         titleSpring.set(1);
     }, [titleSpring]);
+
+    // Efeito para o cursor personalizado
+    useEffect(() => {
+        const handleMouseMove = (e: MouseEvent) => {
+            setMousePosition({ x: e.clientX, y: e.clientY });
+        };
+
+        window.addEventListener("mousemove", handleMouseMove);
+        return () => {
+            window.removeEventListener("mousemove", handleMouseMove);
+        };
+    }, []);
+
+    // Variantes para o cursor personalizado
+    const cursorVariants = {
+        default: {
+            x: mousePosition.x - 16,
+            y: mousePosition.y - 16,
+            height: 32,
+            width: 32
+        },
+        hovering: {
+            x: mousePosition.x - 24,
+            y: mousePosition.y - 24,
+            height: 48,
+            width: 48,
+            backgroundColor: "rgba(61, 67, 221, 0.4)",
+            mixBlendMode: "screen" as const
+        }
+    };
+
+    // Função para alterar o estado do cursor ao passar sobre elementos interativos
+    const handleMouseEnter = () => setCursorVariant("hovering");
+    const handleMouseLeave = () => setCursorVariant("default");
+
+    // Lista de tecnologias para o carrossel
+    const technologies = [
+        "JavaScript", "React", "Next.js", "TypeScript",
+        "Node.js", "Python", "Django", "TailwindCSS",
+        "Framer Motion", "Firebase", "AWS", "Docker"
+    ];
 
     return (
         <motion.section
@@ -23,93 +70,231 @@ export default function Hero() {
             className="relative flex flex-col items-center justify-center min-h-screen overflow-hidden"
             style={{ opacity }}
         >
-            {/* Video Background com overlay melhorado */}
-            <div className="absolute inset-0 w-full h-full overflow-hidden bg-black">
-                {/* Overlay com gradiente */}
-                <div className="absolute inset-0 bg-gradient-to-b from-black via-black/10 to-black z-10"></div>
+            {/* Cursor personalizado */}
+            <motion.div
+                ref={cursorRef}
+                className="fixed top-0 left-0 rounded-full bg-[#3d43dd]/20 backdrop-blur-sm border border-[#3d43dd]/30 z-50 pointer-events-none hidden md:block"
+                variants={cursorVariants}
+                animate={cursorVariant}
+                transition={{
+                    type: "spring",
+                    damping: 25,
+                    stiffness: 300,
+                    mass: 0.5
+                }}
+            />
 
-                {/* Efeito de ruído sutil */}
-                <div className="absolute inset-0 opacity-5 mix-blend-overlay bg-[url('/noise-pattern.svg')] z-10"></div>
+            {/* Background com vídeo e efeitos avançados */}
+            <div className="absolute inset-0 w-full h-full overflow-hidden bg-black">
+                {/* Overlay com gradiente refinado */}
+                <div className="absolute inset-0 bg-gradient-to-b from-black via-black/30 to-black z-10"></div>
+
+                {/* Efeito de ruído avançado */}
+                <div className="absolute inset-0 opacity-10 mix-blend-overlay bg-[url('/images/noise-pattern.svg')] z-10"></div>
 
                 {/* Gradiente com a cor principal */}
-                <div className="absolute inset-0 bg-[#3d43dd]/10 mix-blend-overlay z-10"></div>
+                <div className="absolute inset-0 bg-[#3d43dd]/15 mix-blend-color-dodge z-10"></div>
 
-                {/* Vídeo de fundo */}
+                {/* Malha geométrica sutil */}
+                <div className="absolute inset-0 opacity-20 mix-blend-overlay bg-[url('/images/grid-pattern.svg')] z-10"></div>
+
+                {/* Vídeo de fundo com filtros aprimorados - usando loading="lazy" e preload="none" */}
                 <iframe
                     ref={videoRef}
                     src="https://www.youtube.com/embed/Evaf-2l0-QA?autoplay=1&mute=1&loop=1&controls=0&showinfo=0&rel=0&iv_load_policy=3&playlist=Evaf-2l0-QA"
                     title="Background Video"
+                    loading="lazy"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    className="absolute w-[300%] h-[300%] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none"
+                    className="absolute w-[300%] sm:w-[200%] md:w-[300%] h-[300%] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none"
                     style={{
-                        opacity: 0.4,
+                        opacity: 0.5,
                         zIndex: 1,
+                        filter: "saturate(0.7) contrast(1.1)",
+                        willChange: "transform" // Otimização para navegadores
                     }}
                 />
+
+                {/* Camada superior com grão cinemático */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-40 mix-blend-overlay z-15"></div>
             </div>
 
-            {/* Partículas e efeitos decorativos */}
+            {/* Efeitos de partículas e elementos decorativos - reduzindo quantidade para melhorar performance */}
             <div className="absolute inset-0 z-20">
-                {/* Partículas superiores */}
+                {/* Reduzindo para 2 partículas principais ao invés de 3 */}
                 <motion.div
-                    className="absolute top-[20%] left-[15%] w-64 h-64 rounded-full bg-[#3d43dd]/5 blur-[80px]"
-                    animate={{
-                        opacity: [0.3, 0.5, 0.3],
-                        scale: [1, 1.1, 1],
-                    }}
-                    transition={{
-                        duration: 8,
-                        repeat: Infinity,
-                        repeatType: "reverse"
-                    }}
-                />
-
-                {/* Partículas inferiores */}
-                <motion.div
-                    className="absolute bottom-[15%] right-[20%] w-96 h-96 rounded-full bg-[#3d43dd]/10 blur-[100px]"
+                    className="absolute top-[15%] left-[10%] w-48 h-48 sm:w-72 sm:h-72 rounded-full bg-[#3d43dd]/10 blur-[100px]"
                     animate={{
                         opacity: [0.2, 0.4, 0.2],
                         scale: [1, 1.2, 1],
                     }}
                     transition={{
-                        duration: 10,
+                        duration: 12,
                         repeat: Infinity,
-                        repeatType: "reverse"
+                        repeatType: "reverse",
+                        ease: "easeInOut"
                     }}
                 />
 
-                {/* Partícula menor à esquerda */}
                 <motion.div
-                    className="absolute bottom-[30%] left-[25%] w-32 h-32 rounded-full bg-[#3d43dd]/15 blur-[60px]"
+                    className="absolute bottom-[10%] right-[25%] w-64 h-64 sm:w-96 sm:h-96 rounded-full bg-[#3d43dd]/10 blur-[100px]"
                     animate={{
-                        opacity: [0.3, 0.6, 0.3],
-                        y: [0, -20, 0],
+                        opacity: [0.2, 0.5, 0.2],
+                        scale: [1, 1.1, 1],
                     }}
                     transition={{
-                        duration: 6,
+                        duration: 10,
                         repeat: Infinity,
-                        repeatType: "reverse"
+                        repeatType: "reverse",
+                        ease: "easeInOut"
                     }}
                 />
+
+                {/* Partículas menores flutuantes - usando valores constantes em vez de aleatórios */}
+                <div className="absolute inset-0">
+                    {/* Mostrando apenas 3 partículas em dispositivos móveis */}
+                    <motion.div
+                        className="absolute w-2 h-2 rounded-full bg-[#3d43dd]/50"
+                        style={{
+                            top: "62.43%",
+                            left: "0.80%",
+                            willChange: "transform, opacity" // Otimização para navegadores
+                        }}
+                        animate={{
+                            y: [0, -15, 0],
+                            opacity: [0.3, 0.7, 0.3],
+                        }}
+                        transition={{
+                            duration: 3.5,
+                            repeat: Infinity,
+                            delay: 0.2,
+                            ease: "easeInOut"
+                        }}
+                    />
+                    <motion.div
+                        className="absolute w-2 h-2 rounded-full bg-[#3d43dd]/50"
+                        style={{
+                            top: "75.22%",
+                            left: "14.85%",
+                            willChange: "transform, opacity"
+                        }}
+                        animate={{
+                            y: [0, -15, 0],
+                            opacity: [0.3, 0.7, 0.3],
+                        }}
+                        transition={{
+                            duration: 2.8,
+                            repeat: Infinity,
+                            delay: 0.5,
+                            ease: "easeInOut"
+                        }}
+                    />
+                    <motion.div
+                        className="absolute w-2 h-2 rounded-full bg-[#3d43dd]/50"
+                        style={{
+                            top: "73.24%",
+                            left: "66.22%",
+                            willChange: "transform, opacity"
+                        }}
+                        animate={{
+                            y: [0, -15, 0],
+                            opacity: [0.3, 0.7, 0.3],
+                        }}
+                        transition={{
+                            duration: 3.2,
+                            repeat: Infinity,
+                            delay: 1.2,
+                            ease: "easeInOut"
+                        }}
+                    />
+                    {/* Estas duas partículas serão visíveis apenas em telas maiores */}
+                    <motion.div
+                        className="absolute w-2 h-2 rounded-full bg-[#3d43dd]/50 hidden sm:block"
+                        style={{
+                            top: "59.33%",
+                            left: "98.08%",
+                            willChange: "transform, opacity"
+                        }}
+                        animate={{
+                            y: [0, -15, 0],
+                            opacity: [0.3, 0.7, 0.3],
+                        }}
+                        transition={{
+                            duration: 4.1,
+                            repeat: Infinity,
+                            delay: 0.8,
+                            ease: "easeInOut"
+                        }}
+                    />
+                    <motion.div
+                        className="absolute w-2 h-2 rounded-full bg-[#3d43dd]/50 hidden sm:block"
+                        style={{
+                            top: "90.82%",
+                            left: "53.97%",
+                            willChange: "transform, opacity"
+                        }}
+                        animate={{
+                            y: [0, -15, 0],
+                            opacity: [0.3, 0.7, 0.3],
+                        }}
+                        transition={{
+                            duration: 3.7,
+                            repeat: Infinity,
+                            delay: 1.5,
+                            ease: "easeInOut"
+                        }}
+                    />
+                </div>
             </div>
 
-            {/* Linhas decorativas */}
+            {/* Linhas decorativas aprimoradas */}
             <div className="absolute inset-0 z-20">
-                {/* Linha superior */}
-                <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#3d43dd]/30 to-transparent"></div>
+                {/* Linha superior com animação */}
+                <motion.div
+                    className="absolute top-0 left-0 right-0 h-px"
+                    initial={{ scaleX: 0, opacity: 0 }}
+                    animate={{ scaleX: 1, opacity: 1 }}
+                    transition={{ duration: 1.5, delay: 0.2 }}
+                >
+                    <div className="w-full h-full bg-gradient-to-r from-transparent via-[#3d43dd]/40 to-transparent"></div>
+                </motion.div>
 
-                {/* Linha inferior */}
-                <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#3d43dd]/30 to-transparent"></div>
+                {/* Linha inferior com animação */}
+                <motion.div
+                    className="absolute bottom-0 left-0 right-0 h-px"
+                    initial={{ scaleX: 0, opacity: 0 }}
+                    animate={{ scaleX: 1, opacity: 1 }}
+                    transition={{ duration: 1.5, delay: 0.4 }}
+                >
+                    <div className="w-full h-full bg-gradient-to-r from-transparent via-[#3d43dd]/40 to-transparent"></div>
+                </motion.div>
+
+                {/* Linhas laterais decorativas - escondendo em dispositivos pequenos */}
+                <motion.div
+                    className="absolute top-[30%] bottom-[30%] left-0 w-px hidden sm:block"
+                    initial={{ scaleY: 0, opacity: 0 }}
+                    animate={{ scaleY: 1, opacity: 1 }}
+                    transition={{ duration: 1.5, delay: 0.6 }}
+                >
+                    <div className="w-full h-full bg-gradient-to-b from-transparent via-[#3d43dd]/20 to-transparent"></div>
+                </motion.div>
+
+                <motion.div
+                    className="absolute top-[30%] bottom-[30%] right-0 w-px hidden sm:block"
+                    initial={{ scaleY: 0, opacity: 0 }}
+                    animate={{ scaleY: 1, opacity: 1 }}
+                    transition={{ duration: 1.5, delay: 0.8 }}
+                >
+                    <div className="w-full h-full bg-gradient-to-b from-transparent via-[#3d43dd]/20 to-transparent"></div>
+                </motion.div>
             </div>
 
-            {/* Main Content */}
-            <div className="relative z-30 max-w-5xl mx-auto px-4 flex flex-col items-center">
-                {/* Container com backdrop blur */}
+            {/* Conteúdo principal aprimorado */}
+            <div className="relative z-30 w-full max-w-6xl mx-auto px-4 flex flex-col items-center">
                 <motion.div
-                    className="relative z-30 flex flex-col items-center py-12"
+                    className="relative z-30 flex flex-col items-center pt-28 pb-12 md:py-12"
                     style={{ y }}
                 >
-                    {/* Foto de perfil com efeitos avançados */}
+                    {/* Foto de perfil com efeitos visuais ultra-aprimorados */}
                     <motion.div
                         initial={{ scale: 0.9, opacity: 0 }}
                         animate={{
@@ -122,90 +307,158 @@ export default function Hero() {
                             stiffness: 100
                         }}
                         className="relative mb-10"
+                        onMouseEnter={handleMouseEnter}
+                        onMouseLeave={handleMouseLeave}
+                        style={{
+                            rotate: parallaxRotate,
+                            scale: parallaxScale
+                        }}
                     >
-                        {/* Animação de anel externo */}
+                        {/* Círculo de energia externa */}
                         <motion.div
-                            className="absolute -inset-3 rounded-full opacity-40"
+                            className="absolute -inset-4 rounded-full"
                             animate={{
+                                opacity: [0.3, 0.5, 0.3],
                                 background: [
-                                    "radial-gradient(circle, rgba(61,67,221,0.3) 0%, rgba(61,67,221,0) 70%)",
-                                    "radial-gradient(circle, rgba(61,67,221,0.5) 0%, rgba(61,67,221,0) 70%)",
-                                    "radial-gradient(circle, rgba(61,67,221,0.3) 0%, rgba(61,67,221,0) 70%)"
+                                    "radial-gradient(circle, rgba(61,67,221,0.4) 0%, rgba(61,67,221,0) 70%)",
+                                    "radial-gradient(circle, rgba(61,67,221,0.6) 0%, rgba(61,67,221,0) 70%)",
+                                    "radial-gradient(circle, rgba(61,67,221,0.4) 0%, rgba(61,67,221,0) 70%)"
                                 ]
                             }}
                             transition={{
-                                duration: 3,
+                                duration: 4,
                                 repeat: Infinity,
                                 ease: "easeInOut"
                             }}
                         />
 
-                        {/* Container da foto */}
+                        {/* Anéis orbitais decorativos */}
+                        {[...Array(3)].map((_, i) => (
+                            <motion.div
+                                key={i}
+                                className="absolute rounded-full border border-[#3d43dd]/20"
+                                style={{
+                                    inset: `-${(i + 1) * 8}px`,
+                                }}
+                                animate={{
+                                    rotate: [0, 360],
+                                    opacity: [0.1, 0.3, 0.1]
+                                }}
+                                transition={{
+                                    rotate: {
+                                        duration: 15 + i * 5,
+                                        repeat: Infinity,
+                                        ease: "linear"
+                                    },
+                                    opacity: {
+                                        duration: 3,
+                                        repeat: Infinity,
+                                        repeatType: "reverse",
+                                        ease: "easeInOut"
+                                    }
+                                }}
+                            />
+                        ))}
+
+                        {/* Container da foto com efeitos 3D */}
                         <motion.div
-                            className="w-40 h-40 lg:w-44 lg:h-44 rounded-full relative overflow-hidden backdrop-blur-sm p-1"
+                            className="w-36 h-36 sm:w-44 sm:h-44 lg:w-48 lg:h-48 rounded-full relative overflow-hidden backdrop-blur-sm p-1"
+                            whileHover={{
+                                scale: 1.05,
+                                boxShadow: "0 0 35px rgba(61, 67, 221, 0.7)"
+                            }}
                             animate={{
                                 boxShadow: [
                                     "0 0 20px rgba(61, 67, 221, 0.3)",
-                                    "0 0 30px rgba(61, 67, 221, 0.6)",
+                                    "0 0 35px rgba(61, 67, 221, 0.6)",
                                     "0 0 20px rgba(61, 67, 221, 0.3)"
                                 ],
                                 background: [
-                                    "linear-gradient(225deg, rgba(61,67,221,0.8) 0%, rgba(61,67,221,0.2) 100%)",
-                                    "linear-gradient(225deg, rgba(61,67,221,0.2) 0%, rgba(61,67,221,0.8) 100%)",
-                                    "linear-gradient(225deg, rgba(61,67,221,0.8) 0%, rgba(61,67,221,0.2) 100%)"
+                                    "conic-gradient(from 180deg at 50% 50%, rgba(61,67,221,0.8) 0%, rgba(99,102,241,0.4) 50%, rgba(61,67,221,0.8) 100%)",
+                                    "conic-gradient(from 220deg at 50% 50%, rgba(61,67,221,0.8) 0%, rgba(99,102,241,0.4) 50%, rgba(61,67,221,0.8) 100%)",
+                                    "conic-gradient(from 360deg at 50% 50%, rgba(61,67,221,0.8) 0%, rgba(99,102,241,0.4) 50%, rgba(61,67,221,0.8) 100%)"
                                 ]
                             }}
                             transition={{
-                                duration: 5,
+                                duration: 10,
                                 repeat: Infinity,
-                                ease: "easeInOut"
+                                ease: "linear"
                             }}
                         >
                             <div className="w-full h-full rounded-full overflow-hidden border-2 border-white/10">
                                 <Image
                                     src="https://avatars.githubusercontent.com/u/99822078?v=4"
                                     alt="Perfil"
-                                    width={176}
-                                    height={176}
+                                    width={192}
+                                    height={192}
                                     priority
-                                    className="w-full h-full object-cover"
+                                    className="w-full h-full object-cover scale-110"
                                 />
                             </div>
 
-                            {/* Efeito de brilho na imagem */}
+                            {/* Reflexo na imagem */}
                             <motion.div
-                                className="absolute inset-0 bg-gradient-to-tr from-[#3d43dd]/30 via-white/5 to-transparent rounded-full"
+                                className="absolute inset-0 bg-gradient-to-tr from-[#3d43dd]/10 via-white/30 to-transparent rounded-full"
                                 animate={{
-                                    opacity: [0, 0.5, 0],
+                                    rotateZ: [0, 180, 360],
+                                    opacity: [0, 0.6, 0],
                                 }}
                                 transition={{
-                                    duration: 3,
-                                    repeat: Infinity,
-                                    repeatType: "reverse"
+                                    rotateZ: {
+                                        duration: 8,
+                                        repeat: Infinity,
+                                        ease: "linear"
+                                    },
+                                    opacity: {
+                                        duration: 4,
+                                        repeat: Infinity,
+                                        repeatType: "loop",
+                                        ease: "easeInOut"
+                                    }
                                 }}
                             />
                         </motion.div>
                     </motion.div>
 
-                    {/* Subtítulo acima do título principal */}
+                    {/* Subtítulo elevado com animação */}
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8, delay: 0.5 }}
                         className="text-center mb-4"
                     >
-                        <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#3d43dd]/10 backdrop-blur-sm border border-[#3d43dd]/20 text-sm font-medium text-white/80">
-                            <span className="w-1.5 h-1.5 rounded-full bg-[#3d43dd] animate-pulse"></span>
-                            Desenvolvedor Full Stack
+                        <span className="inline-flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-1.5 rounded-full bg-[#3d43dd]/10 backdrop-blur-sm border border-[#3d43dd]/20 text-xs sm:text-sm font-medium text-white/90 shadow-[0_0_15px_rgba(61,67,221,0.2)]">
+                            <span className="relative flex h-1.5 w-1.5 sm:h-2 sm:w-2">
+                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#3d43dd] opacity-75"></span>
+                                <span className="relative inline-flex rounded-full h-1.5 w-1.5 sm:h-2 sm:w-2 bg-[#3d43dd]"></span>
+                            </span>
+                            <TypeAnimation
+                                sequence={[
+                                    'Desenvolvedor Full Stack',
+                                    2000,
+                                    'Especialista em Web',
+                                    2000,
+                                    'UI/UX Designer',
+                                    2000,
+                                    'Consultor de IA',
+                                    2000,
+                                ]}
+                                wrapper="span"
+                                speed={50}
+                                repeat={Infinity}
+                                className="font-medium"
+                            />
                         </span>
                     </motion.div>
 
-                    {/* Título principal com animações refinadas */}
+                    {/* Título principal com efeito de digitação e gradientes dinâmicos */}
                     <motion.h1
-                        className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-8 text-center leading-tight"
+                        className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold mb-6 sm:mb-8 text-center leading-tight px-4"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ duration: 1, delay: 0.7 }}
+                        onMouseEnter={handleMouseEnter}
+                        onMouseLeave={handleMouseLeave}
                     >
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
@@ -220,12 +473,12 @@ export default function Hero() {
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.8, delay: 1.1 }}
-                            className="bg-clip-text text-transparent bg-gradient-to-r from-[#3d43dd] via-[#6366f1] to-[#818cf8] inline-block relative"
+                            className="inline-block relative"
                         >
-                            <span className="relative z-10">
+                            <span className="relative z-10 font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-[#3d43dd] via-[#6366f1] to-[#818cf8] animate-gradient-x">
                                 com elegância
                                 <motion.span
-                                    className="absolute -bottom-2 left-0 right-0 h-1 bg-gradient-to-r from-[#3d43dd]/0 via-[#3d43dd] to-[#3d43dd]/0 rounded-full"
+                                    className="absolute -bottom-2 left-0 right-0 h-1.5 bg-gradient-to-r from-[#3d43dd]/0 via-[#3d43dd] to-[#3d43dd]/0 rounded-full"
                                     initial={{ width: 0, opacity: 0, left: "50%" }}
                                     animate={{ width: "100%", opacity: 0.7, left: "0%" }}
                                     transition={{ duration: 1, delay: 1.5 }}
@@ -242,91 +495,79 @@ export default function Hero() {
                         </motion.div>
                     </motion.h1>
 
-                    {/* Tags abaixo do título */}
+                    {/* Carrossel de tecnologias em movimento contínuo */}
                     <motion.div
-                        className="flex flex-wrap justify-center gap-4 mb-12"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 1.7, duration: 1 }}
+                        className="w-full max-w-3xl overflow-hidden mb-8 sm:mb-12 px-4"
                     >
-                        {[
-                            {
-                                text: "Web Development", delay: 0, icon: (
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                        <path d="M18 10h-4v4h4z"></path>
-                                        <path d="M2 2v20h20V2H2zM5 5h14v4H5V5zm0 10h14v5H5v-5z"></path>
-                                    </svg>
-                                )
-                            },
-                            {
-                                text: "Inteligência Artificial", delay: 0.2, icon: (
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                        <path d="M12 2a8 8 0 1 0 8 8 8 8 0 0 0-8-8Z"></path>
-                                        <path d="M12 8v8"></path>
-                                        <path d="M8 12h8"></path>
-                                        <path d="M2 22 8 8"></path>
-                                        <path d="M16 22 8 8"></path>
-                                        <path d="m22 8-8 8"></path>
-                                    </svg>
-                                )
-                            },
-                            {
-                                text: "UI/UX Design", delay: 0.4, icon: (
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                        <circle cx="12" cy="12" r="10"></circle>
-                                        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
-                                        <path d="M12 17h.01"></path>
-                                    </svg>
-                                )
-                            }
-                        ].map((item, index) => (
-                            <motion.span
-                                key={index}
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                whileHover={{
-                                    scale: 1.05,
-                                    backgroundColor: "rgba(61, 67, 221, 0.2)"
-                                }}
-                                transition={{
-                                    delay: 1.9 + item.delay,
-                                    duration: 0.5,
-                                }}
-                                className="px-5 py-2.5 rounded-full border border-white/10 bg-black/30 backdrop-blur-md text-white/80 text-sm font-medium inline-flex items-center gap-2"
-                            >
-                                {item.icon}
-                                {item.text}
-                            </motion.span>
-                        ))}
+                        <motion.div
+                            className="flex space-x-4 sm:space-x-8 whitespace-nowrap"
+                            animate={{ x: ["0%", "-50%"] }}
+                            transition={{
+                                x: {
+                                    repeat: Infinity,
+                                    repeatType: "loop",
+                                    duration: 20,
+                                    ease: "linear"
+                                }
+                            }}
+                        >
+                            {[...technologies, ...technologies].map((tech, index) => (
+                                <motion.span
+                                    key={index}
+                                    whileHover={{ scale: 1.1, color: "#3d43dd" }}
+                                    onMouseEnter={handleMouseEnter}
+                                    onMouseLeave={handleMouseLeave}
+                                    className="px-3 py-1.5 sm:px-5 sm:py-2 rounded-full border border-white/10 bg-black/30 backdrop-blur-sm text-white/70 text-xs sm:text-sm font-medium inline-flex items-center gap-2"
+                                >
+                                    <span className="w-1.5 h-1.5 rounded-full bg-[#3d43dd]"></span>
+                                    {tech}
+                                </motion.span>
+                            ))}
+                        </motion.div>
                     </motion.div>
 
-                    {/* Botão de scroll */}
+                    {/* Botão de scroll sofisticado */}
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 2.2, duration: 0.8 }}
                         className="relative"
+                        onMouseEnter={handleMouseEnter}
+                        onMouseLeave={handleMouseLeave}
                     >
-                        <motion.div
-                            className="absolute -inset-2 rounded-full opacity-70 blur-md"
-                            animate={{
-                                background: [
-                                    "radial-gradient(circle, rgba(61,67,221,0.7) 0%, rgba(61,67,221,0) 70%)",
-                                    "radial-gradient(circle, rgba(61,67,221,0.4) 0%, rgba(61,67,221,0) 70%)",
-                                    "radial-gradient(circle, rgba(61,67,221,0.7) 0%, rgba(61,67,221,0) 70%)"
-                                ]
-                            }}
-                            transition={{
-                                duration: 2,
-                                repeat: Infinity,
-                                repeatType: "reverse"
-                            }}
-                        />
+                        {/* Efeito de pulso ao redor do botão */}
+                        <div className="absolute -inset-3 sm:-inset-4">
+                            {[...Array(2)].map((_, i) => (
+                                <motion.div
+                                    key={i}
+                                    className="absolute inset-0 rounded-full opacity-0"
+                                    animate={{
+                                        scale: [1, 1.5, 1.8],
+                                        opacity: [0, 0.4, 0],
+                                    }}
+                                    transition={{
+                                        duration: 2,
+                                        repeat: Infinity,
+                                        delay: i * 0.8,
+                                        ease: "easeOut"
+                                    }}
+                                    style={{
+                                        background: "radial-gradient(circle, rgba(61,67,221,0.6) 0%, rgba(61,67,221,0) 70%)"
+                                    }}
+                                />
+                            ))}
+                        </div>
 
                         <motion.a
                             href="#profile"
-                            className="relative inline-flex items-center justify-center p-4 rounded-full bg-[#3d43dd] text-white shadow-lg z-10"
-                            whileHover={{ scale: 1.1 }}
+                            className="relative inline-flex items-center justify-center p-3 sm:p-4 rounded-full bg-gradient-to-br from-[#3d43dd] to-[#6366f1] text-white shadow-lg shadow-[#3d43dd]/30 z-10 border border-white/10"
+                            whileHover={{
+                                scale: 1.1,
+                                boxShadow: "0 0 20px rgba(61, 67, 221, 0.6)"
+                            }}
                             whileTap={{ scale: 0.95 }}
                             animate={{
                                 y: [0, 8, 0],
@@ -345,7 +586,7 @@ export default function Hero() {
                                 viewBox="0 0 24 24"
                                 strokeWidth={2.5}
                                 stroke="currentColor"
-                                className="w-6 h-6"
+                                className="w-5 h-5 sm:w-6 sm:h-6"
                             >
                                 <path
                                     strokeLinecap="round"
@@ -357,6 +598,33 @@ export default function Hero() {
                     </motion.div>
                 </motion.div>
             </div>
+
+            {/* Estilos para animações adicionais */}
+            <style jsx global>{`
+                @media (max-height: 700px) and (max-width: 768px) {
+                    .min-h-screen {
+                        min-height: 100vh;
+                        padding-top: 4rem;
+                    }
+                }
+                
+                @keyframes animate-gradient-x {
+                    0% {
+                        background-position: 0% 50%;
+                    }
+                    50% {
+                        background-position: 100% 50%;
+                    }
+                    100% {
+                        background-position: 0% 50%;
+                    }
+                }
+                
+                .animate-gradient-x {
+                    background-size: 200% 200%;
+                    animation: animate-gradient-x 15s ease infinite;
+                }
+            `}</style>
         </motion.section>
     );
 } 
