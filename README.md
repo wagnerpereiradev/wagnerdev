@@ -1,6 +1,6 @@
 # Portfólio Wagner Pereira
 
-![Banner do Projeto](https://via.placeholder.com/1200x300/3d43dd/ffffff?text=Wagner+Pereira+Dev)
+![Banner do Projeto](/banner.png)
 
 ## 🚀 Visão Geral
 
