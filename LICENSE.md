@@ -1,6 +1,6 @@
 # Licença MIT
 
-Copyright (c) 2024 Wagner Pereira
+Copyright (c) 2025 Wagner Pereira
 
 A permissão é concedida, gratuitamente, a qualquer pessoa que obtenha uma cópia
 deste software e arquivos de documentação associados (o "Software"), para lidar
