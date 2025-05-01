@@ -11,15 +11,12 @@ export default function Profile() {
     const fullText = 'Desenvolvedor Full Stack especializado em criar experiências digitais modernas e eficientes. Apaixonado por solucionar problemas complexos através de código limpo e interfaces intuitivas.';
     const ref = useRef<HTMLDivElement>(null);
     const sectionRef = useRef<HTMLElement>(null);
+    const [isMobile, setIsMobile] = useState(false);
+    const { scrollY } = useScroll();
 
     // Efeito de scroll para animações baseadas na posição da tela
-    const { scrollYProgress } = useScroll({
-        target: sectionRef,
-        offset: ["start end", "end start"]
-    });
-
-    const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0]);
-    const y = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [100, 0, 0, -100]);
+    const opacity = useTransform(scrollY, [0, 300], [0, 1]);
+    const y = useTransform(scrollY, [0, 300], [100, 0]);
 
     // Efeito para rastrear a posição do mouse - otimizado com useCallback
     const mouseMove = useCallback((e: MouseEvent) => {
@@ -49,6 +46,18 @@ export default function Profile() {
         }, 20);
 
         return () => clearInterval(interval);
+    }, []);
+
+    // Detectar dispositivo móvel no lado do cliente
+    useEffect(() => {
+        setIsMobile(window.innerWidth < 768);
+
+        const handleResize = () => {
+            setIsMobile(window.innerWidth < 768);
+        };
+
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
     }, []);
 
     // Variantes para o cursor
@@ -177,7 +186,7 @@ export default function Profile() {
 
             {/* Fundo com gradiente refinado */}
             <div className="absolute inset-0">
-                <div className="absolute inset-0 bg-gradient-to-b from-neutral-950 via-black to-neutral-950">
+                <div className="absolute inset-0 bg-gradient-to-b from-neutral-950 via-black to-black">
                     <div className="absolute inset-0 opacity-30 mix-blend-overlay bg-[url('/images/grid-pattern.svg')]"></div>
                 </div>
                 <div className="absolute inset-0 bg-gradient-to-r from-[#3d43dd]/5 via-transparent to-[#3d43dd]/5"></div>
@@ -185,10 +194,10 @@ export default function Profile() {
                 <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#3d43dd]/20 to-transparent"></div>
             </div>
 
-            {/* Elementos decorativos */}
-            <div className="absolute top-20 left-[10%] w-40 h-40 sm:w-64 sm:h-64 rounded-full bg-[#3d43dd]/5 blur-[100px] animate-pulse"
+            {/* Elementos decorativos com opacidade reduzida para melhor consistência */}
+            <div className="absolute top-20 left-[10%] w-40 h-40 sm:w-64 sm:h-64 rounded-full bg-[#3d43dd]/5 blur-[100px] animate-pulse opacity-70"
                 style={{ animationDuration: '8s' }} />
-            <div className="absolute bottom-20 right-[10%] w-64 h-64 sm:w-96 sm:h-96 rounded-full bg-[#3d43dd]/5 blur-[120px] animate-pulse"
+            <div className="absolute bottom-20 right-[10%] w-64 h-64 sm:w-96 sm:h-96 rounded-full bg-[#3d43dd]/5 blur-[120px] animate-pulse opacity-70"
                 style={{ animationDuration: '10s' }} />
 
             {/* Conteúdo principal com animação de fade-in e slide-up */}
@@ -493,18 +502,58 @@ export default function Profile() {
                                 <motion.a
                                     href="#contact"
                                     className="group rounded-full relative inline-flex items-center gap-2 p-1 overflow-hidden"
-                                    whileHover={{ scale: 1.02 }}
-                                    whileTap={{ scale: 0.98 }}
+                                    whileHover={{ scale: 1.05 }}
+                                    whileTap={{ scale: 0.97 }}
                                     onMouseEnter={textEnter}
                                     onMouseLeave={textLeave}
                                 >
-                                    <div className="absolute -inset-2 bg-gradient-to-r from-[#3d43dd] to-[#6366f1] rounded-full opacity-70 blur-md group-hover:opacity-100 transition-opacity duration-500"></div>
-                                    <div className="relative inline-flex items-center gap-2 px-6 py-3 bg-neutral-900 rounded-full text-white font-medium">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                            <path d="M14 9a2 2 0 0 1-2 2H6l-4 4V4c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2v5Z" />
-                                            <path d="M18 9h2a2 2 0 0 1 2 2v11l-4-4h-6a2 2 0 0 1-2-2v-1" />
-                                        </svg>
-                                        Entre em contato
+                                    {/* Gradiente animado de fundo */}
+                                    <motion.div
+                                        className="absolute -inset-2 bg-gradient-to-r from-[#3d43dd] via-[#6366f1] to-[#3d43dd] rounded-full opacity-70 blur-md"
+                                        animate={{
+                                            backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
+                                        }}
+                                        transition={{
+                                            duration: 5,
+                                            repeat: Infinity,
+                                            ease: "linear"
+                                        }}
+                                        style={{
+                                            backgroundSize: "200% 200%"
+                                        }}
+                                    />
+
+                                    {/* Efeito de brilho que se move */}
+                                    <div className="absolute inset-0 w-1/4 h-full bg-white/20 blur-md skew-x-15 transform -translate-x-full group-hover:translate-x-[400%] transition-all duration-1000 ease-in-out"></div>
+
+                                    {/* Conteúdo do botão com animação */}
+                                    <div className="relative inline-flex items-center gap-3 px-7 py-3.5 bg-gradient-to-br from-neutral-900 to-neutral-900/90 backdrop-blur-sm rounded-full text-white font-medium shadow-lg shadow-[#3d43dd]/25 group-hover:shadow-[#3d43dd]/40 transition-all duration-300">
+                                        {/* Ícone animado */}
+                                        <motion.div
+                                            animate={{ rotate: [0, 10, 0] }}
+                                            transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                                        >
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                                <path d="M14 9a2 2 0 0 1-2 2H6l-4 4V4c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2v5Z" />
+                                                <path d="M18 9h2a2 2 0 0 1 2 2v11l-4-4h-6a2 2 0 0 1-2-2v-1" />
+                                            </svg>
+                                        </motion.div>
+                                        <span className="relative group-hover:translate-x-1 transition-transform duration-300">
+                                            Entre em contato
+                                            <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-white/30 group-hover:w-full transition-all duration-300"></span>
+                                        </span>
+
+                                        {/* Seta animada */}
+                                        <motion.div
+                                            className="ml-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                                            animate={{ x: [0, 5, 0] }}
+                                            transition={{ duration: 1, repeat: Infinity, ease: "easeInOut" }}
+                                        >
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                                <path d="M5 12h14"></path>
+                                                <path d="m12 5 7 7-7 7"></path>
+                                            </svg>
+                                        </motion.div>
                                     </div>
                                 </motion.a>
                             </motion.div>
@@ -544,139 +593,173 @@ export default function Profile() {
                         </p>
                     </motion.div>
 
-                    {/* Carrossel de tecnologias */}
+                    {/* Detecção condicional de mobile para renderizar versão simplificada */}
                     <div className="overflow-hidden py-8 relative">
                         {/* Gradientes laterais para efeito de fade */}
                         <div className="absolute top-0 bottom-0 left-0 w-20 bg-gradient-to-r from-black to-transparent z-10"></div>
                         <div className="absolute top-0 bottom-0 right-0 w-20 bg-gradient-to-l from-black to-transparent z-10"></div>
 
-                        {/* Framer Motion Carousel - Primeira linha - animação para direita */}
-                        <motion.div
-                            className="flex gap-8 py-4 mb-8"
-                            animate={{ x: [0, -1920] }}
-                            transition={{
-                                x: {
-                                    repeat: Infinity,
-                                    repeatType: "loop",
-                                    duration: 50,
-                                    ease: "linear",
-                                }
-                            }}
-                        >
-                            {/* Duplicamos as tecnologias para um loop contínuo */}
-                            {[...technologies, ...technologies].map((tech, index) => (
+                        {isMobile ? (
+                            // Versão animada para mobile
+                            <>
+                                {/* Framer Motion Carousel para mobile - Primeira linha */}
                                 <motion.div
-                                    key={`${tech.name}-${index}`}
-                                    className="flex-shrink-0 w-32 h-32 bg-neutral-900/30 backdrop-blur-sm border border-neutral-800/30 rounded-xl flex flex-col items-center justify-center p-4 relative group"
-                                    whileHover={{
-                                        y: -10,
-                                        scale: 1.05,
-                                        transition: { duration: 0.2 }
+                                    className="flex gap-4 py-4 mb-6"
+                                    animate={{ x: [0, -1500] }}
+                                    transition={{
+                                        x: {
+                                            repeat: Infinity,
+                                            repeatType: "loop",
+                                            duration: 30, // Mais rápido no mobile
+                                            ease: "linear",
+                                        }
                                     }}
                                 >
-                                    {/* Efeito de brilho ao passar o mouse */}
-                                    <motion.div
-                                        className="absolute inset-0 bg-gradient-to-r from-[#3d43dd]/0 via-[#3d43dd]/30 to-[#3d43dd]/0 rounded-xl opacity-0 group-hover:opacity-100"
-                                        animate={{
-                                            background: [
-                                                "linear-gradient(to right, rgba(61, 67, 221, 0), rgba(61, 67, 221, 0.3), rgba(61, 67, 221, 0))",
-                                                "linear-gradient(to right, rgba(99, 102, 241, 0), rgba(99, 102, 241, 0.3), rgba(99, 102, 241, 0))",
-                                                "linear-gradient(to right, rgba(61, 67, 221, 0), rgba(61, 67, 221, 0.3), rgba(61, 67, 221, 0))"
-                                            ]
-                                        }}
-                                        transition={{
-                                            duration: 2,
-                                            repeat: Infinity,
-                                            repeatType: "reverse"
-                                        }}
-                                    />
-
-                                    <div className="h-16 w-16 mb-3 flex items-center justify-center relative z-10">
-                                        <Image
-                                            src={tech.logo}
-                                            alt={tech.name}
-                                            width={50}
-                                            height={50}
-                                            className="object-contain max-h-16 group-hover:scale-110 transition-transform"
-                                        />
-                                    </div>
-                                    <p className="text-sm font-medium text-neutral-300 group-hover:text-white transition-colors text-center relative z-10">{tech.name}</p>
+                                    {/* Duplicamos as tecnologias para um loop contínuo */}
+                                    {[...technologies, ...technologies].map((tech, index) => (
+                                        <motion.div
+                                            key={`${tech.name}-mobile-${index}`}
+                                            className="flex-shrink-0 w-24 h-24 bg-neutral-900/30 backdrop-blur-sm border border-neutral-800/30 rounded-xl flex flex-col items-center justify-center p-3 relative"
+                                        >
+                                            <div className="h-10 w-10 mb-2 flex items-center justify-center relative z-10">
+                                                <Image
+                                                    src={tech.logo}
+                                                    alt={tech.name}
+                                                    width={36}
+                                                    height={36}
+                                                    className="object-contain max-h-10"
+                                                />
+                                            </div>
+                                            <p className="text-xs font-medium text-neutral-300 text-center relative z-10">{tech.name}</p>
+                                        </motion.div>
+                                    ))}
                                 </motion.div>
-                            ))}
-                        </motion.div>
 
-                        {/* Framer Motion Carousel - Segunda linha - animação para esquerda (direção oposta) */}
-                        <motion.div
-                            className="flex gap-8 py-4"
-                            animate={{ x: [-1920, 0] }}
-                            transition={{
-                                x: {
-                                    repeat: Infinity,
-                                    repeatType: "loop",
-                                    duration: 60,
-                                    ease: "linear",
-                                }
-                            }}
-                        >
-                            {/* Tecnologias em ordem reversa para variedade visual */}
-                            {[...technologies, ...technologies].reverse().map((tech, index) => (
+                                {/* Framer Motion Carousel para mobile - Segunda linha (direção oposta) */}
                                 <motion.div
-                                    key={`${tech.name}-reverse-${index}`}
-                                    className="flex-shrink-0 w-32 h-32 bg-neutral-900/30 backdrop-blur-sm border border-neutral-800/30 rounded-xl flex flex-col items-center justify-center p-4 relative group"
-                                    whileHover={{
-                                        y: -10,
-                                        scale: 1.05,
-                                        transition: { duration: 0.2 }
+                                    className="flex gap-4 py-4"
+                                    animate={{ x: [-1500, 0] }}
+                                    transition={{
+                                        x: {
+                                            repeat: Infinity,
+                                            repeatType: "loop",
+                                            duration: 35, // Mais rápido no mobile
+                                            ease: "linear",
+                                        }
                                     }}
                                 >
-                                    {/* Efeito de brilho ao passar o mouse */}
-                                    <motion.div
-                                        className="absolute inset-0 bg-gradient-to-r from-[#3d43dd]/0 via-[#3d43dd]/30 to-[#3d43dd]/0 rounded-xl opacity-0 group-hover:opacity-100"
-                                        animate={{
-                                            background: [
-                                                "linear-gradient(to left, rgba(61, 67, 221, 0), rgba(61, 67, 221, 0.3), rgba(61, 67, 221, 0))",
-                                                "linear-gradient(to left, rgba(99, 102, 241, 0), rgba(99, 102, 241, 0.3), rgba(99, 102, 241, 0))",
-                                                "linear-gradient(to left, rgba(61, 67, 221, 0), rgba(61, 67, 221, 0.3), rgba(61, 67, 221, 0))"
-                                            ]
-                                        }}
-                                        transition={{
-                                            duration: 2,
-                                            repeat: Infinity,
-                                            repeatType: "reverse"
-                                        }}
-                                    />
-
-                                    <div className="h-16 w-16 mb-3 flex items-center justify-center relative z-10">
-                                        <Image
-                                            src={tech.logo}
-                                            alt={tech.name}
-                                            width={50}
-                                            height={50}
-                                            className="object-contain max-h-16 group-hover:scale-110 transition-transform"
-                                        />
-                                    </div>
-                                    <p className="text-sm font-medium text-neutral-300 group-hover:text-white transition-colors text-center relative z-10">{tech.name}</p>
+                                    {/* Tecnologias em ordem reversa para variedade visual */}
+                                    {[...technologies, ...technologies].reverse().map((tech, index) => (
+                                        <motion.div
+                                            key={`${tech.name}-mobile-reverse-${index}`}
+                                            className="flex-shrink-0 w-24 h-24 bg-neutral-900/30 backdrop-blur-sm border border-neutral-800/30 rounded-xl flex flex-col items-center justify-center p-3 relative"
+                                        >
+                                            <div className="h-10 w-10 mb-2 flex items-center justify-center relative z-10">
+                                                <Image
+                                                    src={tech.logo}
+                                                    alt={tech.name}
+                                                    width={36}
+                                                    height={36}
+                                                    className="object-contain max-h-10"
+                                                />
+                                            </div>
+                                            <p className="text-xs font-medium text-neutral-300 text-center relative z-10">{tech.name}</p>
+                                        </motion.div>
+                                    ))}
                                 </motion.div>
-                            ))}
-                        </motion.div>
+                            </>
+                        ) : (
+                            // Versão animada para desktop
+                            <>
+                                {/* Framer Motion Carousel - Primeira linha - animação para direita */}
+                                <motion.div
+                                    className="flex gap-8 py-4 mb-8"
+                                    animate={{ x: [0, -1920] }}
+                                    transition={{
+                                        x: {
+                                            repeat: Infinity,
+                                            repeatType: "loop",
+                                            duration: 50,
+                                            ease: "linear",
+                                        }
+                                    }}
+                                >
+                                    {/* Duplicamos as tecnologias para um loop contínuo */}
+                                    {[...technologies, ...technologies].map((tech, index) => (
+                                        <motion.div
+                                            key={`${tech.name}-${index}`}
+                                            className="flex-shrink-0 w-32 h-32 bg-neutral-900/30 backdrop-blur-sm border border-neutral-800/30 rounded-xl flex flex-col items-center justify-center p-4 relative group"
+                                            whileHover={{
+                                                y: -10,
+                                                scale: 1.05,
+                                                transition: { duration: 0.2 }
+                                            }}
+                                        >
+                                            {/* Efeito de brilho ao passar o mouse - simplificado */}
+                                            <div className="absolute inset-0 bg-gradient-to-r from-[#3d43dd]/0 via-[#3d43dd]/30 to-[#3d43dd]/0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
 
-                        {/* Indicadores de deslizamento */}
+                                            <div className="h-16 w-16 mb-3 flex items-center justify-center relative z-10">
+                                                <Image
+                                                    src={tech.logo}
+                                                    alt={tech.name}
+                                                    width={50}
+                                                    height={50}
+                                                    className="object-contain max-h-16 group-hover:scale-110 transition-transform"
+                                                />
+                                            </div>
+                                            <p className="text-sm font-medium text-neutral-300 group-hover:text-white transition-colors text-center relative z-10">{tech.name}</p>
+                                        </motion.div>
+                                    ))}
+                                </motion.div>
+
+                                {/* Framer Motion Carousel - Segunda linha - animação para esquerda (direção oposta) */}
+                                <motion.div
+                                    className="flex gap-8 py-4"
+                                    animate={{ x: [-1920, 0] }}
+                                    transition={{
+                                        x: {
+                                            repeat: Infinity,
+                                            repeatType: "loop",
+                                            duration: 60,
+                                            ease: "linear",
+                                        }
+                                    }}
+                                >
+                                    {/* Tecnologias em ordem reversa para variedade visual */}
+                                    {[...technologies, ...technologies].reverse().map((tech, index) => (
+                                        <motion.div
+                                            key={`${tech.name}-reverse-${index}`}
+                                            className="flex-shrink-0 w-32 h-32 bg-neutral-900/30 backdrop-blur-sm border border-neutral-800/30 rounded-xl flex flex-col items-center justify-center p-4 relative group"
+                                            whileHover={{
+                                                y: -10,
+                                                scale: 1.05,
+                                                transition: { duration: 0.2 }
+                                            }}
+                                        >
+                                            {/* Efeito de brilho ao passar o mouse - simplificado */}
+                                            <div className="absolute inset-0 bg-gradient-to-r from-[#3d43dd]/0 via-[#3d43dd]/30 to-[#3d43dd]/0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+
+                                            <div className="h-16 w-16 mb-3 flex items-center justify-center relative z-10">
+                                                <Image
+                                                    src={tech.logo}
+                                                    alt={tech.name}
+                                                    width={50}
+                                                    height={50}
+                                                    className="object-contain max-h-16 group-hover:scale-110 transition-transform"
+                                                />
+                                            </div>
+                                            <p className="text-sm font-medium text-neutral-300 group-hover:text-white transition-colors text-center relative z-10">{tech.name}</p>
+                                        </motion.div>
+                                    ))}
+                                </motion.div>
+                            </>
+                        )}
+
+                        {/* Simplificando indicadores de deslizamento */}
                         <div className="mt-8 flex justify-center gap-1">
-                            <motion.div
-                                className="w-12 h-1 bg-[#3d43dd]/50 rounded-full"
-                                animate={{ opacity: [0.3, 1, 0.3] }}
-                                transition={{ duration: 2, repeat: Infinity }}
-                            />
-                            <motion.div
-                                className="w-12 h-1 bg-[#3d43dd]/50 rounded-full"
-                                animate={{ opacity: [0.3, 1, 0.3] }}
-                                transition={{ duration: 2, repeat: Infinity, delay: 0.6 }}
-                            />
-                            <motion.div
-                                className="w-12 h-1 bg-[#3d43dd]/50 rounded-full"
-                                animate={{ opacity: [0.3, 1, 0.3] }}
-                                transition={{ duration: 2, repeat: Infinity, delay: 1.2 }}
-                            />
+                            <div className="w-12 h-1 bg-[#3d43dd]/50 rounded-full"></div>
+                            <div className="w-12 h-1 bg-[#3d43dd]/30 rounded-full"></div>
+                            <div className="w-12 h-1 bg-[#3d43dd]/30 rounded-full"></div>
                         </div>
                     </div>
                 </motion.div>

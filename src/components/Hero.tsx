@@ -16,12 +16,25 @@ export default function Hero() {
     const opacity = useTransform(scrollY, [0, 300], [1, 0]);
     const parallaxRotate = useTransform(scrollY, [0, 300], [0, 15]);
     const parallaxScale = useTransform(scrollY, [0, 300], [1, 0.9]);
+    const [isMobile, setIsMobile] = useState(false);
 
     // Spring para animações suaves do título
     const titleSpring = useSpring(0, { stiffness: 70, damping: 15 });
     useEffect(() => {
         titleSpring.set(1);
     }, [titleSpring]);
+
+    // Detectar dispositivo móvel
+    useEffect(() => {
+        setIsMobile(window.innerWidth < 768);
+
+        const handleResize = () => {
+            setIsMobile(window.innerWidth < 768);
+        };
+
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     // Efeito para o cursor personalizado
     useEffect(() => {
@@ -110,7 +123,8 @@ export default function Hero() {
                         opacity: 0.5,
                         zIndex: 1,
                         filter: "saturate(0.7) contrast(1.1)",
-                        willChange: "transform" // Otimização para navegadores
+                        willChange: "transform", // Otimização para navegadores
+                        display: isMobile ? 'none' : 'block' // Remover vídeo em dispositivos móveis
                     }}
                 />
 
@@ -118,17 +132,16 @@ export default function Hero() {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-40 mix-blend-overlay z-15"></div>
             </div>
 
-            {/* Efeitos de partículas e elementos decorativos - reduzindo quantidade para melhorar performance */}
+            {/* Efeitos de partículas e elementos decorativos - reduzindo ainda mais para dispositivos móveis */}
             <div className="absolute inset-0 z-20">
-                {/* Reduzindo para 2 partículas principais ao invés de 3 */}
+                {/* Uma única partícula principal em dispositivos móveis, duas em desktop */}
                 <motion.div
                     className="absolute top-[15%] left-[10%] w-48 h-48 sm:w-72 sm:h-72 rounded-full bg-[#3d43dd]/10 blur-[100px]"
                     animate={{
                         opacity: [0.2, 0.4, 0.2],
-                        scale: [1, 1.2, 1],
                     }}
                     transition={{
-                        duration: 12,
+                        duration: 6, // Reduzido de 12 para 6
                         repeat: Infinity,
                         repeatType: "reverse",
                         ease: "easeInOut"
@@ -136,27 +149,26 @@ export default function Hero() {
                 />
 
                 <motion.div
-                    className="absolute bottom-[10%] right-[25%] w-64 h-64 sm:w-96 sm:h-96 rounded-full bg-[#3d43dd]/10 blur-[100px]"
+                    className="absolute bottom-[10%] right-[25%] w-64 h-64 sm:w-96 sm:h-96 rounded-full bg-[#3d43dd]/10 blur-[100px] hidden md:block"
                     animate={{
                         opacity: [0.2, 0.5, 0.2],
-                        scale: [1, 1.1, 1],
                     }}
                     transition={{
-                        duration: 10,
+                        duration: 5, // Reduzido de 10 para 5
                         repeat: Infinity,
                         repeatType: "reverse",
                         ease: "easeInOut"
                     }}
                 />
 
-                {/* Partículas menores flutuantes - usando valores constantes em vez de aleatórios */}
+                {/* Partículas menores flutuantes - reduzidas para apenas uma em dispositivos móveis */}
                 <div className="absolute inset-0">
-                    {/* Mostrando apenas 3 partículas em dispositivos móveis */}
+                    {/* Mostrando apenas 1 partícula em dispositivos móveis */}
                     <motion.div
                         className="absolute w-2 h-2 rounded-full bg-[#3d43dd]/50"
                         style={{
-                            top: "62.43%",
-                            left: "0.80%",
+                            top: "65%",
+                            left: "20%",
                             willChange: "transform, opacity" // Otimização para navegadores
                         }}
                         animate={{
@@ -164,14 +176,16 @@ export default function Hero() {
                             opacity: [0.3, 0.7, 0.3],
                         }}
                         transition={{
-                            duration: 3.5,
+                            duration: 4,
                             repeat: Infinity,
                             delay: 0.2,
                             ease: "easeInOut"
                         }}
                     />
+
+                    {/* Estas partículas serão visíveis apenas em desktop */}
                     <motion.div
-                        className="absolute w-2 h-2 rounded-full bg-[#3d43dd]/50"
+                        className="absolute w-2 h-2 rounded-full bg-[#3d43dd]/50 hidden md:block"
                         style={{
                             top: "75.22%",
                             left: "14.85%",
@@ -189,7 +203,7 @@ export default function Hero() {
                         }}
                     />
                     <motion.div
-                        className="absolute w-2 h-2 rounded-full bg-[#3d43dd]/50"
+                        className="absolute w-2 h-2 rounded-full bg-[#3d43dd]/50 hidden md:block"
                         style={{
                             top: "73.24%",
                             left: "66.22%",
@@ -206,54 +220,18 @@ export default function Hero() {
                             ease: "easeInOut"
                         }}
                     />
-                    {/* Estas duas partículas serão visíveis apenas em telas maiores */}
-                    <motion.div
-                        className="absolute w-2 h-2 rounded-full bg-[#3d43dd]/50 hidden sm:block"
-                        style={{
-                            top: "59.33%",
-                            left: "98.08%",
-                            willChange: "transform, opacity"
-                        }}
-                        animate={{
-                            y: [0, -15, 0],
-                            opacity: [0.3, 0.7, 0.3],
-                        }}
-                        transition={{
-                            duration: 4.1,
-                            repeat: Infinity,
-                            delay: 0.8,
-                            ease: "easeInOut"
-                        }}
-                    />
-                    <motion.div
-                        className="absolute w-2 h-2 rounded-full bg-[#3d43dd]/50 hidden sm:block"
-                        style={{
-                            top: "90.82%",
-                            left: "53.97%",
-                            willChange: "transform, opacity"
-                        }}
-                        animate={{
-                            y: [0, -15, 0],
-                            opacity: [0.3, 0.7, 0.3],
-                        }}
-                        transition={{
-                            duration: 3.7,
-                            repeat: Infinity,
-                            delay: 1.5,
-                            ease: "easeInOut"
-                        }}
-                    />
+                    {/* Removendo completamente partículas adicionais em dispositivos pequenos */}
                 </div>
             </div>
 
-            {/* Linhas decorativas aprimoradas */}
+            {/* Linhas decorativas simplificadas */}
             <div className="absolute inset-0 z-20">
                 {/* Linha superior com animação */}
                 <motion.div
                     className="absolute top-0 left-0 right-0 h-px"
                     initial={{ scaleX: 0, opacity: 0 }}
                     animate={{ scaleX: 1, opacity: 1 }}
-                    transition={{ duration: 1.5, delay: 0.2 }}
+                    transition={{ duration: 1, delay: 0.2 }}
                 >
                     <div className="w-full h-full bg-gradient-to-r from-transparent via-[#3d43dd]/40 to-transparent"></div>
                 </motion.div>
@@ -263,29 +241,12 @@ export default function Hero() {
                     className="absolute bottom-0 left-0 right-0 h-px"
                     initial={{ scaleX: 0, opacity: 0 }}
                     animate={{ scaleX: 1, opacity: 1 }}
-                    transition={{ duration: 1.5, delay: 0.4 }}
+                    transition={{ duration: 1, delay: 0.4 }}
                 >
                     <div className="w-full h-full bg-gradient-to-r from-transparent via-[#3d43dd]/40 to-transparent"></div>
                 </motion.div>
 
-                {/* Linhas laterais decorativas - escondendo em dispositivos pequenos */}
-                <motion.div
-                    className="absolute top-[30%] bottom-[30%] left-0 w-px hidden sm:block"
-                    initial={{ scaleY: 0, opacity: 0 }}
-                    animate={{ scaleY: 1, opacity: 1 }}
-                    transition={{ duration: 1.5, delay: 0.6 }}
-                >
-                    <div className="w-full h-full bg-gradient-to-b from-transparent via-[#3d43dd]/20 to-transparent"></div>
-                </motion.div>
-
-                <motion.div
-                    className="absolute top-[30%] bottom-[30%] right-0 w-px hidden sm:block"
-                    initial={{ scaleY: 0, opacity: 0 }}
-                    animate={{ scaleY: 1, opacity: 1 }}
-                    transition={{ duration: 1.5, delay: 0.8 }}
-                >
-                    <div className="w-full h-full bg-gradient-to-b from-transparent via-[#3d43dd]/20 to-transparent"></div>
-                </motion.div>
+                {/* Removendo linhas laterais em todos os dispositivos para aumentar performance */}
             </div>
 
             {/* Conteúdo principal aprimorado */}

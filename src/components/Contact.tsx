@@ -34,11 +34,12 @@ export default function Contact() {
     const [activeTab, setActiveTab] = useState<'social' | 'form'>('social');
     const [progress, setProgress] = useState<number>(0);
     const [isOpening, setIsOpening] = useState<boolean>(false);
-    const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
     const [formStatus, setFormStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
+    const [isMobile, setIsMobile] = useState(false);
     const [formData, setFormData] = useState({
         name: '',
         email: '',
+        subject: '',
         message: ''
     });
 
@@ -154,14 +155,6 @@ export default function Contact() {
         }
     ], []);
 
-    const handleMouseMove = (e: React.MouseEvent<HTMLAnchorElement>) => {
-        const rect = e.currentTarget.getBoundingClientRect();
-        setMousePosition({
-            x: e.clientX - rect.left,
-            y: e.clientY - rect.top
-        });
-    };
-
     useEffect(() => {
         let timer: NodeJS.Timeout;
         if (hoveredItem && !isOpening) {
@@ -194,6 +187,18 @@ export default function Contact() {
         }
     }, [isOpening, hoveredItem, contactInfo]);
 
+    // Detectar dispositivo móvel no lado do cliente
+    useEffect(() => {
+        setIsMobile(window.innerWidth < 768);
+
+        const handleResize = () => {
+            setIsMobile(window.innerWidth < 768);
+        };
+
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
     // Form handlers
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -221,7 +226,7 @@ export default function Contact() {
 
             // Success!
             setFormStatus('success');
-            setFormData({ name: '', email: '', message: '' });
+            setFormData({ name: '', email: '', subject: '', message: '' });
 
             // Reset form after 3 seconds
             setTimeout(() => {
@@ -310,39 +315,39 @@ export default function Contact() {
                     </motion.p>
                 </motion.div>
 
-                {/* Tabs para escolher entre redes sociais e formulário */}
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5, delay: 0.3 }}
-                    className="flex justify-center mb-12"
-                >
-                    <div className="inline-flex p-1 bg-neutral-900/50 backdrop-blur-sm rounded-full border border-neutral-800/30">
+                {/* Seletor de abas estilo Apple */}
+                <div className="flex justify-center mb-12">
+                    <div className="inline-flex p-1 rounded-xl bg-neutral-900/30 backdrop-blur-md border border-white/5 shadow-lg">
                         <button
                             onClick={() => setActiveTab('social')}
-                            className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 ${activeTab === 'social'
-                                ? 'bg-[#3d43dd] text-white'
+                            className={`flex items-center gap-2 px-6 py-3 rounded-lg font-medium text-sm transition-all duration-300 ${activeTab === 'social'
+                                ? 'bg-gradient-to-r from-[#3d43dd] to-[#6366f1] text-white shadow-md'
                                 : 'text-neutral-400 hover:text-white'
                                 }`}
                         >
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z" />
+                            </svg>
                             Redes Sociais
                         </button>
                         <button
                             onClick={() => setActiveTab('form')}
-                            className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 ${activeTab === 'form'
-                                ? 'bg-[#3d43dd] text-white'
+                            className={`flex items-center gap-2 px-6 py-3 rounded-lg font-medium text-sm transition-all duration-300 ${activeTab === 'form'
+                                ? 'bg-gradient-to-r from-[#3d43dd] to-[#6366f1] text-white shadow-md'
                                 : 'text-neutral-400 hover:text-white'
                                 }`}
                         >
-                            Formulário
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                <path fillRule="evenodd" d="M14.243 5.757a6 6 0 10-.986 9.284 1 1 0 111.087 1.678A8 8 0 1118 10a3 3 0 01-4.8 2.401A4 4 0 1114 10a1 1 0 102 0c0-1.537-.586-3.07-1.757-4.243zM12 10a2 2 0 10-4 0 2 2 0 004 0z" clipRule="evenodd" />
+                            </svg>
+                            Mensagem
                         </button>
                     </div>
-                </motion.div>
+                </div>
 
                 {/* Content Container */}
                 <AnimatePresence mode="wait">
-                    {/* Redes Sociais - Versão ultramoderna */}
+                    {/* Redes Sociais - Estilo Apple, moderno e clean */}
                     {activeTab === 'social' && (
                         <motion.div
                             key="social"
@@ -350,183 +355,123 @@ export default function Contact() {
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, y: -20 }}
                             transition={{ duration: 0.3 }}
-                            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto"
+                            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 max-w-5xl mx-auto"
                         >
-                            {contactInfo.map((item, index) => (
+                            {/* Renderização condicional para mobile vs desktop */}
+                            {contactInfo.map((item) => (
                                 <motion.div
                                     key={item.id}
-                                    initial={{ opacity: 0, y: 30 }}
-                                    animate={{
-                                        opacity: 1,
-                                        y: 0,
-                                        transition: { delay: index * 0.1, duration: 0.5 }
-                                    }}
-                                    className="w-full h-full"
+                                    initial={{ opacity: 0, y: 20 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    viewport={{ once: true }}
+                                    transition={{ duration: 0.5, delay: 0.2 + item.id * 0.1 }}
+                                    className="h-full"
                                 >
-                                    {/* Card com efeito de vidromorfismo avançado */}
-                                    <motion.a
+                                    <a
                                         href={item.url}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="group relative h-full flex flex-col overflow-hidden rounded-3xl bg-gradient-to-br from-black/70 to-black/90 backdrop-blur-xl border border-white/5 shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:shadow-[0_8px_30px_rgba(61,67,221,0.2)] transition-all duration-500"
-                                        onMouseEnter={() => setHoveredItem(item.id)}
-                                        onMouseLeave={() => setHoveredItem(null)}
-                                        onMouseMove={handleMouseMove}
-                                        whileHover={{
-                                            y: -8,
-                                            transition: { duration: 0.3, ease: [0.33, 1, 0.68, 1] }
-                                        }}
-                                        whileTap={{ scale: 0.98 }}
+                                        className={`block h-full w-full relative overflow-visible rounded-2xl bg-neutral-900/40 backdrop-blur-xl border border-white/5 shadow-xl group hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 ease-out mt-8`}
                                     >
-                                        {/* Fundo de resplandor */}
-                                        <div
-                                            className="absolute inset-0 z-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700"
-                                            style={{
-                                                background: `
-                                                    radial-gradient(
-                                                        circle at ${mousePosition.x}px ${mousePosition.y}px, 
-                                                        rgba(61, 67, 221, 0.15) 0%, 
-                                                        transparent 60%
-                                                    )
-                                                `
-                                            }}
-                                        />
+                                        {/* Efeito de brilho no hover */}
+                                        <div className={`absolute inset-0 opacity-0 group-hover:opacity-100 rounded-2xl bg-gradient-to-r ${item.hoverGradient} transition-opacity duration-300 blur-sm -z-10`}></div>
 
-                                        {/* Efeito de linha luminosa no topo */}
-                                        <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+                                        {/* Círculos decorativos */}
+                                        <div className="absolute top-0 right-0 w-20 h-20 rounded-full bg-gradient-to-br from-white/[0.01] to-transparent blur-xl transform translate-x-1/4 -translate-y-1/4"></div>
+                                        <div className="absolute bottom-0 left-0 w-24 h-24 rounded-full bg-gradient-to-tr from-white/[0.01] to-transparent blur-xl transform -translate-x-1/3 translate-y-1/4"></div>
 
-                                        {/* Cabeçalho com gradiente */}
-                                        <div className={`relative h-28 overflow-hidden ${hoveredItem === item.id ? `bg-gradient-to-br ${item.hoverGradient}` : 'bg-neutral-900/50'} transition-colors duration-500`}>
-                                            {/* Padrão decorativo */}
-                                            <motion.div
-                                                className="absolute inset-0 opacity-30 bg-[url('/images/noise-pattern.svg')] mix-blend-overlay"
-                                                animate={{
-                                                    backgroundPosition: ['0% 0%', '100% 100%'],
-                                                }}
-                                                transition={{
-                                                    duration: 20,
-                                                    repeat: Infinity,
-                                                    repeatType: 'reverse',
-                                                }}
-                                            />
-
-                                            {/* Círculos decorativos - reduzindo o z-index */}
-                                            <motion.div
-                                                className="absolute w-40 h-40 rounded-full bg-white/10 blur-xl z-0"
-                                                style={{ top: '-20px', right: '-20px' }}
-                                                animate={{
-                                                    scale: [1, 1.2, 1],
-                                                    opacity: [0.1, 0.3, 0.1],
-                                                }}
-                                                transition={{
-                                                    duration: 8,
-                                                    repeat: Infinity,
-                                                }}
-                                            />
+                                        {/* Ícone no topo centro com posição ajustada para ficar totalmente visível */}
+                                        <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 w-16 h-16 z-10">
+                                            <div
+                                                className={`w-16 h-16 flex items-center justify-center rounded-full shadow-lg backdrop-blur-2xl transition-all duration-300 border border-white/10 text-white
+                                                    ${hoveredItem === item.id
+                                                        ? `bg-gradient-to-r ${item.hoverGradient} shadow-lg shadow-${item.color}/10`
+                                                        : 'bg-neutral-900/90'
+                                                    }`}
+                                            >
+                                                <motion.div
+                                                    animate={hoveredItem === item.id ? { scale: [1, 1.1, 1] } : {}}
+                                                    transition={{ duration: 0.5, ease: "easeInOut" }}
+                                                >
+                                                    {item.icon}
+                                                </motion.div>
+                                            </div>
                                         </div>
 
-                                        {/* Conteúdo principal com layout moderno */}
-                                        <div className="flex-1 p-6 pt-16 flex flex-col relative">
-                                            {/* Ícone flutuante - movido para fora do cabeçalho e com z-index superior */}
-                                            <motion.div
-                                                className="absolute -top-8 right-6 z-20"
-                                                animate={{
-                                                    y: hoveredItem === item.id ? -5 : 0,
-                                                    rotate: hoveredItem === item.id ? [0, -5, 5, 0] : 0,
-                                                }}
-                                                transition={{
-                                                    y: { duration: 0.5 },
-                                                    rotate: { duration: 0.5, repeat: 0 }
-                                                }}
-                                            >
-                                                <div className={`flex items-center justify-center w-16 h-16 rounded-2xl shadow-lg ${hoveredItem === item.id
-                                                    ? `bg-gradient-to-br ${item.hoverGradient} shadow-${item.color}/20`
-                                                    : 'bg-neutral-800 shadow-black/20'
-                                                    } transition-all duration-300`}>
-                                                    <div className="text-white relative">
-                                                        {item.icon}
-                                                    </div>
-                                                </div>
-                                            </motion.div>
+                                        {/* Indicador de progresso no hover (estilo Apple) */}
+                                        {hoveredItem === item.id && (
+                                            <div className="absolute bottom-3 left-1/2 transform -translate-x-1/2 w-12 h-1 bg-neutral-800/80 rounded-full overflow-hidden">
+                                                <div
+                                                    className={`h-full rounded-full bg-gradient-to-r ${item.hoverGradient}`}
+                                                    style={{ width: `${progress}%` }}
+                                                ></div>
+                                            </div>
+                                        )}
 
-                                            {/* Área de texto */}
-                                            <div className="flex-1">
-                                                {/* Tag da plataforma */}
-                                                <div className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-medium text-neutral-300 mb-4 relative z-20">
-                                                    <span className={`w-2 h-2 rounded-full`} style={{ backgroundColor: item.color }}></span>
-                                                    <span>Conectar via {item.name}</span>
-                                                </div>
+                                        {/* Conteúdo principal com espaçamento ajustado */}
+                                        <div className="px-8 pt-10 pb-10 flex flex-col items-center text-center">
+                                            {/* Nome do contato com gradiente */}
+                                            <h3 className={`text-xl font-medium mb-2 transition-all duration-300 ${hoveredItem === item.id
+                                                ? `bg-gradient-to-r ${item.hoverGradient} bg-clip-text text-transparent`
+                                                : 'text-white'
+                                                }`}>
+                                                {item.name}
+                                            </h3>
 
-                                                {/* Título com efeito de texto */}
-                                                <motion.h3
-                                                    className={`text-2xl font-bold mb-3 ${hoveredItem === item.id
-                                                        ? `bg-gradient-to-r ${item.hoverGradient} bg-clip-text text-transparent`
-                                                        : 'text-white'
-                                                        } transition-colors duration-300 relative z-20`}
-                                                >
+                                            {/* Valor do contato com tamanho maior */}
+                                            <div className="mb-5">
+                                                <span className={`text-lg font-light ${hoveredItem === item.id ? 'text-white' : 'text-neutral-300'} transition-colors`}>
                                                     {item.value}
-                                                </motion.h3>
+                                                </span>
+                                            </div>
 
-                                                {/* Descrição */}
-                                                {item.description && (
-                                                    <motion.p
-                                                        className="text-neutral-400 text-sm leading-relaxed mb-4 relative z-20"
-                                                    >
-                                                        {item.description}
-                                                    </motion.p>
+                                            {/* Separador com animação */}
+                                            <div className="relative h-px w-20 my-4 overflow-hidden">
+                                                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+                                                {hoveredItem === item.id && (
+                                                    <motion.div
+                                                        className={`absolute inset-0 bg-gradient-to-r ${item.hoverGradient}`}
+                                                        initial={{ x: "-100%" }}
+                                                        animate={{ x: "100%" }}
+                                                        transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
+                                                    />
                                                 )}
                                             </div>
 
-                                            {/* Botão com efeito hover */}
-                                            <motion.div
-                                                className="mt-2 group-hover:mt-0 transition-all duration-300 relative z-20"
-                                                animate={{
-                                                    opacity: hoveredItem === item.id ? 1 : 0.7,
-                                                }}
-                                            >
-                                                <div className={`
-                                                    group relative flex items-center gap-2 w-full py-2.5 px-4 
-                                                    ${hoveredItem === item.id
-                                                        ? `bg-gradient-to-r ${item.hoverGradient}`
-                                                        : 'bg-white/5'
-                                                    } 
-                                                    rounded-xl overflow-hidden transition-all duration-300 cursor-pointer
-                                                `}>
-                                                    <span className={`flex-1 text-sm font-medium ${hoveredItem === item.id ? 'text-white' : 'text-neutral-300'}`}>
-                                                        Acessar {item.name}
-                                                    </span>
-                                                    <div className={`flex items-center justify-center w-6 h-6 rounded-full ${hoveredItem === item.id ? 'bg-white' : 'bg-white/10'} transition-colors duration-300`}>
-                                                        <motion.svg
-                                                            xmlns="http://www.w3.org/2000/svg"
-                                                            className={`h-3 w-3 ${hoveredItem === item.id ? 'text-[#3d43dd]' : 'text-white'}`}
-                                                            viewBox="0 0 20 20"
-                                                            fill="currentColor"
-                                                            animate={{ x: hoveredItem === item.id ? [0, 3, 0] : 0 }}
-                                                            transition={{ repeat: hoveredItem === item.id ? Infinity : 0, duration: 1 }}
-                                                        >
-                                                            <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd" />
-                                                        </motion.svg>
-                                                    </div>
+                                            {/* Descrição com espaçamento melhorado */}
+                                            <p className="text-sm text-neutral-400 leading-relaxed mb-6 max-w-[90%] mx-auto">
+                                                {item.description || `Conecte-se comigo no ${item.name}`}
+                                            </p>
 
-                                                    {/* Progress bar integrado no botão */}
-                                                    {hoveredItem === item.id && (
-                                                        <motion.div
-                                                            className="absolute bottom-0 left-0 h-full w-full bg-white/10"
-                                                            initial={{ scaleX: 0 }}
-                                                            animate={{ scaleX: progress / 100 }}
-                                                            style={{ transformOrigin: 'left' }}
-                                                        />
-                                                    )}
-                                                </div>
-                                            </motion.div>
+                                            {/* Botão estilo Apple com animação */}
+                                            <div
+                                                className={`
+                                                    group-hover:scale-105 mt-auto inline-flex items-center justify-center px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300
+                                                    ${hoveredItem === item.id
+                                                        ? `bg-gradient-to-r ${item.hoverGradient} text-white shadow-lg`
+                                                        : 'bg-white/5 text-neutral-300 hover:bg-white/10'
+                                                    }
+                                                `}
+                                            >
+                                                <span>Conectar</span>
+                                                <motion.div
+                                                    animate={hoveredItem === item.id ? { x: [0, 2, 0] } : {}}
+                                                    transition={{ duration: 1, repeat: Infinity, repeatType: "reverse" }}
+                                                    className="ml-2"
+                                                >
+                                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                                        <path fillRule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
+                                                    </svg>
+                                                </motion.div>
+                                            </div>
                                         </div>
-                                    </motion.a>
+                                    </a>
                                 </motion.div>
                             ))}
                         </motion.div>
                     )}
 
-                    {/* Formulário */}
+                    {/* Formulário - Estilo Apple clean */}
                     {activeTab === 'form' && (
                         <motion.div
                             key="form"
@@ -536,7 +481,7 @@ export default function Contact() {
                             transition={{ duration: 0.3 }}
                             className="max-w-2xl mx-auto"
                         >
-                            <div className="bg-neutral-900/50 backdrop-blur-sm rounded-3xl p-8 border border-neutral-800/30">
+                            <div className="bg-neutral-900/30 backdrop-blur-xl rounded-3xl p-8 sm:p-10 border border-white/5 shadow-xl">
                                 <motion.form
                                     ref={formRef}
                                     onSubmit={handleFormSubmit}
@@ -545,9 +490,9 @@ export default function Contact() {
                                     animate={{ opacity: 1 }}
                                     transition={{ delay: 0.2 }}
                                 >
-                                    <div className="space-y-4">
+                                    <div className="space-y-5">
                                         <div>
-                                            <label htmlFor="name" className="block text-sm font-medium text-neutral-300 mb-1">
+                                            <label htmlFor="name" className="block text-sm font-medium text-neutral-300 mb-2">
                                                 Nome
                                             </label>
                                             <input
@@ -556,14 +501,14 @@ export default function Contact() {
                                                 name="name"
                                                 value={formData.name}
                                                 onChange={handleInputChange}
-                                                className="w-full px-4 py-3 bg-neutral-800/50 rounded-xl border border-neutral-700/50 text-white focus:border-[#3d43dd]/50 focus:ring-1 focus:ring-[#3d43dd]/30 transition-colors"
+                                                className="w-full px-4 py-3 bg-neutral-800/30 backdrop-blur-sm rounded-xl border border-white/5 text-white focus:border-[#3d43dd]/50 focus:ring-1 focus:ring-[#3d43dd]/30 transition-colors"
                                                 placeholder="Seu nome completo"
                                                 disabled={formStatus === 'submitting'}
                                             />
                                         </div>
 
                                         <div>
-                                            <label htmlFor="email" className="block text-sm font-medium text-neutral-300 mb-1">
+                                            <label htmlFor="email" className="block text-sm font-medium text-neutral-300 mb-2">
                                                 Email
                                             </label>
                                             <input
@@ -572,14 +517,30 @@ export default function Contact() {
                                                 name="email"
                                                 value={formData.email}
                                                 onChange={handleInputChange}
-                                                className="w-full px-4 py-3 bg-neutral-800/50 rounded-xl border border-neutral-700/50 text-white focus:border-[#3d43dd]/50 focus:ring-1 focus:ring-[#3d43dd]/30 transition-colors"
+                                                className="w-full px-4 py-3 bg-neutral-800/30 backdrop-blur-sm rounded-xl border border-white/5 text-white focus:border-[#3d43dd]/50 focus:ring-1 focus:ring-[#3d43dd]/30 transition-colors"
                                                 placeholder="seu.email@exemplo.com"
                                                 disabled={formStatus === 'submitting'}
                                             />
                                         </div>
 
                                         <div>
-                                            <label htmlFor="message" className="block text-sm font-medium text-neutral-300 mb-1">
+                                            <label htmlFor="subject" className="block text-sm font-medium text-neutral-300 mb-2">
+                                                Assunto
+                                            </label>
+                                            <input
+                                                type="text"
+                                                id="subject"
+                                                name="subject"
+                                                value={formData.subject}
+                                                onChange={handleInputChange}
+                                                className="w-full px-4 py-3 bg-neutral-800/30 backdrop-blur-sm rounded-xl border border-white/5 text-white focus:border-[#3d43dd]/50 focus:ring-1 focus:ring-[#3d43dd]/30 transition-colors"
+                                                placeholder="Assunto do projeto"
+                                                disabled={formStatus === 'submitting'}
+                                            />
+                                        </div>
+
+                                        <div>
+                                            <label htmlFor="message" className="block text-sm font-medium text-neutral-300 mb-2">
                                                 Mensagem
                                             </label>
                                             <textarea
@@ -588,23 +549,22 @@ export default function Contact() {
                                                 value={formData.message}
                                                 onChange={handleInputChange}
                                                 rows={5}
-                                                className="w-full px-4 py-3 bg-neutral-800/50 rounded-xl border border-neutral-700/50 text-white focus:border-[#3d43dd]/50 focus:ring-1 focus:ring-[#3d43dd]/30 transition-colors resize-none"
+                                                className="w-full px-4 py-3 bg-neutral-800/30 backdrop-blur-sm rounded-xl border border-white/5 text-white focus:border-[#3d43dd]/50 focus:ring-1 focus:ring-[#3d43dd]/30 transition-colors resize-none"
                                                 placeholder="Descreva seu projeto ou ideia..."
                                                 disabled={formStatus === 'submitting'}
                                             />
                                         </div>
                                     </div>
 
-                                    <div>
+                                    <div className="pt-2">
                                         <motion.button
                                             type="submit"
                                             disabled={formStatus === 'submitting'}
-                                            className="w-full relative group overflow-hidden"
-                                            whileHover={{ scale: 1.02 }}
-                                            whileTap={{ scale: 0.98 }}
+                                            className="w-full relative overflow-hidden"
+                                            whileHover={{ scale: 1.01 }}
+                                            whileTap={{ scale: 0.99 }}
                                         >
-                                            <div className="absolute -inset-2 bg-gradient-to-r from-[#3d43dd] to-[#6366f1] rounded-full blur opacity-30 group-hover:opacity-50 transition-opacity duration-500"></div>
-                                            <div className={`relative inline-flex items-center justify-center w-full gap-2 px-6 py-3 ${formStatus === 'success' ? 'bg-green-600' : formStatus === 'error' ? 'bg-red-600' : 'bg-[#3d43dd]'} rounded-full text-white font-medium transition-all duration-300`}>
+                                            <div className={`inline-flex items-center justify-center w-full px-6 py-3.5 ${formStatus === 'success' ? 'bg-green-600' : formStatus === 'error' ? 'bg-red-600' : 'bg-gradient-to-r from-[#3d43dd] to-[#6366f1]'} rounded-xl text-white font-medium shadow-lg transition-all duration-300`}>
                                                 {formStatus === 'submitting' ? (
                                                     <>
                                                         <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -615,21 +575,21 @@ export default function Contact() {
                                                     </>
                                                 ) : formStatus === 'success' ? (
                                                     <>
-                                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
                                                             <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                                                         </svg>
                                                         Mensagem Enviada!
                                                     </>
                                                 ) : formStatus === 'error' ? (
                                                     <>
-                                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
                                                             <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
                                                         </svg>
-                                                        Erro ao enviar. Tente novamente.
+                                                        Erro ao enviar
                                                     </>
                                                 ) : (
                                                     <>
-                                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
                                                             <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
                                                         </svg>
                                                         Enviar Mensagem
@@ -644,160 +604,182 @@ export default function Contact() {
                     )}
                 </AnimatePresence>
 
-                {/* Área de call-to-action moderna e interativa - substitui o rodapé anterior */}
+                {/* Área de call-to-action estilo Apple - APRIMORADA */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.5, delay: 0.6 }}
-                    className="mt-20 text-center"
+                    className="mt-24 mb-4"
                 >
-                    <div className="relative overflow-hidden p-1 rounded-3xl bg-gradient-to-r from-[#3d43dd]/50 via-[#6366f1]/50 to-[#3d43dd]/50">
-                        <div className="bg-black rounded-[22px] p-8 sm:p-10 md:p-12 relative">
-                            {/* Efeito de partículas flutuantes com posições fixas */}
-                            {[
-                                { top: "75%", left: "63%" },
-                                { top: "69%", left: "51%" },
-                                { top: "25%", left: "19%" },
-                                { top: "3%", left: "25%" },
-                                { top: "76%", left: "63%" },
-                                { top: "81%", left: "97%" }
-                            ].map((position, i) => (
-                                <motion.div
-                                    key={`particle-${i}`}
-                                    className="absolute w-3 h-3 rounded-full bg-[#3d43dd]/30"
-                                    style={{
-                                        top: position.top,
-                                        left: position.left,
-                                    }}
-                                    animate={{
-                                        y: [0, -15, 0],
-                                        opacity: [0.3, 0.8, 0.3],
-                                    }}
-                                    transition={{
-                                        duration: 3 + i % 2,
-                                        repeat: Infinity,
-                                        delay: i * 0.5,
-                                    }}
-                                />
-                            ))}
+                    {/* Container com borda de gradiente e efeito de vidro */}
+                    <div className="relative overflow-hidden p-0.5 rounded-3xl bg-gradient-to-r from-[#3d43dd]/60 via-[#6366f1]/60 to-[#3d43dd]/60 shadow-2xl">
+                        {/* Efeito de brilho que se move */}
+                        <motion.div
+                            className="absolute inset-0 opacity-20 z-0"
+                            animate={{
+                                background: [
+                                    'radial-gradient(circle at 20% 30%, rgba(61, 67, 221, 0.4) 0%, transparent 50%)',
+                                    'radial-gradient(circle at 50% 80%, rgba(61, 67, 221, 0.4) 0%, transparent 50%)',
+                                    'radial-gradient(circle at 80% 20%, rgba(61, 67, 221, 0.4) 0%, transparent 50%)',
+                                    'radial-gradient(circle at 20% 30%, rgba(61, 67, 221, 0.4) 0%, transparent 50%)'
+                                ]
+                            }}
+                            transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+                        />
 
-                            {/* Efeito de gradiente animado */}
-                            <motion.div
-                                className="absolute -inset-40 bg-gradient-to-r from-[#3d43dd]/0 via-[#3d43dd]/5 to-[#3d43dd]/0 rounded-full blur-3xl"
-                                animate={{
-                                    rotate: [0, 360],
-                                    scale: [1, 1.1, 1],
-                                }}
-                                transition={{
-                                    rotate: { duration: 20, repeat: Infinity, ease: "linear" },
-                                    scale: { duration: 8, repeat: Infinity, repeatType: "reverse", ease: "easeInOut" },
-                                }}
-                            />
+                        {/* Conteúdo principal com backdrop blur */}
+                        <div className="bg-black/80 backdrop-blur-xl rounded-[22px] p-12 sm:p-16 md:p-20 relative overflow-hidden">
+                            {/* Grade decorativa com linhas sutis */}
+                            <div className="absolute inset-0 opacity-10">
+                                <div className="h-full w-full" style={{
+                                    backgroundImage: 'radial-gradient(circle at center, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.03) 1px, transparent 1px)',
+                                    backgroundSize: '30px 30px'
+                                }}></div>
+                            </div>
 
-                            <div className="relative z-10 max-w-3xl mx-auto">
-                                {/* Ícone decorativo */}
-                                <motion.div
-                                    className="w-16 h-16 mx-auto mb-6 bg-gradient-to-br from-[#3d43dd] to-[#6366f1] rounded-2xl flex items-center justify-center"
-                                    initial={{ rotate: -5 }}
-                                    whileHover={{ rotate: 5, scale: 1.1 }}
-                                    transition={{ type: "spring", stiffness: 300, damping: 15 }}
-                                >
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-8 h-8 text-white">
-                                        <path d="M16 16v1a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h2m5.66 0H14a2 2 0 0 1 2 2v3.34l1 1L23 7v10"></path>
-                                        <line x1="1" y1="1" x2="23" y2="23"></line>
-                                    </svg>
-                                </motion.div>
+                            {/* Elementos decorativos */}
+                            <div className="absolute top-0 right-0 w-1/2 h-1/2 bg-gradient-to-b from-indigo-500/10 to-transparent opacity-30 blur-3xl rounded-full transform translate-x-1/3 -translate-y-1/3"></div>
+                            <div className="absolute bottom-0 left-0 w-1/2 h-1/2 bg-gradient-to-t from-indigo-500/10 to-transparent opacity-30 blur-3xl rounded-full transform -translate-x-1/3 translate-y-1/3"></div>
 
-                                <motion.h3
-                                    initial={{ opacity: 0, y: 10 }}
-                                    whileInView={{ opacity: 1, y: 0 }}
-                                    transition={{ delay: 0.7 }}
-                                    viewport={{ once: true }}
-                                    className="text-2xl md:text-3xl font-bold mb-6 bg-gradient-to-r from-white to-neutral-300 bg-clip-text text-transparent"
-                                >
-                                    Vamos transformar suas ideias em realidade digital
-                                </motion.h3>
+                            {/* Partículas flutuantes */}
+                            {!isMobile && (
+                                <>
+                                    {Array.from({ length: 5 }).map((_, index) => {
+                                        // Valores pré-calculados fixos para cada índice
+                                        const positions = [
+                                            { top: "35%", left: "25%", scale: 0.8 },
+                                            { top: "65%", left: "15%", scale: 1.2 },
+                                            { top: "25%", left: "65%", scale: 1.5 },
+                                            { top: "45%", left: "85%", scale: 0.7 },
+                                            { top: "75%", left: "55%", scale: 1.1 }
+                                        ];
 
-                                <motion.p
-                                    initial={{ opacity: 0 }}
-                                    whileInView={{ opacity: 1 }}
-                                    transition={{ delay: 0.8 }}
-                                    viewport={{ once: true }}
-                                    className="text-neutral-400 max-w-xl mx-auto mb-8 text-lg"
-                                >
-                                    Estou disponível para novos projetos e colaborações. Minha abordagem combina design moderno,
-                                    código limpo e experiências interativas que destacam seu negócio.
-                                </motion.p>
+                                        return (
+                                            <motion.div
+                                                key={index}
+                                                className="absolute w-2 h-2 rounded-full bg-[#3d43dd]/30"
+                                                style={{
+                                                    top: positions[index].top,
+                                                    left: positions[index].left,
+                                                    scale: positions[index].scale
+                                                }}
+                                                animate={{
+                                                    y: [0, -15, 0],
+                                                    opacity: [0.3, 0.8, 0.3]
+                                                }}
+                                                transition={{
+                                                    duration: 3 + index, // usar o índice em vez de random
+                                                    repeat: Infinity,
+                                                    delay: index * 0.5, // usar o índice para delay previsível
+                                                    ease: "easeInOut"
+                                                }}
+                                            />
+                                        );
+                                    })}
+                                </>
+                            )}
 
-                                {/* Cards numéricos de estatísticas */}
-                                <motion.div
+                            {/* Divisor de linhas finas na parte superior */}
+                            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+
+                            {/* Conteúdo do CTA melhorado */}
+                            <div className="relative z-10 max-w-4xl mx-auto">
+                                {/* Tag superior para aumentar apelo */}
+                                <div className="flex items-center justify-center gap-2 px-4 py-2 rounded-full bg-[#3d43dd]/10 border border-[#3d43dd]/20 backdrop-blur-sm mb-8 mx-auto w-fit">
+                                    <span className="w-2 h-2 rounded-full bg-[#3d43dd] animate-pulse"></span>
+                                    <span className="text-sm font-medium bg-gradient-to-r from-white to-neutral-300 bg-clip-text text-transparent">
+                                        Vamos colaborar
+                                    </span>
+                                </div>
+
+                                {/* Título principal com design mais atrativo */}
+                                <motion.h2
                                     initial={{ opacity: 0, y: 20 }}
                                     whileInView={{ opacity: 1, y: 0 }}
                                     viewport={{ once: true }}
-                                    transition={{ delay: 0.9 }}
-                                    className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10"
+                                    transition={{ duration: 0.5, delay: 0.2 }}
+                                    className="text-4xl sm:text-5xl lg:text-6xl font-light text-white mb-6 tracking-tight text-center"
                                 >
-                                    {[
-                                        { value: "1-3", label: "Semanas para MVP" },
-                                        { value: "100%", label: "Satisfação" },
-                                        { value: "24/7", label: "Suporte" },
-                                        { value: "100%", label: "Comprometimento" }
-                                    ].map((stat, index) => (
-                                        <motion.div
-                                            key={`stat-${index}`}
-                                            className="bg-neutral-900/40 backdrop-blur-sm rounded-xl p-4 border border-neutral-700/20"
-                                            whileHover={{
-                                                y: -5,
-                                                backgroundColor: "rgba(61, 67, 221, 0.1)",
-                                                borderColor: "rgba(61, 67, 221, 0.3)"
-                                            }}
-                                        >
-                                            <div className="text-2xl font-bold bg-gradient-to-r from-[#3d43dd] via-[#6366f1] to-[#818cf8] bg-clip-text text-transparent">
-                                                {stat.value}
-                                            </div>
-                                            <div className="text-sm text-neutral-400">
-                                                {stat.label}
-                                            </div>
-                                        </motion.div>
-                                    ))}
-                                </motion.div>
+                                    Vamos <span className="font-semibold text-transparent bg-clip-text bg-gradient-to-r from-[#3d43dd] via-[#6366f1] to-[#818cf8] animate-gradient">transformar</span>
+                                    <br className="hidden md:block" /> suas ideias em realidade
+                                </motion.h2>
 
-                                {/* Botão de ação principal com efeito 3D - melhor contraste */}
-                                <motion.div
-                                    initial={{ opacity: 0 }}
-                                    whileInView={{ opacity: 1 }}
+                                {/* Descrição com melhor formatação */}
+                                <motion.p
+                                    initial={{ opacity: 0, y: 20 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
                                     viewport={{ once: true }}
-                                    transition={{ delay: 1 }}
-                                    className="inline-block"
+                                    transition={{ duration: 0.5, delay: 0.3 }}
+                                    className="text-lg text-neutral-300 mb-12 max-w-2xl mx-auto font-light leading-relaxed text-center"
                                 >
+                                    Estou disponível para novos projetos, consultorias e colaborações.
+                                    Vamos criar experiências digitais excepcionais que impressionam e inspiram.
+                                </motion.p>
+
+                                {/* Grupo de botões de ação com mais opções */}
+                                <motion.div
+                                    initial={{ opacity: 0, y: 10 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    viewport={{ once: true }}
+                                    transition={{ delay: 0.5 }}
+                                    className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6"
+                                >
+                                    {/* Botão principal com efeito 3D aprimorado */}
                                     <a
                                         href="#contact"
                                         onClick={() => setActiveTab('form')}
-                                        className="group relative inline-flex items-center justify-center"
+                                        className="group relative overflow-hidden inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-gradient-to-r from-white to-neutral-100 text-neutral-900 font-medium shadow-xl hover:shadow-2xl hover:-translate-y-0.5 transition-all duration-300"
                                     >
-                                        <div className="absolute -inset-1 bg-gradient-to-r from-[#3d43dd] to-[#6366f1] rounded-full blur-md opacity-80 group-hover:opacity-100 transition duration-500 group-hover:duration-200 animate-pulse"></div>
-                                        <div className="relative px-8 py-4 bg-gradient-to-r from-[#3d43dd] to-[#6366f1] rounded-full leading-none flex items-center gap-3 shadow-lg shadow-[#3d43dd]/20">
-                                            <span className="text-white font-medium">Iniciar um projeto</span>
-                                            <span className="bg-white p-1.5 rounded-full">
-                                                <motion.svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    className="h-4 w-4 text-[#3d43dd]"
-                                                    viewBox="0 0 20 20"
-                                                    fill="currentColor"
-                                                    animate={{ x: [0, 5, 0] }}
-                                                    transition={{ repeat: Infinity, duration: 1.5 }}
-                                                >
-                                                    <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd" />
-                                                </motion.svg>
-                                            </span>
-                                        </div>
+                                        <span className="relative z-10">Iniciar um projeto</span>
+                                        <motion.div
+                                            className="relative z-10 ml-1"
+                                            animate={{ x: [0, 3, 0] }}
+                                            transition={{ duration: 1.5, repeat: Infinity, repeatType: "reverse" }}
+                                        >
+                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                                <path fillRule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
+                                            </svg>
+                                        </motion.div>
+                                        {/* Efeito de brilho que se move */}
+                                        <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/30 to-transparent skew-x-30 opacity-0 group-hover:opacity-100 animate-shine" />
+                                    </a>
+
+                                    {/* Botão secundário */}
+                                    <a
+                                        href="mailto:wagnerpereiradev@gmail.com"
+                                        className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-white/10 text-white backdrop-blur-sm border border-white/10 hover:bg-white/15 transition-all duration-300"
+                                    >
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                            <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                                            <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+                                        </svg>
+                                        <span>Contato direto</span>
                                     </a>
                                 </motion.div>
                             </div>
                         </div>
                     </div>
                 </motion.div>
+
+                {/* Adicionar estilo para animação de gradiente e brilho */}
+                <style jsx global>{`
+                    @keyframes shine {
+                        from {transform: translateX(-100%) skewX(-30deg);}
+                        to {transform: translateX(200%) skewX(-30deg);}
+                    }
+                    .animate-shine {animation: shine 2s infinite;}
+                    
+                    @keyframes gradient {
+                        0% {background-position: 0% 50%;}
+                        50% {background-position: 100% 50%;}
+                        100% {background-position: 0% 50%;}
+                    }
+                    .animate-gradient {
+                        background-size: 200% 200%;
+                        animation: gradient 3s ease infinite;
+                    }
+                `}</style>
             </div>
         </section>
     );
