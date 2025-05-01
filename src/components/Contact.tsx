@@ -32,7 +32,6 @@ export default function Contact() {
 
     const [hoveredItem, setHoveredItem] = useState<number | null>(null);
     const [activeTab, setActiveTab] = useState<'social' | 'form'>('social');
-    const [progress, setProgress] = useState<number>(0);
     const [isOpening, setIsOpening] = useState<boolean>(false);
     const [formStatus, setFormStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
     const [isMobile, setIsMobile] = useState(false);
@@ -159,17 +158,9 @@ export default function Contact() {
         let timer: NodeJS.Timeout;
         if (hoveredItem && !isOpening) {
             timer = setInterval(() => {
-                setProgress((prev) => {
-                    if (prev >= 100) {
-                        clearInterval(timer);
-                        setIsOpening(true);
-                        return 100;
-                    }
-                    return prev + 1;
-                });
-            }, 30);
+                setIsOpening(true);
+            }, 300);
         } else if (!hoveredItem) {
-            setProgress(0);
             setIsOpening(false);
         }
         return () => clearInterval(timer);
@@ -182,7 +173,6 @@ export default function Contact() {
                 window.open(item.url, '_blank');
                 setIsOpening(false);
                 setHoveredItem(null);
-                setProgress(0);
             }
         }
     }, [isOpening, hoveredItem, contactInfo]);
@@ -357,7 +347,7 @@ export default function Contact() {
                             transition={{ duration: 0.3 }}
                             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 max-w-5xl mx-auto"
                         >
-                            {/* Renderização condicional para mobile vs desktop */}
+                            {/* Cards de redes sociais ultra minimalistas */}
                             {contactInfo.map((item) => (
                                 <motion.div
                                     key={item.id}
@@ -371,95 +361,42 @@ export default function Contact() {
                                         href={item.url}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className={`block h-full w-full relative overflow-visible rounded-2xl bg-neutral-900/40 backdrop-blur-xl border border-white/5 shadow-xl group hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 ease-out mt-8`}
+                                        className="block h-full w-full relative rounded-xl bg-neutral-900/40 backdrop-blur-sm border border-neutral-800/50 group hover:border-[#3d43dd]/30 transition-all duration-300"
+                                        onMouseEnter={() => !isMobile && setHoveredItem(item.id)}
+                                        onMouseLeave={() => !isMobile && setHoveredItem(null)}
                                     >
-                                        {/* Efeito de brilho no hover */}
-                                        <div className={`absolute inset-0 opacity-0 group-hover:opacity-100 rounded-2xl bg-gradient-to-r ${item.hoverGradient} transition-opacity duration-300 blur-sm -z-10`}></div>
-
-                                        {/* Círculos decorativos */}
-                                        <div className="absolute top-0 right-0 w-20 h-20 rounded-full bg-gradient-to-br from-white/[0.01] to-transparent blur-xl transform translate-x-1/4 -translate-y-1/4"></div>
-                                        <div className="absolute bottom-0 left-0 w-24 h-24 rounded-full bg-gradient-to-tr from-white/[0.01] to-transparent blur-xl transform -translate-x-1/3 translate-y-1/4"></div>
-
-                                        {/* Ícone no topo centro com posição ajustada para ficar totalmente visível */}
-                                        <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 w-16 h-16 z-10">
-                                            <div
-                                                className={`w-16 h-16 flex items-center justify-center rounded-full shadow-lg backdrop-blur-2xl transition-all duration-300 border border-white/10 text-white
-                                                    ${hoveredItem === item.id
-                                                        ? `bg-gradient-to-r ${item.hoverGradient} shadow-lg shadow-${item.color}/10`
-                                                        : 'bg-neutral-900/90'
-                                                    }`}
-                                            >
-                                                <motion.div
-                                                    animate={hoveredItem === item.id ? { scale: [1, 1.1, 1] } : {}}
-                                                    transition={{ duration: 0.5, ease: "easeInOut" }}
-                                                >
-                                                    {item.icon}
-                                                </motion.div>
+                                        {/* Conteúdo ultra simplificado */}
+                                        <div className="p-6 flex flex-col h-full">
+                                            {/* Ícone, elegante e clean */}
+                                            <div className={`self-start mb-3 text-white/60 group-hover:text-white transition-colors duration-300`}>
+                                                {item.icon}
                                             </div>
-                                        </div>
 
-                                        {/* Indicador de progresso no hover (estilo Apple) */}
-                                        {hoveredItem === item.id && (
-                                            <div className="absolute bottom-3 left-1/2 transform -translate-x-1/2 w-12 h-1 bg-neutral-800/80 rounded-full overflow-hidden">
-                                                <div
-                                                    className={`h-full rounded-full bg-gradient-to-r ${item.hoverGradient}`}
-                                                    style={{ width: `${progress}%` }}
-                                                ></div>
-                                            </div>
-                                        )}
-
-                                        {/* Conteúdo principal com espaçamento ajustado */}
-                                        <div className="px-8 pt-10 pb-10 flex flex-col items-center text-center">
-                                            {/* Nome do contato com gradiente */}
-                                            <h3 className={`text-xl font-medium mb-2 transition-all duration-300 ${hoveredItem === item.id
-                                                ? `bg-gradient-to-r ${item.hoverGradient} bg-clip-text text-transparent`
-                                                : 'text-white'
-                                                }`}>
+                                            {/* Nome da rede em gradiente no hover */}
+                                            <h3 className={`text-xl font-medium mb-1 transition-all duration-300 ${hoveredItem === item.id ? `bg-gradient-to-r ${item.hoverGradient} bg-clip-text text-transparent` : 'text-white'}`}>
                                                 {item.name}
                                             </h3>
 
-                                            {/* Valor do contato com tamanho maior */}
-                                            <div className="mb-5">
-                                                <span className={`text-lg font-light ${hoveredItem === item.id ? 'text-white' : 'text-neutral-300'} transition-colors`}>
-                                                    {item.value}
-                                                </span>
-                                            </div>
-
-                                            {/* Separador com animação */}
-                                            <div className="relative h-px w-20 my-4 overflow-hidden">
-                                                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
-                                                {hoveredItem === item.id && (
-                                                    <motion.div
-                                                        className={`absolute inset-0 bg-gradient-to-r ${item.hoverGradient}`}
-                                                        initial={{ x: "-100%" }}
-                                                        animate={{ x: "100%" }}
-                                                        transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
-                                                    />
-                                                )}
-                                            </div>
-
-                                            {/* Descrição com espaçamento melhorado */}
-                                            <p className="text-sm text-neutral-400 leading-relaxed mb-6 max-w-[90%] mx-auto">
-                                                {item.description || `Conecte-se comigo no ${item.name}`}
+                                            {/* Username/valor com tamanho reduzido */}
+                                            <p className="text-sm text-neutral-400 mb-4">
+                                                {item.value}
                                             </p>
 
-                                            {/* Botão estilo Apple com animação */}
-                                            <div
-                                                className={`
-                                                    group-hover:scale-105 mt-auto inline-flex items-center justify-center px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300
-                                                    ${hoveredItem === item.id
-                                                        ? `bg-gradient-to-r ${item.hoverGradient} text-white shadow-lg`
-                                                        : 'bg-white/5 text-neutral-300 hover:bg-white/10'
-                                                    }
-                                                `}
-                                            >
-                                                <span>Conectar</span>
+                                            {/* Linha minimalista */}
+                                            <div className="h-px w-12 bg-neutral-800/70 mb-4">
                                                 <motion.div
-                                                    animate={hoveredItem === item.id ? { x: [0, 2, 0] } : {}}
-                                                    transition={{ duration: 1, repeat: Infinity, repeatType: "reverse" }}
-                                                    className="ml-2"
+                                                    className={`h-px bg-gradient-to-r ${item.gradient} w-0 group-hover:w-full transition-all duration-300`}
+                                                />
+                                            </div>
+
+                                            {/* Seta indicativa com animação sutil */}
+                                            <div className="mt-auto flex justify-end">
+                                                <motion.div
+                                                    className="text-neutral-500 group-hover:text-white transition-colors duration-300"
+                                                    animate={hoveredItem === item.id ? { x: [0, 5, 0] } : {}}
+                                                    transition={{ duration: 2, repeat: Infinity, repeatType: "reverse" }}
                                                 >
-                                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                                                         <path fillRule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
                                                     </svg>
                                                 </motion.div>
