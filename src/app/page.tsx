@@ -7,7 +7,7 @@ import Navbar from '@/components/Navbar';
 
 export default function Home() {
   return (
-    <main className="bg-neutral-950 text-neutral-100">
+    <main className="bg-neutral-950 text-neutral-100 cursor-default select-none">
       <Navbar />
       <Hero />
       <Profile />

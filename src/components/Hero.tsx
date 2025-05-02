@@ -73,8 +73,8 @@ export default function Hero() {
     // Lista de tecnologias para o carrossel
     const technologies = [
         "JavaScript", "React", "Next.js", "TypeScript",
-        "Node.js", "Python", "Django", "TailwindCSS",
-        "Framer Motion", "Firebase", "AWS", "Docker"
+        "Node.js", "Python", "TailwindCSS",
+        "Framer Motion", "Firebase", "AWS", "Docker", "Kotlin", "Java", "PHP"
     ];
 
     return (
