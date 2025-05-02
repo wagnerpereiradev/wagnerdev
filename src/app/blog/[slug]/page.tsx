@@ -198,7 +198,7 @@ export default function BlogPost() {
                     {/* Botões de compartilhamento */}
                     <div className="mt-12 border-t border-neutral-800 pt-8">
                         <ShareButtons
-                            url={`https://wagnerpearson.dev/blog/${post.slug}`}
+                            url={`https://wagnerdev.vercel.app/blog/${post.slug}`}
                             title={post.headline}
                             summary={post.summary}
                         />
