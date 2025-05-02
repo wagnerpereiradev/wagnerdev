@@ -103,13 +103,13 @@ export default function Hero() {
                 <div className="absolute inset-0 bg-gradient-to-b from-black via-black/30 to-black z-10"></div>
 
                 {/* Efeito de ruído avançado */}
-                <div className="absolute inset-0 opacity-10 mix-blend-overlay bg-[url('/images/noise-pattern.svg')] z-10"></div>
+                <div className="absolute inset-0 opacity-100 mix-blend-overlay bg-[url('/images/noise-pattern.svg')] z-10"></div>
 
                 {/* Gradiente com a cor principal */}
                 <div className="absolute inset-0 bg-[#3d43dd]/15 mix-blend-color-dodge z-10"></div>
 
                 {/* Malha geométrica sutil */}
-                <div className="absolute inset-0 opacity-20 mix-blend-overlay bg-[url('/images/grid-pattern.svg')] z-10"></div>
+                <div className="absolute inset-0 opacity-50 bg-[url('/images/grid-pattern.svg')] z-10"></div>
 
                 {/* Vídeo de fundo com filtros aprimorados - usando loading="lazy" e preload="none" */}
                 <iframe

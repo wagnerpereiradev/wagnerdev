@@ -1,87 +1,189 @@
 'use client';
 
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
+import Link from 'next/link';
+import { usePathname, useRouter } from 'next/navigation';
 
 export default function Navbar() {
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [activeSection, setActiveSection] = useState('hero');
     const [hoveredItem, setHoveredItem] = useState<string | null>(null);
+    const pathname = usePathname();
+    const router = useRouter();
 
-    // Memoize menu items para evitar recriações em cada render
+    // Referência para rastrear se o usuário clicou em "Início" recentemente
+    const homeClickedRef = useRef<boolean>(false);
+    const homeClickTimerRef = useRef<NodeJS.Timeout | null>(null);
+
+    const isBlogPage = pathname.startsWith('/blog');
+
+    // Ajuste nos itens de menu para melhor lidar com a navegação entre páginas
     const menuItems = useMemo(() => [
-        { name: 'Início', href: '#', id: 'hero' },
-        { name: 'Perfil', href: '#profile', id: 'profile' },
-        { name: 'Projetos', href: '#projects', id: 'projects' },
-    ], []);
+        { name: 'Início', href: isBlogPage ? '/' : '#', id: 'hero', isHomePage: true },
+        { name: 'Perfil', href: isBlogPage ? '/#profile' : '#profile', id: 'profile' },
+        { name: 'Projetos', href: isBlogPage ? '/#projects' : '#projects', id: 'projects' },
+        { name: 'Blog', href: '/blog', id: 'blog', isExternalPage: true },
+    ], [isBlogPage]);
 
     // Usar useCallback para funções que não precisam ser recriadas em cada render
+    // Criar referência para armazenar o tempo da última verificação
+    const lastCalculationTimeRef = useRef<number>(0);
+
     const handleScroll = useCallback(() => {
-        // Ajusta a transparência com base na rolagem
-        if (window.scrollY > 10) {
-            setIsScrolled(true);
-        } else {
-            setIsScrolled(false);
-        }
+        // Não rastrear seções ativas quando estiver na página do blog
+        if (isBlogPage) return;
 
-        // Detecta a seção ativa com base na posição da rolagem
-        const sections = ['hero', 'profile', 'projects', 'contact'];
-        const sectionPositions = sections.map(id => {
-            const element = document.getElementById(id);
-            if (!element) return null;
-            return {
-                id,
-                top: element.offsetTop - 100,
-                bottom: element.offsetTop + element.offsetHeight - 100
-            };
-        }).filter(Boolean);
-
-        const currentPosition = window.scrollY + window.innerHeight / 3;
-
-        for (const section of sectionPositions) {
-            if (section && currentPosition >= section.top && currentPosition <= section.bottom) {
-                setActiveSection(section.id);
-                break;
+        // Ajusta a transparência com base na rolagem - usando requestAnimationFrame para otimização
+        const updateScrollState = () => {
+            if (window.scrollY > 10) {
+                if (!isScrolled) {
+                    setIsScrolled(true);
+                }
+            } else {
+                if (isScrolled) {
+                    setIsScrolled(false);
+                }
             }
-        }
-    }, []);
+
+            // Se o usuário acabou de clicar em "Início", não mudar a seção ativa
+            if (homeClickedRef.current) {
+                // Forçar a seção ativa para ser 'hero'
+                if (activeSection !== 'hero') {
+                    setActiveSection('hero');
+                }
+                return;
+            }
+
+            // Detecta a seção ativa com base na posição da rolagem
+            // Limitando a busca apenas a cada 200ms para melhorar performance
+            const now = Date.now();
+            if (!lastCalculationTimeRef.current || now - lastCalculationTimeRef.current > 200) {
+                lastCalculationTimeRef.current = now;
+
+                // Se estiver no topo da página, defina a seção como 'hero'
+                if (window.scrollY < 100) {
+                    setActiveSection('hero');
+                    return;
+                }
+
+                const sections = ['hero', 'profile', 'projects', 'contact'];
+                const sectionPositions = sections.map(id => {
+                    const element = document.getElementById(id);
+                    if (!element) return null;
+                    return {
+                        id,
+                        top: element.offsetTop - 100,
+                        bottom: element.offsetTop + element.offsetHeight - 100
+                    };
+                }).filter(Boolean);
+
+                const currentPosition = window.scrollY + window.innerHeight / 3;
+
+                for (const section of sectionPositions) {
+                    if (section && currentPosition >= section.top && currentPosition <= section.bottom) {
+                        setActiveSection(section.id);
+                        break;
+                    }
+                }
+            }
+        };
+
+        // Usando requestAnimationFrame para melhor performance
+        window.requestAnimationFrame(updateScrollState);
+    }, [isBlogPage, isScrolled, activeSection, homeClickedRef]);
 
     const toggleMenu = useCallback(() => {
         setIsMenuOpen(prev => !prev);
     }, []);
 
-    // Função melhorada para navegação suave tanto em desktop quanto em mobile
-    const handleNavigation = useCallback((e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
-        e.preventDefault(); // Prevenir comportamento padrão para controlar a navegação
-        setActiveSection(id);
-        setIsMenuOpen(false);
+    // Função melhorada para navegação
+    const handleNavigation = useCallback((e: React.MouseEvent<HTMLAnchorElement>, id: string, href: string) => {
+        // Forçar a atualização do estado ativo imediatamente
+        if (!isBlogPage && (id === 'hero' || href === '#')) {
+            e.preventDefault();
+            setActiveSection('hero');
+            setIsMenuOpen(false);
 
-        // Navegação suave opcional para melhorar a experiência
-        const targetId = e.currentTarget.getAttribute('href')?.replace('#', '');
+            // Marcar que o usuário clicou em "Início" e configurar um timer
+            homeClickedRef.current = true;
 
-        // Se targetId estiver vazio, rolar para o topo da página
-        if (targetId === '') {
+            // Limpar qualquer timer existente
+            if (homeClickTimerRef.current) {
+                clearTimeout(homeClickTimerRef.current);
+            }
+
+            // Definir um novo timer (manter o bloqueio por 1.5 segundos)
+            homeClickTimerRef.current = setTimeout(() => {
+                homeClickedRef.current = false;
+            }, 1500);
+
+            // Rolar para o topo suavemente
             window.scrollTo({
                 top: 0,
                 behavior: 'smooth'
             });
-        } else if (targetId) {
-            const element = document.getElementById(targetId);
-            if (element) {
-                setTimeout(() => {
-                    element.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }, 10);
+
+            return;
+        }
+
+        // Se estiver na página do blog e quiser ir para uma seção da página inicial
+        if (isBlogPage && !href.startsWith('/blog')) {
+            // Se for apenas para a página inicial sem âncora
+            if (href === '/' || href === '') {
+                // Deixe o comportamento padrão do link
+                return;
+            }
+
+            // Se for para uma âncora específica na página inicial (#profile, #projects)
+            if (href.includes('#')) {
+                // Não impeça o comportamento padrão para links com âncoras na página inicial
+                return;
             }
         }
-    }, []);
+
+        // Se não estiver na página do blog (ou seja, na página inicial)
+        if (!isBlogPage) {
+            e.preventDefault(); // Prevenir o comportamento padrão
+
+            // Atualizar a seção ativa imediatamente, sem esperar pelo scroll
+            setActiveSection(id);
+            setIsMenuOpen(false);
+
+            // Navegação suave para âncoras na mesma página
+            const targetId = href.replace('#', '');
+
+            // Se targetId estiver vazio, rolar para o topo da página
+            if (targetId === '') {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+                setActiveSection('hero');
+            } else {
+                const element = document.getElementById(targetId);
+                if (element) {
+                    setTimeout(() => {
+                        element.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }, 10);
+                }
+            }
+        }
+    }, [isBlogPage]);
 
     // Função especial para o botão de contato
     const handleContactClick = useCallback((e: React.MouseEvent<HTMLAnchorElement>) => {
+        if (isBlogPage) {
+            // Se estiver na página do blog, redirecione para a página inicial com âncora #contact
+            router.push('/#contact');
+            return;
+        }
+
         e.preventDefault();
         setActiveSection('contact');
         setIsMenuOpen(false);
@@ -95,22 +197,59 @@ export default function Navbar() {
                 });
             }, 10);
         }
-    }, []);
+    }, [isBlogPage, router]);
+
+    // Determinar qual item deve estar ativo
+    const isItemActive = useCallback((item: { id: string, isExternalPage?: boolean, isHomePage?: boolean }) => {
+        // Se estiver na página do blog, apenas o item "Blog" deve estar ativo
+        if (isBlogPage) {
+            return item.id === 'blog';
+        }
+
+        // Para o item Home/Início, verificar se estamos no topo ou se foi explicitamente selecionado
+        if (item.isHomePage) {
+            // Início fica ativo se for a seção atual (hero)
+            return activeSection === 'hero';
+        }
+
+        // Na página inicial, o item correspondente à seção atual deve estar ativo
+        return activeSection === item.id;
+    }, [isBlogPage, activeSection]);
 
     useEffect(() => {
-        window.addEventListener('scroll', handleScroll);
+        if (!isBlogPage) {
+            window.addEventListener('scroll', handleScroll);
+            // Inicializar com a posição atual
+            handleScroll();
 
-        // Inicializar com a posição atual
-        handleScroll();
+            return () => {
+                window.removeEventListener('scroll', handleScroll);
+            };
+        }
+    }, [handleScroll, isBlogPage]);
 
-        return () => {
-            window.removeEventListener('scroll', handleScroll);
-        };
-    }, [handleScroll]);
+    // Efeito para detectar a mudança de seção via URL hash quando a página carrega
+    useEffect(() => {
+        // Se não estiver na página de blog
+        if (!isBlogPage) {
+            // Verificar se há um hash na URL
+            const hash = window.location.hash;
+            if (hash) {
+                const id = hash.replace('#', '');
+                const validSections = ['hero', 'profile', 'projects', 'contact'];
+                if (validSections.includes(id)) {
+                    setActiveSection(id);
+                }
+            } else {
+                // Se não houver hash, definir a seção ativa como 'hero'
+                setActiveSection('hero');
+            }
+        }
+    }, [isBlogPage]);
 
     return (
         <header
-            className={`fixed top-0 w-full z-50 transition-all duration-500 ${isScrolled
+            className={`fixed top-0 w-full z-50 transition-all duration-500 ${isScrolled || isBlogPage
                 ? 'bg-neutral-950/80 backdrop-blur-md py-3'
                 : 'bg-transparent py-6'
                 }`}
@@ -163,7 +302,6 @@ export default function Navbar() {
                                 transition={{
                                     duration: 3 + i,
                                     repeat: Infinity,
-                                    delay: i * 0.7,
                                 }}
                             />
                         );
@@ -173,10 +311,30 @@ export default function Navbar() {
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                 <div className="flex justify-between items-center">
-                    <a
-                        href="#"
+                    <Link
+                        href="/"
                         className="flex items-center group"
-                        onClick={(e) => handleNavigation(e, 'hero')}
+                        onClick={(e) => {
+                            if (!isBlogPage) {
+                                e.preventDefault();
+                                setActiveSection('hero');
+                                // Marcar que o usuário clicou para ir ao início
+                                homeClickedRef.current = true;
+                                // Limpar timer existente
+                                if (homeClickTimerRef.current) {
+                                    clearTimeout(homeClickTimerRef.current);
+                                }
+                                // Configurar novo timer
+                                homeClickTimerRef.current = setTimeout(() => {
+                                    homeClickedRef.current = false;
+                                }, 1500);
+                                // Rolar para o topo
+                                window.scrollTo({
+                                    top: 0,
+                                    behavior: 'smooth'
+                                });
+                            }
+                        }}
                     >
                         <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#3d43dd] to-[#6366f1] p-0.5 flex items-center justify-center mr-2 group-hover:shadow-lg group-hover:shadow-[#3d43dd]/20 transition-all duration-300 overflow-hidden">
                             <div className="w-full h-full rounded-lg overflow-hidden relative">
@@ -195,50 +353,88 @@ export default function Navbar() {
                             </span>
                             <span className="text-xs text-neutral-400 tracking-wider">DESENVOLVEDOR</span>
                         </div>
-                    </a>
+                    </Link>
 
                     {/* Desktop Navigation */}
                     <nav className="hidden md:flex items-center space-x-1">
                         {menuItems.map((item) => (
-                            <a
-                                key={item.id}
-                                href={item.href}
-                                onClick={(e) => handleNavigation(e, item.id)}
-                                onMouseEnter={() => setHoveredItem(item.id)}
-                                onMouseLeave={() => setHoveredItem(null)}
-                                className={`relative px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${activeSection === item.id
-                                    ? 'text-white'
-                                    : 'text-neutral-400 hover:text-white'
-                                    }`}
-                            >
-                                {item.name}
-                                {activeSection === item.id && (
-                                    <motion.div
-                                        layoutId="activeSection"
-                                        className="absolute inset-0 bg-gradient-to-br from-[#3d43dd]/20 to-[#6366f1]/10 rounded-lg -z-10"
-                                        initial={{ opacity: 0 }}
-                                        animate={{ opacity: 1 }}
-                                        transition={{ duration: 0.2 }}
-                                    />
-                                )}
-                                {hoveredItem === item.id && activeSection !== item.id && (
-                                    <motion.div
-                                        className="absolute inset-0 bg-white/5 rounded-lg -z-10"
-                                        initial={{ opacity: 0 }}
-                                        animate={{ opacity: 1 }}
-                                        exit={{ opacity: 0 }}
-                                        transition={{ duration: 0.2 }}
-                                    />
-                                )}
-                            </a>
+                            item.isExternalPage ? (
+                                <Link
+                                    key={item.id}
+                                    href={item.href}
+                                    className={`relative px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 
+                                        ${isItemActive(item) ? 'text-white' : 'text-neutral-400 hover:text-white'}`}
+                                    onMouseEnter={() => setHoveredItem(item.id)}
+                                    onMouseLeave={() => setHoveredItem(null)}
+                                >
+                                    {item.name}
+                                    {isItemActive(item) && (
+                                        <motion.div
+                                            layoutId="activeSection"
+                                            className="absolute inset-0 bg-gradient-to-br from-[#3d43dd]/20 to-[#6366f1]/10 rounded-lg -z-10"
+                                            initial={{ opacity: 0 }}
+                                            animate={{ opacity: 1 }}
+                                            transition={{ duration: 0.2 }}
+                                        />
+                                    )}
+                                    {hoveredItem === item.id && !isItemActive(item) && (
+                                        <motion.div
+                                            className="absolute inset-0 bg-white/5 rounded-lg -z-10"
+                                            initial={{ opacity: 0 }}
+                                            animate={{ opacity: 1 }}
+                                            exit={{ opacity: 0 }}
+                                            transition={{ duration: 0.2 }}
+                                        />
+                                    )}
+                                </Link>
+                            ) : (
+                                <Link
+                                    key={item.id}
+                                    href={item.href}
+                                    onClick={(e) => handleNavigation(e, item.id, item.href)}
+                                    onMouseEnter={() => setHoveredItem(item.id)}
+                                    onMouseLeave={() => setHoveredItem(null)}
+                                    className={`relative px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 
+                                        ${isItemActive(item) ? 'text-white' : 'text-neutral-400 hover:text-white'}`}
+                                >
+                                    {item.name}
+                                    {isItemActive(item) && (
+                                        <motion.div
+                                            layoutId="activeSection"
+                                            className="absolute inset-0 bg-gradient-to-br from-[#3d43dd]/20 to-[#6366f1]/10 rounded-lg -z-10"
+                                            initial={{ opacity: 0 }}
+                                            animate={{ opacity: 1 }}
+                                            transition={{ duration: 0.2 }}
+                                        />
+                                    )}
+                                    {hoveredItem === item.id && !isItemActive(item) && (
+                                        <motion.div
+                                            className="absolute inset-0 bg-white/5 rounded-lg -z-10"
+                                            initial={{ opacity: 0 }}
+                                            animate={{ opacity: 1 }}
+                                            exit={{ opacity: 0 }}
+                                            transition={{ duration: 0.2 }}
+                                        />
+                                    )}
+                                </Link>
+                            )
                         ))}
-                        <a
-                            href="#contact"
-                            onClick={handleContactClick}
-                            className="ml-4 px-5 py-2 bg-gradient-to-r from-[#3d43dd] to-[#6366f1] text-white rounded-lg text-sm font-medium hover:shadow-lg hover:shadow-[#3d43dd]/20 transition-all duration-300"
-                        >
-                            Contato
-                        </a>
+                        {isBlogPage ? (
+                            <Link
+                                href="/#contact"
+                                className="ml-4 px-5 py-2 bg-gradient-to-r from-[#3d43dd] to-[#6366f1] text-white rounded-lg text-sm font-medium hover:shadow-lg hover:shadow-[#3d43dd]/20 transition-all duration-300"
+                            >
+                                Contato
+                            </Link>
+                        ) : (
+                            <a
+                                href="#contact"
+                                onClick={handleContactClick}
+                                className="ml-4 px-5 py-2 bg-gradient-to-r from-[#3d43dd] to-[#6366f1] text-white rounded-lg text-sm font-medium hover:shadow-lg hover:shadow-[#3d43dd]/20 transition-all duration-300"
+                            >
+                                Contato
+                            </a>
+                        )}
                     </nav>
 
                     {/* Mobile menu button */}
@@ -276,7 +472,7 @@ export default function Navbar() {
                 </div>
             </div>
 
-            {/* Mobile menu - usando AnimatePresence para garantir animações suaves */}
+            {/* Mobile menu */}
             <AnimatePresence>
                 {isMenuOpen && (
                     <motion.div
@@ -296,61 +492,82 @@ export default function Navbar() {
                             <div className="px-4 py-2 relative z-10">
                                 <nav className="flex flex-col space-y-2 py-4">
                                     {menuItems.map((item) => (
-                                        <motion.a
+                                        <Link
                                             key={item.id}
                                             href={item.href}
-                                            className={`px-4 py-3 rounded-lg transition-all duration-200 ${activeSection === item.id
-                                                ? 'bg-gradient-to-r from-[#3d43dd]/20 to-[#6366f1]/10 text-white'
-                                                : 'text-neutral-300 hover:text-white hover:bg-white/5'
+                                            className={`px-4 py-3 rounded-lg transition-all duration-200 
+                                                ${isItemActive(item)
+                                                    ? 'bg-gradient-to-r from-[#3d43dd]/20 to-[#6366f1]/10 text-white'
+                                                    : 'text-neutral-300 hover:text-white hover:bg-white/5'
                                                 }`}
                                             onClick={(e) => {
-                                                e.preventDefault();
-                                                setActiveSection(item.id);
-                                                setIsMenuOpen(false);
+                                                if (item.isHomePage && !isBlogPage) {
+                                                    e.preventDefault();
+                                                    setIsMenuOpen(false);
+                                                    setActiveSection('hero');
 
-                                                // Código especial para o link "Início"
-                                                if (item.id === 'hero') {
-                                                    console.log('Clicou em Início, rolando para o topo');
-                                                    // Usar setTimeout para garantir que o menu feche primeiro
-                                                    setTimeout(() => {
-                                                        window.scrollTo({
-                                                            top: 0,
-                                                            behavior: 'smooth'
-                                                        });
-                                                    }, 100);
+                                                    // Marcar que o usuário clicou em "Início"
+                                                    homeClickedRef.current = true;
+
+                                                    // Limpar timer existente
+                                                    if (homeClickTimerRef.current) {
+                                                        clearTimeout(homeClickTimerRef.current);
+                                                    }
+
+                                                    // Configurar novo timer
+                                                    homeClickTimerRef.current = setTimeout(() => {
+                                                        homeClickedRef.current = false;
+                                                    }, 1500);
+
+                                                    window.scrollTo({
+                                                        top: 0,
+                                                        behavior: 'smooth'
+                                                    });
                                                 } else {
-                                                    // Para outros links, manter o comportamento atual
-                                                    const element = document.getElementById(item.id);
-                                                    if (element) {
-                                                        setTimeout(() => {
-                                                            element.scrollIntoView({
-                                                                behavior: 'smooth',
-                                                                block: 'start'
-                                                            });
-                                                        }, 100);
+                                                    setIsMenuOpen(false);
+                                                    if (!isBlogPage && !item.isExternalPage) {
+                                                        e.preventDefault();
+                                                        setActiveSection(item.id);
+                                                        const targetSection = document.getElementById(item.id);
+                                                        if (targetSection) {
+                                                            setTimeout(() => {
+                                                                targetSection.scrollIntoView({
+                                                                    behavior: 'smooth',
+                                                                    block: 'start'
+                                                                });
+                                                            }, 100);
+                                                        }
                                                     }
                                                 }
                                             }}
-                                            initial={{ opacity: 0, x: -10 }}
-                                            animate={{ opacity: 1, x: 0 }}
-                                            transition={{ duration: 0.2, delay: 0.1 * (menuItems.indexOf(item) + 1) }}
                                         >
                                             <div className="flex items-center">
-                                                <div className={`w-1 h-1 rounded-full ${activeSection === item.id ? 'bg-[#3d43dd]' : 'bg-neutral-600'} mr-2`}></div>
+                                                <div className={`w-1 h-1 rounded-full ${isItemActive(item) ? 'bg-[#3d43dd]' : 'bg-neutral-600'} mr-2`}></div>
                                                 {item.name}
                                             </div>
-                                        </motion.a>
+                                        </Link>
                                     ))}
-                                    <motion.a
-                                        href="#contact"
+
+                                    <Link
+                                        href={isBlogPage ? '/#contact' : '#contact'}
                                         className="mt-2 px-4 py-3 bg-gradient-to-r from-[#3d43dd] to-[#6366f1] text-white rounded-lg font-medium flex items-center justify-center shadow-lg shadow-[#3d43dd]/10"
-                                        onClick={handleContactClick}
-                                        initial={{ opacity: 0, y: 10 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        transition={{ duration: 0.3, delay: 0.3 }}
+                                        onClick={() => {
+                                            setIsMenuOpen(false);
+                                            if (!isBlogPage) {
+                                                const contactSection = document.getElementById('contact');
+                                                if (contactSection) {
+                                                    setTimeout(() => {
+                                                        contactSection.scrollIntoView({
+                                                            behavior: 'smooth',
+                                                            block: 'start'
+                                                        });
+                                                    }, 100);
+                                                }
+                                            }
+                                        }}
                                     >
                                         Contato
-                                    </motion.a>
+                                    </Link>
                                 </nav>
                             </div>
                         </div>
@@ -359,4 +576,4 @@ export default function Navbar() {
             </AnimatePresence>
         </header>
     );
-} 
+}

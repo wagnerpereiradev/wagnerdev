@@ -149,7 +149,7 @@ export default function Projects() {
             {/* Fundo aprimorado com gradientes e efeitos */}
             <div className="absolute inset-0">
                 <div className="absolute inset-0 bg-gradient-to-b from-neutral-950 via-black to-neutral-950">
-                    <div className="absolute inset-0 opacity-30 mix-blend-overlay bg-[url('/images/grid-pattern.svg')]"></div>
+                    <div className="absolute inset-0 opacity-50 bg-[url('/images/grid-pattern.svg')]"></div>
                 </div>
                 <div className="absolute inset-0 bg-gradient-to-r from-[#3d43dd]/5 via-transparent to-[#3d43dd]/5"></div>
 
@@ -378,7 +378,7 @@ export default function Projects() {
                                     ></div>
 
                                     {/* Padrão decorativo */}
-                                    <div className="absolute inset-0 opacity-5 mix-blend-overlay bg-[url('/images/grid-pattern.svg')] bg-repeat"></div>
+                                    <div className="absolute inset-0 opacity-10 bg-[url('/images/grid-pattern.svg')] bg-repeat"></div>
 
                                     <div className="relative flex flex-col gap-8 p-8 z-10 h-full">
                                         {/* Cabeçalho do projeto com logo e título */}
@@ -737,7 +737,7 @@ export default function Projects() {
                     <div className="absolute top-1/2 transform -translate-y-1/2 right-0 w-32 h-32 rounded-full bg-[#3d43dd]/5 blur-[100px]"></div>
 
                     <div className="relative inline-flex flex-col items-center p-8 md:p-10 rounded-3xl bg-gradient-to-b from-black/60 to-black/80 backdrop-blur-md border border-[#3d43dd]/20 shadow-[0_0_50px_rgba(61,67,221,0.1)]">
-                        <div className="absolute inset-0 bg-[url('/images/grid-pattern.svg')] opacity-10 mix-blend-overlay rounded-3xl"></div>
+                        <div className="absolute inset-0 bg-[url('/images/grid-pattern.svg')] opacity-25 rounded-3xl"></div>
 
                         <motion.div
                             className="w-16 h-16 mb-6 relative"

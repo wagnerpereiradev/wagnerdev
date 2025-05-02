@@ -80,7 +80,7 @@ export default function Footer() {
             <div className="absolute inset-0 z-0">
                 {/* Gradiente de fundo estilo Apple */}
                 <div className="absolute inset-0 bg-gradient-to-b from-neutral-950 to-black">
-                    <div className="absolute inset-0 opacity-20 mix-blend-overlay bg-[url('/images/grid-pattern.svg')]"></div>
+                    <div className="absolute inset-0 opacity-50 bg-[url('/images/grid-pattern.svg')]"></div>
                 </div>
 
                 {/* Camada de gradientes sutis */}

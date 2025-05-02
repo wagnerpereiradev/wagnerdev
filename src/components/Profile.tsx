@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { useEffect, useState, useRef, useCallback } from 'react';
+import { useEffect, useState, useRef, useCallback, useMemo } from 'react';
 
 export default function Profile() {
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -20,9 +20,20 @@ export default function Profile() {
 
     // Efeito para rastrear a posição do mouse - otimizado com useCallback
     const mouseMove = useCallback((e: MouseEvent) => {
-        setMousePosition({
-            x: e.clientX,
-            y: e.clientY
+        // Throttle para limitar atualizações excessivas
+        if (!window.requestAnimationFrame) {
+            setMousePosition({
+                x: e.clientX,
+                y: e.clientY
+            });
+            return;
+        }
+
+        window.requestAnimationFrame(() => {
+            setMousePosition({
+                x: e.clientX,
+                y: e.clientY
+            });
         });
     }, []);
 
@@ -152,7 +163,8 @@ export default function Profile() {
         },
     ];
 
-    const technologies = [
+    // Otimização das tecnologias com useMemo
+    const technologies = useMemo(() => [
         { name: 'Next.js', logo: 'https://images.ctfassets.net/23aumh6u8s0i/6pjUKboBuFLvCKkE3esaFA/5f2101d6d2add5c615db5e98a553fc44/nextjs.jpeg' },
         { name: 'TypeScript', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Typescript_logo_2020.svg/2048px-Typescript_logo_2020.svg.png' },
         { name: 'Tailwind CSS', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Tailwind_CSS_Logo.svg/2560px-Tailwind_CSS_Logo.svg.png' },
@@ -170,7 +182,7 @@ export default function Profile() {
         { name: 'Vercel', logo: 'https://registry.npmmirror.com/@lobehub/icons-static-png/latest/files/dark/vercel.png' },
         { name: 'GitHub', logo: 'https://img.icons8.com/ios11/512/FFFFFF/github.png' },
         { name: 'PNPM', logo: 'https://static-00.iconduck.com/assets.00/file-type-light-pnpm-icon-2048x2048-5ykb4rad.png' },
-    ];
+    ], []);
 
     return (
         <section id="profile"
@@ -187,7 +199,7 @@ export default function Profile() {
             {/* Fundo com gradiente refinado */}
             <div className="absolute inset-0">
                 <div className="absolute inset-0 bg-gradient-to-b from-neutral-950 via-black to-black">
-                    <div className="absolute inset-0 opacity-30 mix-blend-overlay bg-[url('/images/grid-pattern.svg')]"></div>
+                    <div className="absolute inset-0 opacity-50 bg-[url('/images/grid-pattern.svg')]"></div>
                 </div>
                 <div className="absolute inset-0 bg-gradient-to-r from-[#3d43dd]/5 via-transparent to-[#3d43dd]/5"></div>
                 <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#3d43dd]/20 to-transparent"></div>
@@ -628,6 +640,9 @@ export default function Profile() {
                                                     width={36}
                                                     height={36}
                                                     className="object-contain max-h-10"
+                                                    style={{ width: "auto", height: "auto" }}
+                                                    loading="lazy"
+                                                    sizes="36px"
                                                 />
                                             </div>
                                             <p className="text-xs font-medium text-neutral-300 text-center relative z-10">{tech.name}</p>
@@ -661,6 +676,9 @@ export default function Profile() {
                                                     width={36}
                                                     height={36}
                                                     className="object-contain max-h-10"
+                                                    style={{ width: "auto", height: "auto" }}
+                                                    loading="lazy"
+                                                    sizes="36px"
                                                 />
                                             </div>
                                             <p className="text-xs font-medium text-neutral-300 text-center relative z-10">{tech.name}</p>
@@ -705,6 +723,9 @@ export default function Profile() {
                                                     width={50}
                                                     height={50}
                                                     className="object-contain max-h-16 group-hover:scale-110 transition-transform"
+                                                    style={{ width: "auto", height: "auto" }}
+                                                    loading="lazy"
+                                                    sizes="50px"
                                                 />
                                             </div>
                                             <p className="text-sm font-medium text-neutral-300 group-hover:text-white transition-colors text-center relative z-10">{tech.name}</p>
@@ -746,6 +767,9 @@ export default function Profile() {
                                                     width={50}
                                                     height={50}
                                                     className="object-contain max-h-16 group-hover:scale-110 transition-transform"
+                                                    style={{ width: "auto", height: "auto" }}
+                                                    loading="lazy"
+                                                    sizes="50px"
                                                 />
                                             </div>
                                             <p className="text-sm font-medium text-neutral-300 group-hover:text-white transition-colors text-center relative z-10">{tech.name}</p>
@@ -757,9 +781,9 @@ export default function Profile() {
 
                         {/* Simplificando indicadores de deslizamento */}
                         <div className="mt-8 flex justify-center gap-1">
-                            <div className="w-12 h-1 bg-[#3d43dd]/50 rounded-full"></div>
-                            <div className="w-12 h-1 bg-[#3d43dd]/30 rounded-full"></div>
-                            <div className="w-12 h-1 bg-[#3d43dd]/30 rounded-full"></div>
+                            <div className="w-12 h-1 bg-[rgba(61,67,221,0.5)] rounded-full"></div>
+                            <div className="w-12 h-1 bg-[rgba(61,67,221,0.3)] rounded-full"></div>
+                            <div className="w-12 h-1 bg-[rgba(61,67,221,0.3)] rounded-full"></div>
                         </div>
                     </div>
                 </motion.div>

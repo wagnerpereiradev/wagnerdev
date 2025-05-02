@@ -33,6 +33,7 @@ export default function Contact() {
     const [hoveredItem, setHoveredItem] = useState<number | null>(null);
     const [activeTab, setActiveTab] = useState<'social' | 'form'>('social');
     const [isOpening, setIsOpening] = useState<boolean>(false);
+    const [progress, setProgress] = useState<number>(0);
     const [formStatus, setFormStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
     const [isMobile, setIsMobile] = useState(false);
     const [formData, setFormData] = useState({
@@ -156,23 +157,43 @@ export default function Contact() {
 
     useEffect(() => {
         let timer: NodeJS.Timeout;
+        let progressInterval: NodeJS.Timeout;
+
         if (hoveredItem && !isOpening) {
-            timer = setInterval(() => {
+            // Timer para abrir após 3 segundos
+            timer = setTimeout(() => {
                 setIsOpening(true);
-            }, 300);
+            }, 3000);
+
+            // Intervalo para atualizar o progresso a cada 30ms (100 passos em 3 segundos)
+            progressInterval = setInterval(() => {
+                setProgress(prev => {
+                    const newProgress = prev + 1;
+                    return newProgress > 100 ? 100 : newProgress;
+                });
+            }, 30);
         } else if (!hoveredItem) {
             setIsOpening(false);
+            setProgress(0); // Resetar o progresso quando não houver item com hover
         }
-        return () => clearInterval(timer);
+
+        return () => {
+            clearTimeout(timer);
+            clearInterval(progressInterval);
+        };
     }, [hoveredItem, isOpening]);
 
     useEffect(() => {
         if (isOpening && hoveredItem) {
             const item = contactInfo.find(i => i.id === hoveredItem);
             if (item) {
-                window.open(item.url, '_blank');
-                setIsOpening(false);
-                setHoveredItem(null);
+                // Adicionar um pequeno delay antes de abrir realmente a página
+                // para que a animação de conclusão seja visível
+                setTimeout(() => {
+                    window.open(item.url, '_blank');
+                    setIsOpening(false);
+                    setHoveredItem(null);
+                }, 200);
             }
         }
     }, [isOpening, hoveredItem, contactInfo]);
@@ -238,7 +259,7 @@ export default function Contact() {
             {/* Fundo com gradiente mais escuro */}
             <div className="absolute inset-0">
                 <div className="absolute inset-0 bg-gradient-to-b from-black via-black to-neutral-950">
-                    <div className="absolute inset-0 opacity-20 mix-blend-overlay bg-[url('/images/grid-pattern.svg')]"></div>
+                    <div className="absolute inset-0 opacity-50 bg-[url('/images/grid-pattern.svg')]"></div>
                 </div>
                 <div className="absolute inset-0 bg-gradient-to-r from-[#3d43dd]/3 via-transparent to-[#3d43dd]/3"></div>
                 <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#3d43dd]/15 to-transparent"></div>
@@ -365,6 +386,51 @@ export default function Contact() {
                                         onMouseEnter={() => !isMobile && setHoveredItem(item.id)}
                                         onMouseLeave={() => !isMobile && setHoveredItem(null)}
                                     >
+                                        {/* Indicador de progresso circular */}
+                                        {hoveredItem === item.id && (progress > 0 || isOpening) && (
+                                            <div className="absolute top-3 right-3 w-6 h-6">
+                                                <svg className="w-6 h-6 transform -rotate-90" viewBox="0 0 36 36">
+                                                    <circle
+                                                        cx="18"
+                                                        cy="18"
+                                                        r="16"
+                                                        fill="none"
+                                                        className="stroke-neutral-700"
+                                                        strokeWidth="3"
+                                                    />
+                                                    <circle
+                                                        cx="18"
+                                                        cy="18"
+                                                        r="16"
+                                                        fill="none"
+                                                        stroke={item.color}
+                                                        className={`transition-all duration-100 ease-linear ${isOpening ? 'opacity-70 animate-pulse' : ''}`}
+                                                        strokeWidth="3"
+                                                        strokeDasharray={`${2 * Math.PI * 16}`}
+                                                        strokeDashoffset={isOpening ? '0' : `${2 * Math.PI * 16 * (1 - progress / 100)}`}
+                                                        strokeLinecap="round"
+                                                    />
+                                                </svg>
+                                                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-xs font-medium text-white">
+                                                    {isOpening ? (
+                                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" viewBox="0 0 20 20" fill="currentColor">
+                                                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                                                        </svg>
+                                                    ) : Math.round(3 - (progress / 100 * 3))}
+                                                </div>
+                                            </div>
+                                        )}
+
+                                        {/* Dica textual para segurar o cursor */}
+                                        {hoveredItem === item.id && progress > 0 && progress < 100 && (
+                                            <div className="absolute bottom-3 right-3 left-3 text-center">
+                                                <div className="px-2 py-1 bg-black/40 backdrop-blur-sm rounded-md text-xs text-neutral-300 animate-fadeIn">
+                                                    Mantenha o cursor ou<br></br>
+                                                    clique para abrir
+                                                </div>
+                                            </div>
+                                        )}
+
                                         {/* Conteúdo ultra simplificado */}
                                         <div className="p-6 flex flex-col h-full">
                                             {/* Ícone, elegante e clean */}
@@ -715,6 +781,14 @@ export default function Contact() {
                     .animate-gradient {
                         background-size: 200% 200%;
                         animation: gradient 3s ease infinite;
+                    }
+                    
+                    @keyframes fadeIn {
+                        from {opacity: 0;}
+                        to {opacity: 1;}
+                    }
+                    .animate-fadeIn {
+                        animation: fadeIn 0.3s ease-in-out;
                     }
                 `}</style>
             </div>
