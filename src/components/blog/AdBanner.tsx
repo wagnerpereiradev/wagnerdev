@@ -337,4 +337,4 @@ export default function AdBanner({ ad, className = '', featured = false }: AdBan
             </motion.div>
         </div>
     );
-} 
+}

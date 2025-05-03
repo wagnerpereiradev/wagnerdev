@@ -160,9 +160,9 @@ export default function AdContainer({
         const progress = (remainingTime / rotationInterval) * 100;
 
         return (
-            <div className={`relative ${className}`} style={{ position: 'relative' }}>
+            <div className={`relative ${className}`}>
                 {/* Animação de transição entre anúncios */}
-                <AnimatePresence mode="sync" initial={false}>
+                <AnimatePresence mode="wait" initial={false}>
                     <motion.div
                         key={currentAdIndex}
                         initial={{
