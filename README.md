@@ -145,6 +145,33 @@ Este projeto está licenciado sob a Licença MIT - veja o arquivo [LICENSE.md](L
 - **LinkedIn**: [linkedin.com/in/owrp](https://linkedin.com/in/owrp)
 - **GitHub**: [github.com/wagnerpereiradev](https://github.com/wagnerpereiradev)
 
+## Favicon
+
+Para gerar os favicons em diferentes tamanhos, você pode usar ferramentas online como:
+
+1. [RealFaviconGenerator](https://realfavicongenerator.net/)
+2. [Favicon.io](https://favicon.io/)
+
+Ou use ferramentas como ImageMagick para converter manualmente:
+
+```bash
+# Instalar ImageMagick (se necessário)
+# macOS
+brew install imagemagick
+
+# Linux
+sudo apt-get install imagemagick
+
+# Gerar os ícones a partir de uma imagem de alta resolução (pelo menos 512x512)
+convert original-icon.png -resize 16x16 public/favicon-16x16.png
+convert original-icon.png -resize 32x32 public/favicon-32x32.png
+convert original-icon.png -resize 180x180 public/apple-touch-icon.png
+convert original-icon.png -resize 192x192 public/android-chrome-192x192.png
+convert original-icon.png -resize 512x512 public/android-chrome-512x512.png
+```
+
+Certifique-se de que todos os arquivos estejam na pasta `public/` para que sejam acessíveis na raiz do site.
+
 ---
 
 ⭐ Desenvolvido por Wagner Pereira | Full Stack Developer & UX/UI Designer
