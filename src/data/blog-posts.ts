@@ -72,6 +72,7 @@ export const blogPosts: BlogPost[] = [
             twitter: "https://x.com/wagnerdvlpr",
             instagram: "https://instagram.com/wagnerai.me",
         },
+        ads: ['wagnerdev', 'perrin'],
         body: [
             {
                 type: "markdown",
