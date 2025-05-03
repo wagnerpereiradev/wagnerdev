@@ -24,7 +24,7 @@ export const blogPosts: BlogPost[] = [
             github: "https://github.com/wagnerpereiradev",
             twitter: "https://twitter.com"
         },
-        ads: ['perrin'],
+        ads: ['wagnerdev', 'perrin'],
         body: [
             {
                 type: "markdown",

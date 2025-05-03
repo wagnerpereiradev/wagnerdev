@@ -80,7 +80,7 @@ export default function AdBanner({ ad, className = '', featured = false }: AdBan
             // Efeito de glow específico para hexadecimal
             if (ad.effects?.glow) {
                 glowStyle = {
-                    boxShadow: `0 0 15px 2px ${hexToRGBA(hexColor, 0.4)}`
+                    boxShadow: `0 0 50px ${hexToRGBA(hexColor, 0.3)}`
                 };
             }
         } else {
@@ -181,10 +181,10 @@ export default function AdBanner({ ad, className = '', featured = false }: AdBan
             >
                 {/* Container com gradiente sutil */}
                 <div
-                    className="rounded-2xl overflow-hidden"
+                    className="overflow-hidden rounded-2xl"
                 >
                     {/* Container principal - design mais flat */}
-                    <div style={gradientStyle} className="backdrop-blur-sm rounded-2xl">
+                    <div style={gradientStyle} className="backdrop-blur-sm rounded-xl">
                         {/* Layout para mobile e desktop */}
                         <div className="flex flex-row items-stretch h-full rounded-xl">
                             {/* Imagem do anúncio - container com altura completa */}

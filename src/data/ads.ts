@@ -14,13 +14,38 @@ export const ads: Ad[] = [
         link: 'https://www.youtube.com/@perrinxisz',
         theme: '#ff0000', // Vermelho do YouTube
         position: 'in-content',
-        featured: true,
+        featured: false,
         priority: 10,
         icon: '🎥',
         tags: ['youtube', 'gaming', 'live'],
         effects: {
             pulse: false,
             glow: false,
+            hover: 'none'
+        },
+        stats: {
+            impressions: 15420,
+            clicks: 2354,
+            conversionRate: 15.3
+        }
+    },
+    {
+        id: 'wagnerdev',
+        title: 'Anuncie no meu blog!',
+        description: 'Quer divulgar seu produto ou serviço? Anuncie no meu blog!',
+        imageUrl: 'https://pbs.twimg.com/profile_banners/1866218067161763840/1743262647/600x200',
+        alt: 'Anuncie no meu blog!',
+        cta: 'Anuncie',
+        link: 'https://wagnerai.me/#contact',
+        theme: '#3d43dd',
+        position: 'in-content',
+        featured: true,
+        priority: 10,
+        icon: 'by Creator',
+        tags: ['marketing', 'ads', 'blog'],
+        effects: {
+            pulse: false,
+            glow: true,
             hover: 'none'
         },
         stats: {
