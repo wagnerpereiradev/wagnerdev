@@ -53,7 +53,7 @@ export default function ClientBlogPost({ slug }: ClientBlogPostProps) {
                         width={1200}
                         height={628}
                         className="w-full h-full object-cover"
-                        style={{ width: '100%', height: 'auto' }}
+                        style={{ width: '100%', height: '100%' }}
                         quality={85}
                         priority={true}
                         sizes="(max-width: 768px) 100vw, (max-width: 1024px) 90vw, 1200px"

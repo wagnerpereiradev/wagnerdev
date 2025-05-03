@@ -22,6 +22,7 @@ export interface SocialLinks {
     github?: string;
     twitter?: string;
     website?: string;
+    instagram?: string;
 }
 
 export interface MarkdownBlock {

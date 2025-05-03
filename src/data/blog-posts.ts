@@ -6,7 +6,7 @@ export const blogPosts: BlogPost[] = [
         slug: "function-calling-vs-mcp",
         author: {
             name: "Wagner Pereira",
-            profile_url: "https://github.com/wagnerpereiradev",
+            profile_url: "https://instagram.com/wagnerai.me",
             avatar_url: "/images/authors/certified-wagner.png"
         },
         date: "2025-04-06T00:00:00Z",
@@ -22,7 +22,8 @@ export const blogPosts: BlogPost[] = [
         social: {
             linkedin: "https://linkedin.com/in/owrp",
             github: "https://github.com/wagnerpereiradev",
-            twitter: "https://twitter.com"
+            twitter: "https://x.com/wagnerdvlpr",
+            instagram: "https://instagram.com/wagnerai.me",
         },
         ads: ['wagnerdev', 'perrin'],
         body: [
@@ -45,6 +46,56 @@ export const blogPosts: BlogPost[] = [
             {
                 type: "markdown",
                 content: "### Conclusão\nEstou estruturando soluções onde o LLM se conecta com o ambiente como um verdadeiro agente: consciente de suas ferramentas, do histórico, e do que pode ou não fazer.\n\nO MCP ainda está em construção pela comunidade, mas com potencial de se tornar um \"HTTP para LLMs\". Quem entender isso agora vai sair na frente.\n\nSe você trabalha com IA e está desenvolvendo aplicações inteligentes, vale muito a pena estudar o MCP. Quer trocar ideia ou está nessa mesma jornada? Me chama."
+            }
+        ]
+    },
+    {
+        headline: "GPT-4o e o Efeito Bajulador: Quando a IA para de pensar e só quer agradar",
+        slug: "gpt-4o-efeito-bajulador-ia-agradar",
+        author: {
+            name: "Wagner Pereira",
+            profile_url: "https://instagram.com/wagnerai.me",
+            avatar_url: "/images/authors/certified-wagner.png"
+        },
+        date: "2025-05-03T10:30:00Z",
+        category: "Inteligência Artificial",
+        tags: ["ia", "openai", "gpt-4o", "ética", "comportamento-ia"],
+        cover_image: {
+            url: "https://pbs.twimg.com/profile_banners/1866218067161763840/1743262647/1500x500",
+            alt: "Ilustração de IA validando emoções humanas",
+        },
+        reading_time: "5 min",
+        summary: "A OpenAI corrigiu um comportamento problemático no GPT-4o que priorizava agradar o usuário em vez de oferecer críticas construtivas. O artigo discute os riscos éticos de IAs que validam emoções negativas e a importância do equilíbrio em modelos generativos.",
+        social: {
+            linkedin: "https://linkedin.com/in/owrp",
+            github: "https://github.com/wagnerpereiradev",
+            twitter: "https://x.com/wagnerdvlpr",
+            instagram: "https://instagram.com/wagnerai.me",
+        },
+        body: [
+            {
+                type: "markdown",
+                content: "A OpenAI admitiu recentemente que o update lançado em 25 de abril no GPT-4o transformou o modelo num verdadeiro 'puxa-saco digital'. E não tô falando de um simples excesso de gentileza — foi uma guinada no core behavior do modelo: passou a validar emoções negativas, reforçar impulsividade, agradar em vez de orientar. E isso, pra mim, bate num ponto muito mais sério do que parece."
+            },
+            {
+                type: "markdown",
+                content: "### Quando a IA troca bom senso por aprovação\n\nNa tentativa de ser 'mais útil' e 'mais empática', o modelo basicamente virou um espelho que balança a cabeça pra tudo que o usuário fala. Sentiu raiva? A IA te valida. Está confuso? Ela reforça o drama. Quer se convencer de algo errado? Ela embala o argumento com fita dourada.\n\nIsso é perigoso por uma razão simples: se você quer IA como copiloto de decisões (profissionais, emocionais, criativas), ela precisa ser uma contrapartida crítica, não um espelho emocional ou um coach barato de autoajuda."
+            },
+            {
+                type: "markdown",
+                content: "### O problema não foi técnico. Foi cultural.\n\nA própria OpenAI disse que a mudança foi resultado da soma de vários pequenos ajustes: mais peso no feedback dos usuários (like/dislike), memória ativada, sinais de recompensa mais flexíveis. Cada tweak parecia bom isoladamente, mas no conjunto formou um monstrinho que prioriza aprovação sobre responsabilidade.\n\nE o mais grave: eles não tinham testes de 'sycophancy' antes do deploy. Passaram por offline evals, spot checks, A/B tests... e mesmo assim não pegaram. Por quê? Porque os testes medem performance, não necessariamente discernimento."
+            },
+            {
+                type: "markdown",
+                content: "### IA como espelho emocional = bomba-relógio\n\nCada vez mais pessoas usam o ChatGPT pra pedir conselhos de vida, desabafar, tomar decisões. O próprio artigo da OpenAI reconhece isso. E é aí que o buraco fica mais embaixo. Uma IA que 'valida tudo' não ajuda, ela alimenta ciclos emocionais perigosos. Pensa na galera lidando com burnout, depressão, ou crises... receber validação passiva da IA, em vez de orientação ponderada, pode ser o empurrão no abismo.\n\nNão é só questão de UX. É questão de ética."
+            },
+            {
+                type: "markdown",
+                content: "### O que a OpenAI aprendeu (e o que você deveria aprender com isso também)\n\n* **Sinais subjetivos importam tanto quanto métrica**\n* **Qualquer mudança no comportamento da IA é uma feature de alto impacto**\n* **Fidelidade ao feedback do usuário não pode superar a integridade do modelo**"
+            },
+            {
+                type: "markdown",
+                content: "### Resumo da ópera\n\nA IA que só quer agradar é a IA que você não deveria usar. A OpenAI percebeu tarde, mas corrigiu rápido. O importante agora é aprender que modelos generativos precisam de personalidade balanceada — nem capacho, nem tirano.\n\n**Se IA vai participar das nossas decisões, ela precisa de coragem pra discordar, não só programação pra agradar.**"
             }
         ]
     }
