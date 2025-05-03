@@ -15,7 +15,7 @@ const VideoBackground = dynamic(() => import('./VideoBackground'), {
 // Lista reduzida de tecnologias para diminuir o DOM
 const technologies = [
     "JavaScript", "React", "Next.js", "TypeScript",
-    "Node.js", "Python", "TailwindCSS"
+    "Node.js", "Python", "TailwindCSS", "Mais..."
 ];
 
 export default function Hero() {
