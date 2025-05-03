@@ -207,7 +207,7 @@ export default function AdBanner({ ad, className = '', featured = false }: AdBan
                             <div className="flex-1 flex flex-col justify-center p-2 pr-3 sm:p-3 md:py-3 md:pr-4">
                                 {/* Tag de promoção e título em linha para mobile */}
                                 <div>
-                                    <div className="flex items-center mb-0.5 sm:mb-1 gap-2">
+                                    <div className="flex flex-col items-start mb-0.5 sm:mb-1 gap-2 sm:flex-row sm:items-center">
                                         <motion.span
                                             className="text-[8px] sm:text-[9px] md:text-[10px] uppercase tracking-wider text-neutral-400 px-1.5 py-0.5 rounded-full bg-neutral-800/50 inline-block"
                                             animate={{ opacity: [0.7, 1, 0.7] }}
@@ -220,14 +220,16 @@ export default function AdBanner({ ad, className = '', featured = false }: AdBan
                                             Ad
                                         </motion.span>
 
-                                        {/* Ícone (se fornecido) */}
-                                        {ad.icon && (
-                                            <span className="text-xs mr-1">{ad.icon}</span>
-                                        )}
+                                        <div className="flex items-center gap-2 w-full">
+                                            {/* Ícone (se fornecido) */}
+                                            {ad.icon && (
+                                                <span className="text-xs mr-1">{ad.icon}</span>
+                                            )}
 
-                                        <h3 className="text-sm sm:text-base md:text-lg font-medium text-white line-clamp-1 group-hover:text-white/90 transition-colors">
-                                            {ad.title}
-                                        </h3>
+                                            <h3 className="text-sm sm:text-base md:text-lg font-medium text-white line-clamp-1 group-hover:text-white/90 transition-colors">
+                                                {ad.title}
+                                            </h3>
+                                        </div>
                                     </div>
                                     <p className="text-neutral-300 text-[10px] sm:text-xs leading-tight sm:leading-relaxed line-clamp-1 sm:line-clamp-2 group-hover:text-neutral-200 transition-colors">
                                         {ad.description}
@@ -326,7 +328,7 @@ export default function AdBanner({ ad, className = '', featured = false }: AdBan
                 )}
 
                 {/* Efeito de marca d'água sutil com ID no canto */}
-                <div className="absolute bottom-1 right-1.5 text-[8px] text-white/20 pointer-events-none select-none">
+                <div className="absolute bottom-1 right-2 text-[8px] text-white/20 pointer-events-none select-none">
                     {ad.id}
                 </div>
 
