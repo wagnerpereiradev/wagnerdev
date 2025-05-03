@@ -1,6 +1,7 @@
 import { Geist_Mono as GeistMono, Geist as GeistSans } from 'next/font/google';
 import './globals.css';
 import type { Metadata, Viewport } from 'next';
+import Script from 'next/script';
 
 // Configuração das fontes
 const geistSans = GeistSans({
@@ -93,6 +94,20 @@ export default function RootLayout({
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+
+        {/* Google Analytics */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-XRTG4BZY8F"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XRTG4BZY8F');
+          `}
+        </Script>
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} font-sans antialiased bg-neutral-950 text-neutral-100`}
