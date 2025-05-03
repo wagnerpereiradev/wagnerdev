@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, Suspense } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import Image from 'next/image';
 import { TypeAnimation } from 'react-type-animation';
@@ -24,6 +24,12 @@ export default function Hero() {
     const y = useTransform(scrollY, [0, 500], [0, -150]);
     const opacity = useTransform(scrollY, [0, 300], [1, 0]);
     const [isMobile, setIsMobile] = useState(false);
+    const [isClient, setIsClient] = useState(false);
+
+    // Detectar lado do cliente
+    useEffect(() => {
+        setIsClient(true);
+    }, []);
 
     // Detectar dispositivo móvel
     useEffect(() => {
@@ -50,11 +56,19 @@ export default function Hero() {
                 {/* Overlay com gradiente simplificado */}
                 <div className="absolute inset-0 bg-gradient-to-b from-black via-black/30 to-black z-10"></div>
 
-                {/* Efeito de ruído - com preload no layout principal */}
-                <div className="absolute inset-0 opacity-100 mix-blend-overlay bg-[url('/images/noise-pattern.svg')] z-10"></div>
+                {/* Efeito de grade e ruído com renderização constante */}
+                <div className="absolute inset-0 opacity-50 bg-[url('/images/grid-pattern.svg')] z-10"></div>
+                <div className="absolute inset-0 mix-blend-overlay bg-[url('/images/noise-pattern.svg')] z-10"></div>
+
+                {/* Efeito de cor para adicionar consistência entre servidor e cliente */}
+                <div className="absolute inset-0 bg-[#3d43dd]/15 mix-blend-color-dodge z-10"></div>
 
                 {/* Background estático para mobile, vídeo apenas para desktop */}
-                {!isMobile && <VideoBackground />}
+                {isClient && !isMobile && (
+                    <Suspense fallback={null}>
+                        <VideoBackground />
+                    </Suspense>
+                )}
             </div>
 
             {/* Conteúdo principal otimizado */}

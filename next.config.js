@@ -10,14 +10,23 @@ const nextConfig = {
         protocol: 'https',
         hostname: '**',
       },
+      // Adicionando os domínios específicos como remotePatterns em vez de 'domains'
+      {
+        protocol: 'https',
+        hostname: 'i.ytimg.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'img.youtube.com',
+      },
     ],
     // Configurações de otimização de imagem
     formats: ['image/avif', 'image/webp'],
     minimumCacheTTL: 60,
     dangerouslyAllowSVG: true,
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
-    // Otimização de imagens do YouTube para thumbnails
-    domains: ['i.ytimg.com', 'img.youtube.com'],
+    // A propriedade 'domains' foi removida pois está depreciada
+    // Use 'remotePatterns' em vez disso
   },
   // Otimização de cache para melhorar performance
   poweredByHeader: false,
@@ -54,10 +63,11 @@ const nextConfig = {
     serverMinification: true,
     // Permitir módulos ESM para bibliotecas modernas
     serverSourceMaps: false,
-    // Adicionar compressão de strings longas
-    staticGenerationAsyncStorage: true,
-    // Otimizar ainda mais páginas estáticas
-    instrumentationHook: true,
+
+    // Nota: As seguintes propriedades foram removidas pois não são mais necessárias 
+    // ou são inválidas na versão atual do Next.js:
+    // - 'staticGenerationAsyncStorage': não é mais uma opção válida
+    // - 'instrumentationHook': não é mais necessário, agora 'instrumentation.js' está disponível por padrão
   },
   // Configuração de headers para melhorar caching e performance
   async headers() {

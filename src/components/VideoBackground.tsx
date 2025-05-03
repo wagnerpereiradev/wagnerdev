@@ -1,8 +1,9 @@
 'use client';
 
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect, useState, memo } from 'react';
 
-export default function VideoBackground() {
+// Utilizando memo para evitar re-renderizações desnecessárias
+const VideoBackground = memo(function VideoBackground() {
     const videoRef = useRef<HTMLVideoElement>(null);
     const [isVisible, setIsVisible] = useState(false);
     const [isMobile, setIsMobile] = useState(false);
@@ -72,12 +73,17 @@ export default function VideoBackground() {
     // Reproduz o vídeo quando estiver visível
     useEffect(() => {
         if (videoRef.current && isVisible) {
-            const playPromise = videoRef.current.play();
+            // Utilizando setTimeout para garantir que o play seja chamado após a renderização completa
+            const timer = setTimeout(() => {
+                const playPromise = videoRef.current?.play();
 
-            // Tratando erro silenciosamente para evitar console errors
-            if (playPromise !== undefined) {
-                playPromise.catch(() => { });
-            }
+                // Tratando erro silenciosamente para evitar console errors
+                if (playPromise !== undefined) {
+                    playPromise.catch(() => { });
+                }
+            }, 100);
+
+            return () => clearTimeout(timer);
         }
     }, [isVisible]);
 
@@ -120,4 +126,6 @@ export default function VideoBackground() {
             </video>
         </div>
     );
-} 
+});
+
+export default VideoBackground; 

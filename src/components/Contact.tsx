@@ -187,30 +187,34 @@ export default function Contact() {
     }, [hoveredItem, isOpening]);
 
     useEffect(() => {
-        if (isOpening && hoveredItem) {
+        if (isOpening && hoveredItem && typeof window !== 'undefined') {
             const item = contactInfo.find(i => i.id === hoveredItem);
             if (item) {
                 // Adicionar um pequeno delay antes de abrir realmente a página
                 // para que a animação de conclusão seja visível
-                setTimeout(() => {
+                const timer = setTimeout(() => {
                     window.open(item.url, '_blank');
                     setIsOpening(false);
                     setHoveredItem(null);
                 }, 200);
+
+                return () => clearTimeout(timer);
             }
         }
     }, [isOpening, hoveredItem, contactInfo]);
 
     // Detectar dispositivo móvel no lado do cliente
     useEffect(() => {
-        setIsMobile(window.innerWidth < 768);
-
-        const handleResize = () => {
+        if (typeof window !== 'undefined') {
             setIsMobile(window.innerWidth < 768);
-        };
 
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
+            const handleResize = () => {
+                setIsMobile(window.innerWidth < 768);
+            };
+
+            window.addEventListener('resize', handleResize);
+            return () => window.removeEventListener('resize', handleResize);
+        }
     }, []);
 
     // Form handlers
@@ -376,255 +380,257 @@ export default function Contact() {
                 </div>
 
                 {/* Content Container */}
-                <AnimatePresence mode="wait">
-                    {/* Redes Sociais - Estilo Apple, moderno e clean */}
-                    {activeTab === 'social' && (
-                        <motion.div
-                            key="social"
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: -20 }}
-                            transition={{ duration: 0.3 }}
-                            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 max-w-5xl mx-auto"
-                        >
-                            {/* Cards de redes sociais ultra minimalistas */}
-                            {contactInfo.map((item) => (
-                                <motion.div
-                                    key={item.id}
-                                    initial={{ opacity: 0, y: 20 }}
-                                    whileInView={{ opacity: 1, y: 0 }}
-                                    viewport={{ once: true }}
-                                    transition={{ duration: 0.5, delay: 0.2 + item.id * 0.1 }}
-                                    className="h-full"
-                                >
-                                    <a
-                                        href={item.url}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="block h-full w-full relative rounded-xl bg-neutral-900/40 backdrop-blur-sm border border-neutral-800/50 group hover:border-[#3d43dd]/30 transition-all duration-300"
-                                        onMouseEnter={() => !isMobile && setHoveredItem(item.id)}
-                                        onMouseLeave={() => !isMobile && setHoveredItem(null)}
+                <div style={{ position: 'relative' }}>
+                    <AnimatePresence mode="sync">
+                        {/* Redes Sociais - Estilo Apple, moderno e clean */}
+                        {activeTab === 'social' && (
+                            <motion.div
+                                key="social"
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -20 }}
+                                transition={{ duration: 0.3 }}
+                                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 max-w-5xl mx-auto"
+                            >
+                                {/* Cards de redes sociais ultra minimalistas */}
+                                {contactInfo.map((item) => (
+                                    <motion.div
+                                        key={item.id}
+                                        initial={{ opacity: 0, y: 20 }}
+                                        whileInView={{ opacity: 1, y: 0 }}
+                                        viewport={{ once: true }}
+                                        transition={{ duration: 0.5, delay: 0.2 + item.id * 0.1 }}
+                                        className="h-full"
                                     >
-                                        {/* Indicador de progresso circular */}
-                                        {hoveredItem === item.id && (progress > 0 || isOpening) && (
-                                            <div className="absolute top-3 right-3 w-6 h-6">
-                                                <svg className="w-6 h-6 transform -rotate-90" viewBox="0 0 36 36">
-                                                    <circle
-                                                        cx="18"
-                                                        cy="18"
-                                                        r="16"
-                                                        fill="none"
-                                                        className="stroke-neutral-700"
-                                                        strokeWidth="3"
+                                        <a
+                                            href={item.url}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="block h-full w-full relative rounded-xl bg-neutral-900/40 backdrop-blur-sm border border-neutral-800/50 group hover:border-[#3d43dd]/30 transition-all duration-300"
+                                            onMouseEnter={() => setHoveredItem(item.id)}
+                                            onMouseLeave={() => setHoveredItem(null)}
+                                        >
+                                            {/* Indicador de progresso circular */}
+                                            {hoveredItem === item.id && (progress > 0 || isOpening) && (
+                                                <div className="absolute top-3 right-3 w-6 h-6">
+                                                    <svg className="w-6 h-6 transform -rotate-90" viewBox="0 0 36 36">
+                                                        <circle
+                                                            cx="18"
+                                                            cy="18"
+                                                            r="16"
+                                                            fill="none"
+                                                            className="stroke-neutral-700"
+                                                            strokeWidth="3"
+                                                        />
+                                                        <circle
+                                                            cx="18"
+                                                            cy="18"
+                                                            r="16"
+                                                            fill="none"
+                                                            stroke={item.color}
+                                                            className={`transition-all duration-100 ease-linear ${isOpening ? 'opacity-70 animate-pulse' : ''}`}
+                                                            strokeWidth="3"
+                                                            strokeDasharray={`${2 * Math.PI * 16}`}
+                                                            strokeDashoffset={isOpening ? '0' : `${2 * Math.PI * 16 * (1 - progress / 100)}`}
+                                                            strokeLinecap="round"
+                                                        />
+                                                    </svg>
+                                                    <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-xs font-medium text-white">
+                                                        {isOpening ? (
+                                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" viewBox="0 0 20 20" fill="currentColor">
+                                                                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                                                            </svg>
+                                                        ) : Math.round(3 - (progress / 100 * 3))}
+                                                    </div>
+                                                </div>
+                                            )}
+
+                                            {/* Dica textual para segurar o cursor */}
+                                            {hoveredItem === item.id && progress > 0 && progress < 100 && (
+                                                <div className="absolute bottom-3 right-3 left-3 text-center">
+                                                    <div className="px-2 py-1 bg-black/40 backdrop-blur-sm rounded-md text-xs text-neutral-300 animate-fadeIn">
+                                                        Mantenha o cursor ou<br></br>
+                                                        clique para abrir
+                                                    </div>
+                                                </div>
+                                            )}
+
+                                            {/* Conteúdo ultra simplificado */}
+                                            <div className="p-6 flex flex-col h-full">
+                                                {/* Ícone, elegante e clean */}
+                                                <div className={`self-start mb-3 text-white/60 group-hover:text-white transition-colors duration-300`}>
+                                                    {item.icon}
+                                                </div>
+
+                                                {/* Nome da rede em gradiente no hover */}
+                                                <h3 className={`text-xl font-medium mb-1 transition-all duration-300 ${hoveredItem === item.id ? `bg-gradient-to-r ${item.hoverGradient} bg-clip-text text-transparent` : 'text-white'}`}>
+                                                    {item.name}
+                                                </h3>
+
+                                                {/* Username/valor com tamanho reduzido */}
+                                                <p className="text-sm text-neutral-400 mb-4">
+                                                    {item.value}
+                                                </p>
+
+                                                {/* Linha minimalista */}
+                                                <div className="h-px w-12 bg-neutral-800/70 mb-4">
+                                                    <motion.div
+                                                        className={`h-px bg-gradient-to-r ${item.gradient} w-0 group-hover:w-full transition-all duration-300`}
                                                     />
-                                                    <circle
-                                                        cx="18"
-                                                        cy="18"
-                                                        r="16"
-                                                        fill="none"
-                                                        stroke={item.color}
-                                                        className={`transition-all duration-100 ease-linear ${isOpening ? 'opacity-70 animate-pulse' : ''}`}
-                                                        strokeWidth="3"
-                                                        strokeDasharray={`${2 * Math.PI * 16}`}
-                                                        strokeDashoffset={isOpening ? '0' : `${2 * Math.PI * 16 * (1 - progress / 100)}`}
-                                                        strokeLinecap="round"
-                                                    />
-                                                </svg>
-                                                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-xs font-medium text-white">
-                                                    {isOpening ? (
-                                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" viewBox="0 0 20 20" fill="currentColor">
-                                                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                                                </div>
+
+                                                {/* Seta indicativa com animação sutil */}
+                                                <div className="mt-auto flex justify-end">
+                                                    <motion.div
+                                                        className="text-neutral-500 group-hover:text-white transition-colors duration-300"
+                                                        animate={hoveredItem === item.id ? { x: [0, 5, 0] } : {}}
+                                                        transition={{ duration: 2, repeat: Infinity, repeatType: "reverse" }}
+                                                    >
+                                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                                            <path fillRule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
                                                         </svg>
-                                                    ) : Math.round(3 - (progress / 100 * 3))}
+                                                    </motion.div>
                                                 </div>
                                             </div>
-                                        )}
+                                        </a>
+                                    </motion.div>
+                                ))}
+                            </motion.div>
+                        )}
 
-                                        {/* Dica textual para segurar o cursor */}
-                                        {hoveredItem === item.id && progress > 0 && progress < 100 && (
-                                            <div className="absolute bottom-3 right-3 left-3 text-center">
-                                                <div className="px-2 py-1 bg-black/40 backdrop-blur-sm rounded-md text-xs text-neutral-300 animate-fadeIn">
-                                                    Mantenha o cursor ou<br></br>
-                                                    clique para abrir
-                                                </div>
-                                            </div>
-                                        )}
-
-                                        {/* Conteúdo ultra simplificado */}
-                                        <div className="p-6 flex flex-col h-full">
-                                            {/* Ícone, elegante e clean */}
-                                            <div className={`self-start mb-3 text-white/60 group-hover:text-white transition-colors duration-300`}>
-                                                {item.icon}
-                                            </div>
-
-                                            {/* Nome da rede em gradiente no hover */}
-                                            <h3 className={`text-xl font-medium mb-1 transition-all duration-300 ${hoveredItem === item.id ? `bg-gradient-to-r ${item.hoverGradient} bg-clip-text text-transparent` : 'text-white'}`}>
-                                                {item.name}
-                                            </h3>
-
-                                            {/* Username/valor com tamanho reduzido */}
-                                            <p className="text-sm text-neutral-400 mb-4">
-                                                {item.value}
-                                            </p>
-
-                                            {/* Linha minimalista */}
-                                            <div className="h-px w-12 bg-neutral-800/70 mb-4">
-                                                <motion.div
-                                                    className={`h-px bg-gradient-to-r ${item.gradient} w-0 group-hover:w-full transition-all duration-300`}
+                        {/* Formulário - Estilo Apple clean */}
+                        {activeTab === 'form' && (
+                            <motion.div
+                                key="form"
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -20 }}
+                                transition={{ duration: 0.3 }}
+                                className="max-w-2xl mx-auto"
+                            >
+                                <div className="bg-neutral-900/30 backdrop-blur-xl rounded-3xl p-8 sm:p-10 border border-white/5 shadow-xl">
+                                    <motion.form
+                                        ref={formRef}
+                                        onSubmit={handleFormSubmit}
+                                        className="space-y-6"
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }}
+                                        transition={{ delay: 0.2 }}
+                                    >
+                                        <div className="space-y-5">
+                                            <div>
+                                                <label htmlFor="name" className="block text-sm font-medium text-neutral-300 mb-2">
+                                                    Nome
+                                                </label>
+                                                <input
+                                                    type="text"
+                                                    id="name"
+                                                    name="name"
+                                                    value={formData.name}
+                                                    onChange={handleInputChange}
+                                                    className="w-full px-4 py-3 bg-neutral-800/30 backdrop-blur-sm rounded-xl border border-white/5 text-white focus:border-[#3d43dd]/50 focus:ring-1 focus:ring-[#3d43dd]/30 transition-colors"
+                                                    placeholder="Seu nome completo"
+                                                    disabled={formStatus === 'submitting'}
                                                 />
                                             </div>
 
-                                            {/* Seta indicativa com animação sutil */}
-                                            <div className="mt-auto flex justify-end">
-                                                <motion.div
-                                                    className="text-neutral-500 group-hover:text-white transition-colors duration-300"
-                                                    animate={hoveredItem === item.id ? { x: [0, 5, 0] } : {}}
-                                                    transition={{ duration: 2, repeat: Infinity, repeatType: "reverse" }}
-                                                >
-                                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                                        <path fillRule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
-                                                    </svg>
-                                                </motion.div>
+                                            <div>
+                                                <label htmlFor="email" className="block text-sm font-medium text-neutral-300 mb-2">
+                                                    Email
+                                                </label>
+                                                <input
+                                                    type="email"
+                                                    id="email"
+                                                    name="email"
+                                                    value={formData.email}
+                                                    onChange={handleInputChange}
+                                                    className="w-full px-4 py-3 bg-neutral-800/30 backdrop-blur-sm rounded-xl border border-white/5 text-white focus:border-[#3d43dd]/50 focus:ring-1 focus:ring-[#3d43dd]/30 transition-colors"
+                                                    placeholder="seu.email@exemplo.com"
+                                                    disabled={formStatus === 'submitting'}
+                                                />
+                                            </div>
+
+                                            <div>
+                                                <label htmlFor="subject" className="block text-sm font-medium text-neutral-300 mb-2">
+                                                    Assunto
+                                                </label>
+                                                <input
+                                                    type="text"
+                                                    id="subject"
+                                                    name="subject"
+                                                    value={formData.subject}
+                                                    onChange={handleInputChange}
+                                                    className="w-full px-4 py-3 bg-neutral-800/30 backdrop-blur-sm rounded-xl border border-white/5 text-white focus:border-[#3d43dd]/50 focus:ring-1 focus:ring-[#3d43dd]/30 transition-colors"
+                                                    placeholder="Assunto do projeto"
+                                                    disabled={formStatus === 'submitting'}
+                                                />
+                                            </div>
+
+                                            <div>
+                                                <label htmlFor="message" className="block text-sm font-medium text-neutral-300 mb-2">
+                                                    Mensagem
+                                                </label>
+                                                <textarea
+                                                    id="message"
+                                                    name="message"
+                                                    value={formData.message}
+                                                    onChange={handleInputChange}
+                                                    rows={5}
+                                                    className="w-full px-4 py-3 bg-neutral-800/30 backdrop-blur-sm rounded-xl border border-white/5 text-white focus:border-[#3d43dd]/50 focus:ring-1 focus:ring-[#3d43dd]/30 transition-colors resize-none"
+                                                    placeholder="Descreva seu projeto ou ideia..."
+                                                    disabled={formStatus === 'submitting'}
+                                                />
                                             </div>
                                         </div>
-                                    </a>
-                                </motion.div>
-                            ))}
-                        </motion.div>
-                    )}
 
-                    {/* Formulário - Estilo Apple clean */}
-                    {activeTab === 'form' && (
-                        <motion.div
-                            key="form"
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: -20 }}
-                            transition={{ duration: 0.3 }}
-                            className="max-w-2xl mx-auto"
-                        >
-                            <div className="bg-neutral-900/30 backdrop-blur-xl rounded-3xl p-8 sm:p-10 border border-white/5 shadow-xl">
-                                <motion.form
-                                    ref={formRef}
-                                    onSubmit={handleFormSubmit}
-                                    className="space-y-6"
-                                    initial={{ opacity: 0 }}
-                                    animate={{ opacity: 1 }}
-                                    transition={{ delay: 0.2 }}
-                                >
-                                    <div className="space-y-5">
-                                        <div>
-                                            <label htmlFor="name" className="block text-sm font-medium text-neutral-300 mb-2">
-                                                Nome
-                                            </label>
-                                            <input
-                                                type="text"
-                                                id="name"
-                                                name="name"
-                                                value={formData.name}
-                                                onChange={handleInputChange}
-                                                className="w-full px-4 py-3 bg-neutral-800/30 backdrop-blur-sm rounded-xl border border-white/5 text-white focus:border-[#3d43dd]/50 focus:ring-1 focus:ring-[#3d43dd]/30 transition-colors"
-                                                placeholder="Seu nome completo"
+                                        <div className="pt-2">
+                                            <motion.button
+                                                type="submit"
                                                 disabled={formStatus === 'submitting'}
-                                            />
+                                                className="w-full relative overflow-hidden"
+                                                whileHover={{ scale: 1.01 }}
+                                                whileTap={{ scale: 0.99 }}
+                                            >
+                                                <div className={`inline-flex items-center justify-center w-full px-6 py-3.5 ${formStatus === 'success' ? 'bg-green-600' : formStatus === 'error' ? 'bg-red-600' : 'bg-gradient-to-r from-[#3d43dd] to-[#6366f1]'} rounded-xl text-white font-medium shadow-lg transition-all duration-300`}>
+                                                    {formStatus === 'submitting' ? (
+                                                        <>
+                                                            <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                                            </svg>
+                                                            Enviando...
+                                                        </>
+                                                    ) : formStatus === 'success' ? (
+                                                        <>
+                                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                                                                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                                                            </svg>
+                                                            Mensagem Enviada!
+                                                        </>
+                                                    ) : formStatus === 'error' ? (
+                                                        <>
+                                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                                                                <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                                                            </svg>
+                                                            Erro ao enviar
+                                                        </>
+                                                    ) : (
+                                                        <>
+                                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                                                                <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
+                                                            </svg>
+                                                            Enviar Mensagem
+                                                        </>
+                                                    )}
+                                                </div>
+                                            </motion.button>
                                         </div>
-
-                                        <div>
-                                            <label htmlFor="email" className="block text-sm font-medium text-neutral-300 mb-2">
-                                                Email
-                                            </label>
-                                            <input
-                                                type="email"
-                                                id="email"
-                                                name="email"
-                                                value={formData.email}
-                                                onChange={handleInputChange}
-                                                className="w-full px-4 py-3 bg-neutral-800/30 backdrop-blur-sm rounded-xl border border-white/5 text-white focus:border-[#3d43dd]/50 focus:ring-1 focus:ring-[#3d43dd]/30 transition-colors"
-                                                placeholder="seu.email@exemplo.com"
-                                                disabled={formStatus === 'submitting'}
-                                            />
-                                        </div>
-
-                                        <div>
-                                            <label htmlFor="subject" className="block text-sm font-medium text-neutral-300 mb-2">
-                                                Assunto
-                                            </label>
-                                            <input
-                                                type="text"
-                                                id="subject"
-                                                name="subject"
-                                                value={formData.subject}
-                                                onChange={handleInputChange}
-                                                className="w-full px-4 py-3 bg-neutral-800/30 backdrop-blur-sm rounded-xl border border-white/5 text-white focus:border-[#3d43dd]/50 focus:ring-1 focus:ring-[#3d43dd]/30 transition-colors"
-                                                placeholder="Assunto do projeto"
-                                                disabled={formStatus === 'submitting'}
-                                            />
-                                        </div>
-
-                                        <div>
-                                            <label htmlFor="message" className="block text-sm font-medium text-neutral-300 mb-2">
-                                                Mensagem
-                                            </label>
-                                            <textarea
-                                                id="message"
-                                                name="message"
-                                                value={formData.message}
-                                                onChange={handleInputChange}
-                                                rows={5}
-                                                className="w-full px-4 py-3 bg-neutral-800/30 backdrop-blur-sm rounded-xl border border-white/5 text-white focus:border-[#3d43dd]/50 focus:ring-1 focus:ring-[#3d43dd]/30 transition-colors resize-none"
-                                                placeholder="Descreva seu projeto ou ideia..."
-                                                disabled={formStatus === 'submitting'}
-                                            />
-                                        </div>
-                                    </div>
-
-                                    <div className="pt-2">
-                                        <motion.button
-                                            type="submit"
-                                            disabled={formStatus === 'submitting'}
-                                            className="w-full relative overflow-hidden"
-                                            whileHover={{ scale: 1.01 }}
-                                            whileTap={{ scale: 0.99 }}
-                                        >
-                                            <div className={`inline-flex items-center justify-center w-full px-6 py-3.5 ${formStatus === 'success' ? 'bg-green-600' : formStatus === 'error' ? 'bg-red-600' : 'bg-gradient-to-r from-[#3d43dd] to-[#6366f1]'} rounded-xl text-white font-medium shadow-lg transition-all duration-300`}>
-                                                {formStatus === 'submitting' ? (
-                                                    <>
-                                                        <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                                        </svg>
-                                                        Enviando...
-                                                    </>
-                                                ) : formStatus === 'success' ? (
-                                                    <>
-                                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                                                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                                                        </svg>
-                                                        Mensagem Enviada!
-                                                    </>
-                                                ) : formStatus === 'error' ? (
-                                                    <>
-                                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                                                            <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-                                                        </svg>
-                                                        Erro ao enviar
-                                                    </>
-                                                ) : (
-                                                    <>
-                                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                                                            <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
-                                                        </svg>
-                                                        Enviar Mensagem
-                                                    </>
-                                                )}
-                                            </div>
-                                        </motion.button>
-                                    </div>
-                                </motion.form>
-                            </div>
-                        </motion.div>
-                    )}
-                </AnimatePresence>
+                                    </motion.form>
+                                </div>
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+                </div>
 
                 {/* Área de call-to-action estilo Apple - APRIMORADA */}
                 <motion.div

@@ -351,377 +351,379 @@ export default function Projects() {
                     </motion.div>
                 )}
 
-                <AnimatePresence>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-                        {filteredProjects.map((project, index) => (
-                            <motion.div
-                                key={project.id}
-                                initial={{ opacity: 0, y: 50 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                exit={{ opacity: 0, y: 30 }}
-                                viewport={{ once: true }}
-                                transition={{
-                                    duration: 0.6,
-                                    delay: index * 0.1,
-                                    ease: [0.22, 1, 0.36, 1]
-                                }}
-                                layout
-                                className="group"
-                            >
-                                <div className="relative bg-neutral-900/50 backdrop-blur-sm rounded-3xl overflow-hidden border border-neutral-800/30 hover:border-neutral-700/50 transition-all duration-500 h-full flex flex-col transform hover:translate-y-[-8px] hover:shadow-2xl hover:shadow-[#3d43dd]/10">
-                                    {/* Gradiente de fundo do card com cor principal do projeto */}
-                                    <div
-                                        className="absolute inset-0 opacity-10 group-hover:opacity-25 transition-opacity duration-500"
-                                        style={{
-                                            background: `radial-gradient(circle at 30% 30%, ${project.primaryColor}, transparent 70%)`
-                                        }}
-                                    ></div>
+                <div style={{ position: 'relative' }}>
+                    <AnimatePresence mode="sync">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                            {filteredProjects.map((project, index) => (
+                                <motion.div
+                                    key={project.id}
+                                    initial={{ opacity: 0, y: 50 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: 30 }}
+                                    viewport={{ once: true }}
+                                    transition={{
+                                        duration: 0.6,
+                                        delay: index * 0.1,
+                                        ease: [0.22, 1, 0.36, 1]
+                                    }}
+                                    layout
+                                    className="group"
+                                >
+                                    <div className="relative bg-neutral-900/50 backdrop-blur-sm rounded-3xl overflow-hidden border border-neutral-800/30 hover:border-neutral-700/50 transition-all duration-500 h-full flex flex-col transform hover:translate-y-[-8px] hover:shadow-2xl hover:shadow-[#3d43dd]/10">
+                                        {/* Gradiente de fundo do card com cor principal do projeto */}
+                                        <div
+                                            className="absolute inset-0 opacity-10 group-hover:opacity-25 transition-opacity duration-500"
+                                            style={{
+                                                background: `radial-gradient(circle at 30% 30%, ${project.primaryColor}, transparent 70%)`
+                                            }}
+                                        ></div>
 
-                                    {/* Padrão decorativo */}
-                                    <div className="absolute inset-0 opacity-10 bg-[url('/images/grid-pattern.svg')] bg-repeat"></div>
+                                        {/* Padrão decorativo */}
+                                        <div className="absolute inset-0 opacity-10 bg-[url('/images/grid-pattern.svg')] bg-repeat"></div>
 
-                                    <div className="relative flex flex-col gap-8 p-8 z-10 h-full">
-                                        {/* Cabeçalho do projeto com logo e título */}
-                                        <div className="flex items-start gap-6">
-                                            {/* Logo */}
-                                            <motion.div
-                                                className="w-16 h-16 md:w-20 md:h-20 relative bg-black/70 rounded-2xl flex items-center justify-center p-3 border border-neutral-800/50 group-hover:border-[#3d43dd]/30 transition-all duration-500 overflow-hidden"
-                                                whileHover={{ scale: 1.05, rotate: [0, -2, 2, 0], transition: { duration: 0.5 } }}
-                                            >
-                                                {project.logo ? (
-                                                    <Image
-                                                        src={project.logo}
-                                                        alt={`${project.title} logo`}
-                                                        fill
-                                                        className="object-contain p-3"
-                                                    />
-                                                ) : (
-                                                    <div className="text-3xl font-bold" style={{ color: project.primaryColor }}>
-                                                        {project.title.charAt(0)}
-                                                    </div>
-                                                )}
-
-                                                {/* Efeito de brilho no logo */}
-                                                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 blur-sm transition-opacity duration-1000 rounded-2xl"
-                                                    style={{
-                                                        backgroundSize: '200% 100%',
-                                                        animation: 'shimmer 2s infinite'
-                                                    }}
-                                                ></div>
-                                            </motion.div>
-
-                                            {/* Título e indicadores */}
-                                            <div className="flex-1">
-                                                <h3 className="text-xl md:text-2xl font-bold mb-2">
-                                                    <span className="bg-gradient-to-r from-white to-neutral-200 bg-clip-text text-transparent">
-                                                        {project.title}
-                                                    </span>
-                                                </h3>
-
-                                                {/* Categoria e ano como badges */}
-                                                <div className="flex items-center flex-wrap gap-2">
-                                                    {project.category && (
-                                                        <span
-                                                            className="px-3 py-1 rounded-full text-xs font-medium inline-flex items-center gap-1.5"
-                                                            style={{ backgroundColor: `${project.primaryColor}30`, color: project.primaryColor }}
-                                                        >
-                                                            <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: project.primaryColor }}></span>
-                                                            {project.category}
-                                                        </span>
+                                        <div className="relative flex flex-col gap-8 p-8 z-10 h-full">
+                                            {/* Cabeçalho do projeto com logo e título */}
+                                            <div className="flex items-start gap-6">
+                                                {/* Logo */}
+                                                <motion.div
+                                                    className="w-16 h-16 md:w-20 md:h-20 relative bg-black/70 rounded-2xl flex items-center justify-center p-3 border border-neutral-800/50 group-hover:border-[#3d43dd]/30 transition-all duration-500 overflow-hidden"
+                                                    whileHover={{ scale: 1.05, rotate: [0, -2, 2, 0], transition: { duration: 0.5 } }}
+                                                >
+                                                    {project.logo ? (
+                                                        <Image
+                                                            src={project.logo}
+                                                            alt={`${project.title} logo`}
+                                                            fill
+                                                            className="object-contain p-3"
+                                                        />
+                                                    ) : (
+                                                        <div className="text-3xl font-bold" style={{ color: project.primaryColor }}>
+                                                            {project.title.charAt(0)}
+                                                        </div>
                                                     )}
-                                                    {project.year && (
-                                                        <span className="px-3 py-1 bg-neutral-800/50 text-neutral-300 rounded-full text-xs inline-flex items-center gap-1.5">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                                                <circle cx="12" cy="12" r="10"></circle>
-                                                                <polyline points="12 6 12 12 16 14"></polyline>
-                                                            </svg>
-                                                            {project.year}
+
+                                                    {/* Efeito de brilho no logo */}
+                                                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 blur-sm transition-opacity duration-1000 rounded-2xl"
+                                                        style={{
+                                                            backgroundSize: '200% 100%',
+                                                            animation: 'shimmer 2s infinite'
+                                                        }}
+                                                    ></div>
+                                                </motion.div>
+
+                                                {/* Título e indicadores */}
+                                                <div className="flex-1">
+                                                    <h3 className="text-xl md:text-2xl font-bold mb-2">
+                                                        <span className="bg-gradient-to-r from-white to-neutral-200 bg-clip-text text-transparent">
+                                                            {project.title}
                                                         </span>
+                                                    </h3>
+
+                                                    {/* Categoria e ano como badges */}
+                                                    <div className="flex items-center flex-wrap gap-2">
+                                                        {project.category && (
+                                                            <span
+                                                                className="px-3 py-1 rounded-full text-xs font-medium inline-flex items-center gap-1.5"
+                                                                style={{ backgroundColor: `${project.primaryColor}30`, color: project.primaryColor }}
+                                                            >
+                                                                <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: project.primaryColor }}></span>
+                                                                {project.category}
+                                                            </span>
+                                                        )}
+                                                        {project.year && (
+                                                            <span className="px-3 py-1 bg-neutral-800/50 text-neutral-300 rounded-full text-xs inline-flex items-center gap-1.5">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                                                    <circle cx="12" cy="12" r="10"></circle>
+                                                                    <polyline points="12 6 12 12 16 14"></polyline>
+                                                                </svg>
+                                                                {project.year}
+                                                            </span>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            {/* Descrição */}
+                                            <p className="text-neutral-300 text-base leading-relaxed">
+                                                {project.description}
+                                            </p>
+
+                                            {/* Stack de Tecnologias */}
+                                            <div className="flex flex-wrap gap-2 mt-auto">
+                                                {project.stack.map((tech, idx) => (
+                                                    <motion.span
+                                                        key={tech}
+                                                        initial={{ opacity: 0, y: 10 }}
+                                                        animate={{ opacity: 1, y: 0 }}
+                                                        transition={{ delay: 0.1 + idx * 0.05 }}
+                                                        className="px-3 py-1 bg-black/60 text-neutral-300 rounded-full text-xs border border-neutral-800/50 hover:border-[#3d43dd]/30 hover:bg-[#3d43dd]/5 transition-colors duration-300"
+                                                        whileHover={{ scale: 1.05, y: -2 }}
+                                                    >
+                                                        {tech}
+                                                    </motion.span>
+                                                ))}
+                                            </div>
+
+                                            {/* Controles e ações */}
+                                            <div className="flex items-center justify-between pt-4 border-t border-neutral-800/30">
+                                                {/* Botão Ver Detalhes */}
+                                                <motion.button
+                                                    onClick={() => toggleProject(project.id)}
+                                                    className="text-sm text-neutral-400 flex items-center gap-1.5 hover:text-white transition-colors group/btn"
+                                                    whileHover={{ scale: 1.02 }}
+                                                    whileTap={{ scale: 0.98 }}
+                                                >
+                                                    <span className="relative">
+                                                        {activeProject === project.id ? 'Ocultar detalhes' : 'Ver detalhes'}
+                                                        <span className="absolute left-0 right-0 bottom-0 h-px bg-neutral-700 scale-x-0 group-hover/btn:scale-x-100 transition-transform duration-300 origin-left"></span>
+                                                    </span>
+                                                    <svg
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        width="16"
+                                                        height="16"
+                                                        viewBox="0 0 24 24"
+                                                        fill="none"
+                                                        stroke="currentColor"
+                                                        strokeWidth="2"
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                        className={`transition-transform duration-300 ${activeProject === project.id ? 'rotate-180' : ''}`}
+                                                    >
+                                                        <polyline points="6 9 12 15 18 9"></polyline>
+                                                    </svg>
+                                                </motion.button>
+
+                                                {/* Links rápidos */}
+                                                <div className="flex gap-2">
+                                                    {project.demoUrl && (
+                                                        <motion.a
+                                                            href={project.demoUrl}
+                                                            target="_blank"
+                                                            rel="noopener noreferrer"
+                                                            className="p-2 rounded-full bg-black/40 border border-neutral-800/50 hover:border-[#3d43dd]/30 hover:bg-[#3d43dd]/5 transition-all duration-300"
+                                                            whileHover={{ scale: 1.1, rotate: 5 }}
+                                                            whileTap={{ scale: 0.9 }}
+                                                            title="Ver demo"
+                                                        >
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-neutral-300">
+                                                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                                                <polyline points="15 3 21 3 21 9"></polyline>
+                                                                <line x1="10" y1="14" x2="21" y2="3"></line>
+                                                            </svg>
+                                                        </motion.a>
+                                                    )}
+
+                                                    {project.repoUrl && (
+                                                        <motion.a
+                                                            href={project.repoUrl}
+                                                            target="_blank"
+                                                            rel="noopener noreferrer"
+                                                            className="p-2 rounded-full bg-black/40 border border-neutral-800/50 hover:border-[#3d43dd]/30 hover:bg-[#3d43dd]/5 transition-all duration-300"
+                                                            whileHover={{ scale: 1.1, rotate: 5 }}
+                                                            whileTap={{ scale: 0.9 }}
+                                                            title="Ver código"
+                                                        >
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-neutral-300">
+                                                                <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+                                                            </svg>
+                                                        </motion.a>
                                                     )}
                                                 </div>
                                             </div>
-                                        </div>
 
-                                        {/* Descrição */}
-                                        <p className="text-neutral-300 text-base leading-relaxed">
-                                            {project.description}
-                                        </p>
-
-                                        {/* Stack de Tecnologias */}
-                                        <div className="flex flex-wrap gap-2 mt-auto">
-                                            {project.stack.map((tech, idx) => (
-                                                <motion.span
-                                                    key={tech}
-                                                    initial={{ opacity: 0, y: 10 }}
-                                                    animate={{ opacity: 1, y: 0 }}
-                                                    transition={{ delay: 0.1 + idx * 0.05 }}
-                                                    className="px-3 py-1 bg-black/60 text-neutral-300 rounded-full text-xs border border-neutral-800/50 hover:border-[#3d43dd]/30 hover:bg-[#3d43dd]/5 transition-colors duration-300"
-                                                    whileHover={{ scale: 1.05, y: -2 }}
-                                                >
-                                                    {tech}
-                                                </motion.span>
-                                            ))}
-                                        </div>
-
-                                        {/* Controles e ações */}
-                                        <div className="flex items-center justify-between pt-4 border-t border-neutral-800/30">
-                                            {/* Botão Ver Detalhes */}
-                                            <motion.button
-                                                onClick={() => toggleProject(project.id)}
-                                                className="text-sm text-neutral-400 flex items-center gap-1.5 hover:text-white transition-colors group/btn"
-                                                whileHover={{ scale: 1.02 }}
-                                                whileTap={{ scale: 0.98 }}
-                                            >
-                                                <span className="relative">
-                                                    {activeProject === project.id ? 'Ocultar detalhes' : 'Ver detalhes'}
-                                                    <span className="absolute left-0 right-0 bottom-0 h-px bg-neutral-700 scale-x-0 group-hover/btn:scale-x-100 transition-transform duration-300 origin-left"></span>
-                                                </span>
-                                                <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    width="16"
-                                                    height="16"
-                                                    viewBox="0 0 24 24"
-                                                    fill="none"
-                                                    stroke="currentColor"
-                                                    strokeWidth="2"
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                    className={`transition-transform duration-300 ${activeProject === project.id ? 'rotate-180' : ''}`}
-                                                >
-                                                    <polyline points="6 9 12 15 18 9"></polyline>
-                                                </svg>
-                                            </motion.button>
-
-                                            {/* Links rápidos */}
-                                            <div className="flex gap-2">
-                                                {project.demoUrl && (
-                                                    <motion.a
-                                                        href={project.demoUrl}
-                                                        target="_blank"
-                                                        rel="noopener noreferrer"
-                                                        className="p-2 rounded-full bg-black/40 border border-neutral-800/50 hover:border-[#3d43dd]/30 hover:bg-[#3d43dd]/5 transition-all duration-300"
-                                                        whileHover={{ scale: 1.1, rotate: 5 }}
-                                                        whileTap={{ scale: 0.9 }}
-                                                        title="Ver demo"
+                                            {/* Detalhes Expandidos com AnimatePresence para transições suaves */}
+                                            <AnimatePresence>
+                                                {activeProject === project.id && (
+                                                    <motion.div
+                                                        initial={{ opacity: 0, height: 0 }}
+                                                        animate={{ opacity: 1, height: 'auto' }}
+                                                        exit={{ opacity: 0, height: 0 }}
+                                                        transition={{ duration: 0.4 }}
+                                                        className="overflow-hidden"
                                                     >
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-neutral-300">
-                                                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                                                            <polyline points="15 3 21 3 21 9"></polyline>
-                                                            <line x1="10" y1="14" x2="21" y2="3"></line>
-                                                        </svg>
-                                                    </motion.a>
-                                                )}
-
-                                                {project.repoUrl && (
-                                                    <motion.a
-                                                        href={project.repoUrl}
-                                                        target="_blank"
-                                                        rel="noopener noreferrer"
-                                                        className="p-2 rounded-full bg-black/40 border border-neutral-800/50 hover:border-[#3d43dd]/30 hover:bg-[#3d43dd]/5 transition-all duration-300"
-                                                        whileHover={{ scale: 1.1, rotate: 5 }}
-                                                        whileTap={{ scale: 0.9 }}
-                                                        title="Ver código"
-                                                    >
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-neutral-300">
-                                                            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
-                                                        </svg>
-                                                    </motion.a>
-                                                )}
-                                            </div>
-                                        </div>
-
-                                        {/* Detalhes Expandidos com AnimatePresence para transições suaves */}
-                                        <AnimatePresence>
-                                            {activeProject === project.id && (
-                                                <motion.div
-                                                    initial={{ opacity: 0, height: 0 }}
-                                                    animate={{ opacity: 1, height: 'auto' }}
-                                                    exit={{ opacity: 0, height: 0 }}
-                                                    transition={{ duration: 0.4 }}
-                                                    className="overflow-hidden"
-                                                >
-                                                    <div
-                                                        className="space-y-6 rounded-2xl p-6 border border-neutral-800/50 mt-6"
-                                                        style={{
-                                                            background: `linear-gradient(145deg, rgba(0,0,0,0.7), rgba(0,0,0,0.9))`,
-                                                            boxShadow: `0 0 30px ${project.primaryColor}15 inset`
-                                                        }}
-                                                    >
-                                                        {/* Linha decorativa no topo */}
-                                                        <div className="h-px w-full bg-gradient-to-r from-transparent via-[#3d43dd]/30 to-transparent mb-6"></div>
-
-                                                        {project.stackDetails && (
-                                                            <motion.div
-                                                                initial={{ opacity: 0, y: 10 }}
-                                                                animate={{ opacity: 1, y: 0 }}
-                                                                transition={{ delay: 0.1 }}
-                                                                className="relative"
-                                                            >
-                                                                {/* Elemento decorativo */}
-                                                                <div className="absolute -left-3 top-0 h-full w-px bg-gradient-to-b from-transparent via-[#3d43dd]/30 to-transparent"></div>
-
-                                                                <h4 className="text-white font-medium mb-4 flex items-center gap-2 pl-2">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                                                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
-                                                                    </svg>
-                                                                    <span className="bg-gradient-to-r from-white to-neutral-300 bg-clip-text text-transparent">
-                                                                        Stack Completo
-                                                                    </span>
-                                                                </h4>
-                                                                <ul className="space-y-2 ml-2 grid grid-cols-1 lg:grid-cols-2 gap-2">
-                                                                    {project.stackDetails.map((detail, i) => (
-                                                                        <motion.li
-                                                                            key={i}
-                                                                            className="text-neutral-400 flex items-center gap-2 bg-black/20 p-2 rounded-lg backdrop-blur-sm border border-neutral-800/20"
-                                                                            initial={{ opacity: 0, x: -10 }}
-                                                                            animate={{ opacity: 1, x: 0 }}
-                                                                            transition={{ delay: 0.1 + i * 0.05 }}
-                                                                        >
-                                                                            <span className="min-w-1.5 h-1.5 rounded-full" style={{ backgroundColor: project.primaryColor }}></span>
-                                                                            <span className="text-sm">{detail}</span>
-                                                                        </motion.li>
-                                                                    ))}
-                                                                </ul>
-                                                            </motion.div>
-                                                        )}
-
-                                                        {project.features && (
-                                                            <motion.div
-                                                                initial={{ opacity: 0, y: 10 }}
-                                                                animate={{ opacity: 1, y: 0 }}
-                                                                transition={{ delay: 0.2 }}
-                                                                className="relative"
-                                                            >
-                                                                {/* Elemento decorativo */}
-                                                                <div className="absolute -left-3 top-0 h-full w-px bg-gradient-to-b from-transparent via-[#3d43dd]/30 to-transparent"></div>
-
-                                                                <h4 className="text-white font-medium mb-4 flex items-center gap-2 pl-2">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                                                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                                                                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
-                                                                    </svg>
-                                                                    <span className="bg-gradient-to-r from-white to-neutral-300 bg-clip-text text-transparent">
-                                                                        Funcionalidades
-                                                                    </span>
-                                                                </h4>
-                                                                <ul className="space-y-3 ml-2">
-                                                                    {project.features.map((feature, i) => (
-                                                                        <motion.li
-                                                                            key={i}
-                                                                            className="text-neutral-400 flex items-start gap-2"
-                                                                            initial={{ opacity: 0, x: -10 }}
-                                                                            animate={{ opacity: 1, x: 0 }}
-                                                                            transition={{ delay: 0.2 + i * 0.05 }}
-                                                                        >
-                                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mt-1" style={{ color: project.primaryColor }}>
-                                                                                <polyline points="9 11 12 14 22 4"></polyline>
-                                                                                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
-                                                                            </svg>
-                                                                            <span className="text-sm">{feature}</span>
-                                                                        </motion.li>
-                                                                    ))}
-                                                                </ul>
-                                                            </motion.div>
-                                                        )}
-
-                                                        {project.highlight && (
-                                                            <motion.div
-                                                                initial={{ opacity: 0, y: 10 }}
-                                                                animate={{ opacity: 1, y: 0 }}
-                                                                transition={{ delay: 0.3 }}
-                                                                className="relative"
-                                                            >
-                                                                {/* Elemento decorativo */}
-                                                                <div className="absolute -left-3 top-0 h-full w-px bg-gradient-to-b from-transparent via-[#3d43dd]/30 to-transparent"></div>
-
-                                                                <h4 className="text-white font-medium mb-4 flex items-center gap-2 pl-2">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                                                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                                                                    </svg>
-                                                                    <span className="bg-gradient-to-r from-white to-neutral-300 bg-clip-text text-transparent">
-                                                                        Destaque
-                                                                    </span>
-                                                                </h4>
-                                                                <div className="ml-2">
-                                                                    <motion.div
-                                                                        className="relative p-4 rounded-lg overflow-hidden"
-                                                                        style={{ backgroundColor: `${project.primaryColor}15` }}
-                                                                        initial={{ opacity: 0, scale: 0.95 }}
-                                                                        animate={{ opacity: 1, scale: 1 }}
-                                                                        transition={{ delay: 0.35 }}
-                                                                    >
-                                                                        {/* Efeito de brilho decorativo */}
-                                                                        <div className="absolute top-0 right-0 w-32 h-32 opacity-20"
-                                                                            style={{
-                                                                                background: `radial-gradient(circle, ${project.primaryColor}80, transparent 70%)`,
-                                                                                transform: 'translate(30%, -30%)'
-                                                                            }}
-                                                                        ></div>
-
-                                                                        <p className="text-neutral-300 text-sm relative z-10">
-                                                                            &ldquo;{project.highlight}&rdquo;
-                                                                        </p>
-                                                                    </motion.div>
-                                                                </div>
-                                                            </motion.div>
-                                                        )}
-
-                                                        {/* Links completos para os botões grandes */}
-                                                        <motion.div
-                                                            initial={{ opacity: 0, y: 10 }}
-                                                            animate={{ opacity: 1, y: 0 }}
-                                                            transition={{ delay: 0.4 }}
-                                                            className="flex flex-wrap gap-4 pt-4 justify-center"
+                                                        <div
+                                                            className="space-y-6 rounded-2xl p-6 border border-neutral-800/50 mt-6"
+                                                            style={{
+                                                                background: `linear-gradient(145deg, rgba(0,0,0,0.7), rgba(0,0,0,0.9))`,
+                                                                boxShadow: `0 0 30px ${project.primaryColor}15 inset`
+                                                            }}
                                                         >
-                                                            {project.demoUrl && (
-                                                                <motion.a
-                                                                    href={project.demoUrl}
-                                                                    target="_blank"
-                                                                    rel="noopener noreferrer"
-                                                                    className="relative group/link"
-                                                                    whileHover={{ scale: 1.02 }}
-                                                                    whileTap={{ scale: 0.98 }}
+                                                            {/* Linha decorativa no topo */}
+                                                            <div className="h-px w-full bg-gradient-to-r from-transparent via-[#3d43dd]/30 to-transparent mb-6"></div>
+
+                                                            {project.stackDetails && (
+                                                                <motion.div
+                                                                    initial={{ opacity: 0, y: 10 }}
+                                                                    animate={{ opacity: 1, y: 0 }}
+                                                                    transition={{ delay: 0.1 }}
+                                                                    className="relative"
                                                                 >
-                                                                    <div className="absolute -inset-2 rounded-full opacity-30 blur-md transition-opacity duration-500 group-hover/link:opacity-50"
-                                                                        style={{ background: `linear-gradient(to right, ${project.primaryColor}, ${project.primaryColor}aa)` }}></div>
-                                                                    <div className="relative inline-flex items-center gap-2 px-6 py-2 rounded-full text-white text-sm font-medium transition-colors"
-                                                                        style={{ backgroundColor: project.primaryColor }}>
-                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                                                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                                                                            <polyline points="15 3 21 3 21 9"></polyline>
-                                                                            <line x1="10" y1="14" x2="21" y2="3"></line>
+                                                                    {/* Elemento decorativo */}
+                                                                    <div className="absolute -left-3 top-0 h-full w-px bg-gradient-to-b from-transparent via-[#3d43dd]/30 to-transparent"></div>
+
+                                                                    <h4 className="text-white font-medium mb-4 flex items-center gap-2 pl-2">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                                                            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
                                                                         </svg>
-                                                                        Ver Demo Completo
-                                                                    </div>
-                                                                </motion.a>
+                                                                        <span className="bg-gradient-to-r from-white to-neutral-300 bg-clip-text text-transparent">
+                                                                            Stack Completo
+                                                                        </span>
+                                                                    </h4>
+                                                                    <ul className="space-y-2 ml-2 grid grid-cols-1 lg:grid-cols-2 gap-2">
+                                                                        {project.stackDetails.map((detail, i) => (
+                                                                            <motion.li
+                                                                                key={i}
+                                                                                className="text-neutral-400 flex items-center gap-2 bg-black/20 p-2 rounded-lg backdrop-blur-sm border border-neutral-800/20"
+                                                                                initial={{ opacity: 0, x: -10 }}
+                                                                                animate={{ opacity: 1, x: 0 }}
+                                                                                transition={{ delay: 0.1 + i * 0.05 }}
+                                                                            >
+                                                                                <span className="min-w-1.5 h-1.5 rounded-full" style={{ backgroundColor: project.primaryColor }}></span>
+                                                                                <span className="text-sm">{detail}</span>
+                                                                            </motion.li>
+                                                                        ))}
+                                                                    </ul>
+                                                                </motion.div>
                                                             )}
 
-                                                            {project.repoUrl && (
-                                                                <motion.a
-                                                                    href={project.repoUrl}
-                                                                    target="_blank"
-                                                                    rel="noopener noreferrer"
-                                                                    className="inline-flex items-center gap-2 px-6 py-2 bg-black/60 text-white rounded-full text-sm font-medium border border-neutral-800/50 hover:border-[#3d43dd]/30 hover:bg-[#3d43dd]/5 transition-all"
-                                                                    whileHover={{ scale: 1.02, y: -2 }}
-                                                                    whileTap={{ scale: 0.98 }}
+                                                            {project.features && (
+                                                                <motion.div
+                                                                    initial={{ opacity: 0, y: 10 }}
+                                                                    animate={{ opacity: 1, y: 0 }}
+                                                                    transition={{ delay: 0.2 }}
+                                                                    className="relative"
                                                                 >
-                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                                                        <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
-                                                                    </svg>
-                                                                    Acessar Repositório
-                                                                </motion.a>
+                                                                    {/* Elemento decorativo */}
+                                                                    <div className="absolute -left-3 top-0 h-full w-px bg-gradient-to-b from-transparent via-[#3d43dd]/30 to-transparent"></div>
+
+                                                                    <h4 className="text-white font-medium mb-4 flex items-center gap-2 pl-2">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                                                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                                                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                                                        </svg>
+                                                                        <span className="bg-gradient-to-r from-white to-neutral-300 bg-clip-text text-transparent">
+                                                                            Funcionalidades
+                                                                        </span>
+                                                                    </h4>
+                                                                    <ul className="space-y-3 ml-2">
+                                                                        {project.features.map((feature, i) => (
+                                                                            <motion.li
+                                                                                key={i}
+                                                                                className="text-neutral-400 flex items-start gap-2"
+                                                                                initial={{ opacity: 0, x: -10 }}
+                                                                                animate={{ opacity: 1, x: 0 }}
+                                                                                transition={{ delay: 0.2 + i * 0.05 }}
+                                                                            >
+                                                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mt-1" style={{ color: project.primaryColor }}>
+                                                                                    <polyline points="9 11 12 14 22 4"></polyline>
+                                                                                    <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+                                                                                </svg>
+                                                                                <span className="text-sm">{feature}</span>
+                                                                            </motion.li>
+                                                                        ))}
+                                                                    </ul>
+                                                                </motion.div>
                                                             )}
-                                                        </motion.div>
-                                                    </div>
-                                                </motion.div>
-                                            )}
-                                        </AnimatePresence>
+
+                                                            {project.highlight && (
+                                                                <motion.div
+                                                                    initial={{ opacity: 0, y: 10 }}
+                                                                    animate={{ opacity: 1, y: 0 }}
+                                                                    transition={{ delay: 0.3 }}
+                                                                    className="relative"
+                                                                >
+                                                                    {/* Elemento decorativo */}
+                                                                    <div className="absolute -left-3 top-0 h-full w-px bg-gradient-to-b from-transparent via-[#3d43dd]/30 to-transparent"></div>
+
+                                                                    <h4 className="text-white font-medium mb-4 flex items-center gap-2 pl-2">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                                                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                                                        </svg>
+                                                                        <span className="bg-gradient-to-r from-white to-neutral-300 bg-clip-text text-transparent">
+                                                                            Destaque
+                                                                        </span>
+                                                                    </h4>
+                                                                    <div className="ml-2">
+                                                                        <motion.div
+                                                                            className="relative p-4 rounded-lg overflow-hidden"
+                                                                            style={{ backgroundColor: `${project.primaryColor}15` }}
+                                                                            initial={{ opacity: 0, scale: 0.95 }}
+                                                                            animate={{ opacity: 1, scale: 1 }}
+                                                                            transition={{ delay: 0.35 }}
+                                                                        >
+                                                                            {/* Efeito de brilho decorativo */}
+                                                                            <div className="absolute top-0 right-0 w-32 h-32 opacity-20"
+                                                                                style={{
+                                                                                    background: `radial-gradient(circle, ${project.primaryColor}80, transparent 70%)`,
+                                                                                    transform: 'translate(30%, -30%)'
+                                                                                }}
+                                                                            ></div>
+
+                                                                            <p className="text-neutral-300 text-sm relative z-10">
+                                                                                &ldquo;{project.highlight}&rdquo;
+                                                                            </p>
+                                                                        </motion.div>
+                                                                    </div>
+                                                                </motion.div>
+                                                            )}
+
+                                                            {/* Links completos para os botões grandes */}
+                                                            <motion.div
+                                                                initial={{ opacity: 0, y: 10 }}
+                                                                animate={{ opacity: 1, y: 0 }}
+                                                                transition={{ delay: 0.4 }}
+                                                                className="flex flex-wrap gap-4 pt-4 justify-center"
+                                                            >
+                                                                {project.demoUrl && (
+                                                                    <motion.a
+                                                                        href={project.demoUrl}
+                                                                        target="_blank"
+                                                                        rel="noopener noreferrer"
+                                                                        className="relative group/link"
+                                                                        whileHover={{ scale: 1.02 }}
+                                                                        whileTap={{ scale: 0.98 }}
+                                                                    >
+                                                                        <div className="absolute -inset-2 rounded-full opacity-30 blur-md transition-opacity duration-500 group-hover/link:opacity-50"
+                                                                            style={{ background: `linear-gradient(to right, ${project.primaryColor}, ${project.primaryColor}aa)` }}></div>
+                                                                        <div className="relative inline-flex items-center gap-2 px-6 py-2 rounded-full text-white text-sm font-medium transition-colors"
+                                                                            style={{ backgroundColor: project.primaryColor }}>
+                                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                                                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                                                                <polyline points="15 3 21 3 21 9"></polyline>
+                                                                                <line x1="10" y1="14" x2="21" y2="3"></line>
+                                                                            </svg>
+                                                                            Ver Demo Completo
+                                                                        </div>
+                                                                    </motion.a>
+                                                                )}
+
+                                                                {project.repoUrl && (
+                                                                    <motion.a
+                                                                        href={project.repoUrl}
+                                                                        target="_blank"
+                                                                        rel="noopener noreferrer"
+                                                                        className="inline-flex items-center gap-2 px-6 py-2 bg-black/60 text-white rounded-full text-sm font-medium border border-neutral-800/50 hover:border-[#3d43dd]/30 hover:bg-[#3d43dd]/5 transition-all"
+                                                                        whileHover={{ scale: 1.02, y: -2 }}
+                                                                        whileTap={{ scale: 0.98 }}
+                                                                    >
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                                                            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+                                                                        </svg>
+                                                                        Acessar Repositório
+                                                                    </motion.a>
+                                                                )}
+                                                            </motion.div>
+                                                        </div>
+                                                    </motion.div>
+                                                )}
+                                            </AnimatePresence>
+                                        </div>
                                     </div>
-                                </div>
-                            </motion.div>
-                        ))}
-                    </div>
-                </AnimatePresence>
+                                </motion.div>
+                            ))}
+                        </div>
+                    </AnimatePresence>
+                </div>
 
                 {/* Seção de CTA aprimorada */}
                 <motion.div
@@ -805,11 +807,11 @@ export default function Projects() {
 
             {/* Estilos para animação do brilho */}
             <style jsx global>{`
-                @keyframes shimmer {
-                    0% { background-position: -200% 0; }
-                    100% { background-position: 200% 0; }
-                }
-            `}</style>
+            @keyframes shimmer {
+                0% { background-position: -200% 0; }
+                100% { background-position: 200% 0; }
+            }
+        `}</style>
         </section>
     );
 } 
