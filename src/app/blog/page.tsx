@@ -181,7 +181,9 @@ export default function BlogIndex() {
                                 <form className="max-w-md mx-auto flex flex-col sm:flex-row gap-4" onSubmit={async (e) => {
                                     e.preventDefault();
 
-                                    const emailInput = (e.currentTarget.querySelector('input[type="email"]') as HTMLInputElement).value;
+                                    // Armazenar o formulário em uma referência e capturar o valor do email imediatamente
+                                    const form = e.currentTarget;
+                                    const emailInput = (form.querySelector('input[type="email"]') as HTMLInputElement)?.value;
 
                                     if (!emailInput || !emailInput.includes('@')) {
                                         showToast('Por favor, informe um email válido.', 'warning');
@@ -189,7 +191,7 @@ export default function BlogIndex() {
                                     }
 
                                     // Estado local para controlar o estado do formulário
-                                    const buttonEl = e.currentTarget.querySelector('button');
+                                    const buttonEl = form.querySelector('button');
 
                                     try {
                                         if (buttonEl) {
@@ -213,16 +215,19 @@ export default function BlogIndex() {
                                             throw new Error(data.message || 'Erro ao processar inscrição');
                                         }
 
-                                        // Sucesso
-                                        (e.currentTarget.querySelector('input[type="email"]') as HTMLInputElement).value = '';
+                                        // Sucesso - verifique se o formulário ainda existe antes de limpar o campo
+                                        const emailField = form.querySelector('input[type="email"]') as HTMLInputElement;
+                                        if (emailField) {
+                                            emailField.value = '';
+                                        }
                                         showToast('Inscrição realizada com sucesso! Verifique seu email para confirmar.', 'success');
 
                                     } catch (error) {
                                         console.error('Erro ao enviar formulário:', error);
                                         showToast(error instanceof Error ? error.message : 'Ocorreu um erro ao processar sua inscrição. Tente novamente.', 'error');
                                     } finally {
-                                        // Restaura o botão
-                                        if (buttonEl) {
+                                        // Restaura o botão se ele ainda existir
+                                        if (buttonEl && document.body.contains(buttonEl)) {
                                             buttonEl.innerHTML = 'Inscrever-se';
                                             buttonEl.disabled = false;
                                         }
