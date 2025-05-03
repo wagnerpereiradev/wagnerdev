@@ -121,7 +121,7 @@ export default function Toast({ message, type, duration = 5000, onClose, isVisib
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: -20, scale: 0.9 }}
                     transition={{ type: 'spring', stiffness: 500, damping: 30 }}
-                    className="fixed top-6 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-md px-4"
+                    className="fixed top-6 left-1/2 transform -translate-x-1/2 z-60 w-full max-w-md px-4"
                 >
                     <div className="relative">
                         {/* Efeito de brilho */}
