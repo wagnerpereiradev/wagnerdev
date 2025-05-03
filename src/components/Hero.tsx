@@ -4,9 +4,15 @@ import { useEffect, useRef, useState } from 'react';
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import Image from 'next/image';
 import { TypeAnimation } from 'react-type-animation';
+import dynamic from 'next/dynamic';
+
+// Importando o componente de vídeo dinamicamente para evitar problemas de hidratação
+const VideoBackground = dynamic(() => import('./VideoBackground'), {
+    ssr: false,  // Importante: Desativa SSR para este componente
+    loading: () => null
+});
 
 export default function Hero() {
-    const videoRef = useRef<HTMLIFrameElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
     const cursorRef = useRef<HTMLDivElement>(null);
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -111,22 +117,8 @@ export default function Hero() {
                 {/* Malha geométrica sutil */}
                 <div className="absolute inset-0 opacity-50 bg-[url('/images/grid-pattern.svg')] z-10"></div>
 
-                {/* Vídeo de fundo com filtros aprimorados - usando loading="lazy" e preload="none" */}
-                <iframe
-                    ref={videoRef}
-                    src="https://www.youtube.com/embed/Evaf-2l0-QA?autoplay=1&mute=1&loop=1&controls=0&showinfo=0&rel=0&iv_load_policy=3&playlist=Evaf-2l0-QA"
-                    title="Background Video"
-                    loading="lazy"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    className="absolute w-[300%] sm:w-[200%] md:w-[300%] h-[300%] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none"
-                    style={{
-                        opacity: 0.5,
-                        zIndex: 1,
-                        filter: "saturate(0.7) contrast(1.1)",
-                        willChange: "transform", // Otimização para navegadores
-                        display: isMobile ? 'none' : 'block' // Remover vídeo em dispositivos móveis
-                    }}
-                />
+                {/* Vídeo de fundo com componente dinâmico */}
+                {!isMobile && <VideoBackground />}
 
                 {/* Camada superior com grão cinemático */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-40 mix-blend-overlay z-15"></div>
