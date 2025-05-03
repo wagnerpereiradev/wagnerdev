@@ -81,4 +81,6 @@ export interface BlogPost {
     summary: string;
     social?: SocialLinks;
     body: ContentBlock[];
+    /** IDs dos anúncios que devem aparecer neste post */
+    ads?: string[];
 } 

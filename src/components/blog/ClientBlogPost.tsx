@@ -12,6 +12,7 @@ import ContentRenderer from '@/components/blog/ContentRenderer';
 import AuthorCard from '@/components/blog/AuthorCard';
 import TagList from '@/components/blog/TagList';
 import ShareButtons from '@/components/blog/ShareButtons';
+import AdContainer from '@/components/blog/AdContainer';
 import Link from 'next/link';
 
 interface ClientBlogPostProps {
@@ -188,25 +189,49 @@ export default function ClientBlogPost({ slug }: ClientBlogPostProps) {
                 </div>
             </header>
 
-            {/* Conteúdo do post */}
-            <section className="py-16" ref={contentRef}>
-                <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-                    {/* Renderizador de conteúdo */}
-                    <ContentRenderer blocks={post.body} />
+            {/* Anúncio antes do conteúdo - mostra o primeiro anúncio definido no post */}
+            {post.ads && post.ads.length > 0 && (
+                <div className="max-w-3xl mx-auto px-3 sm:px-4 lg:px-8 -mt-3 mb-8">
+                    <AdContainer
+                        adIds={post.ads}
+                        maxAds={post.ads.length}
+                        position="in-content"
+                        rotationInterval={60} // Alternar a cada 1 minuto
+                    />
+                </div>
+            )}
 
-                    {/* Cartão do autor */}
-                    <AuthorCard author={post.author} socialLinks={post.social} />
+            {/* Conteúdo do artigo */}
+            <div ref={contentRef} className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
+                <ContentRenderer blocks={post.body} />
 
-                    {/* Botões de compartilhamento */}
-                    <div className="mt-12 border-t border-neutral-800 pt-8">
-                        <ShareButtons
-                            url={`https://wagnerai.me/blog/${post.slug}`}
-                            title={post.headline}
-                            summary={post.summary}
-                        />
+                {/* Botões de compartilhamento e autor */}
+                <div className="mt-16 sm:mt-20 border-t border-neutral-800 pt-8">
+                    <ShareButtons
+                        url={`https://wagnerai.me/blog/${post.slug}`}
+                        title={post.headline}
+                        summary={post.summary}
+                    />
+
+                    <div className="mt-8">
+                        <AuthorCard author={post.author} socialLinks={post.social} />
+                    </div>
+
+                    {/* Anúncio após o card do autor - rotaciona todos os anúncios definidos no post */}
+                    <div className="mt-10 sm:mt-12">
+                        {post.ads && post.ads.length > 0 ? (
+                            <AdContainer
+                                adIds={post.ads}
+                                maxAds={post.ads.length}
+                                position="footer"
+                                rotationInterval={60} // Alternar a cada 1 minuto
+                            />
+                        ) : (
+                            <AdContainer position="footer" maxAds={1} />
+                        )}
                     </div>
                 </div>
-            </section>
+            </div>
 
             {/* CTA e navegação */}
             <section className="py-16 bg-neutral-950">
