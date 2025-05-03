@@ -4,8 +4,12 @@ import { NextRequest, NextResponse } from 'next/server';
 const allowedOrigins = [
     'https://www.wagnerai.me',
     'https://wagnerai.me',
+    'https://www.wagnerai.me/blog',
+    'https://wagnerai.me/blog',
     'https://www.wagnerdev.vercel.app',
     'https://wagnerdev.vercel.app',
+    'https://www.wagnerdev.vercel.app/blog',
+    'https://wagnerdev.vercel.app/blog',
     'http://localhost:3000',
 ];
 
