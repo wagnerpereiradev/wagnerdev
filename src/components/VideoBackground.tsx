@@ -6,21 +6,37 @@ export default function VideoBackground() {
     const videoRef = useRef<HTMLVideoElement>(null);
     const [isVisible, setIsVisible] = useState(false);
     const [isMobile, setIsMobile] = useState(false);
+    const [supportsWebm, setSupportsWebm] = useState(false);
 
-    // Detecta dispositivo móvel
+    // Detecta dispositivo móvel e suporte a WebM
     useEffect(() => {
+        // Verifica suporte a WebM (mais eficiente que MP4)
+        const checkWebMSupport = () => {
+            const video = document.createElement('video');
+            return video.canPlayType('video/webm; codecs="vp9"').replace(/no/, '');
+        };
+
         const checkMobile = () => {
             setIsMobile(window.innerWidth < 768);
         };
 
+        setSupportsWebm(!!checkWebMSupport());
         checkMobile();
-        window.addEventListener('resize', checkMobile);
 
-        return () => window.removeEventListener('resize', checkMobile);
+        const handleResize = () => checkMobile();
+        window.addEventListener('resize', handleResize);
+
+        return () => window.removeEventListener('resize', handleResize);
     }, []);
 
     // Observer para carregar o vídeo apenas quando visível
     useEffect(() => {
+        if (typeof IntersectionObserver === 'undefined') {
+            // Fallback para navegadores que não suportam IntersectionObserver
+            setIsVisible(true);
+            return;
+        }
+
         const options = {
             root: null,
             rootMargin: '0px',
@@ -36,7 +52,6 @@ export default function VideoBackground() {
                     if (videoRef.current) {
                         videoRef.current.pause();
                     }
-                    setIsVisible(false);
                 }
             });
         }, options);
@@ -57,16 +72,29 @@ export default function VideoBackground() {
     // Reproduz o vídeo quando estiver visível
     useEffect(() => {
         if (videoRef.current && isVisible) {
-            videoRef.current.play().catch(error => {
-                console.error("Video playback failed:", error);
-            });
+            const playPromise = videoRef.current.play();
+
+            // Tratando erro silenciosamente para evitar console errors
+            if (playPromise !== undefined) {
+                playPromise.catch(() => { });
+            }
         }
     }, [isVisible]);
 
-    // Escolhe a versão do vídeo com base no dispositivo
-    const videoSrc = isMobile
-        ? "/videos/bg-hero-video-mobile.mp4"
-        : "/videos/bg-hero-video-optimized.mp4";
+    // Escolhe o formato de vídeo mais apropriado
+    const videoSources = () => {
+        if (isMobile) {
+            return supportsWebm
+                ? [{ src: "/videos/bg-hero-video-mobile.webm", type: "video/webm" },
+                { src: "/videos/bg-hero-video-mobile.mp4", type: "video/mp4" }]
+                : [{ src: "/videos/bg-hero-video-mobile.mp4", type: "video/mp4" }];
+        } else {
+            return supportsWebm
+                ? [{ src: "/videos/bg-hero-video-optimized.webm", type: "video/webm" },
+                { src: "/videos/bg-hero-video-optimized.mp4", type: "video/mp4" }]
+                : [{ src: "/videos/bg-hero-video-optimized.mp4", type: "video/mp4" }];
+        }
+    };
 
     return (
         <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none">
@@ -86,7 +114,9 @@ export default function VideoBackground() {
                 }}
                 aria-hidden="true"
             >
-                <source src={videoSrc} type="video/mp4" />
+                {videoSources().map((source, index) => (
+                    <source key={index} src={source.src} type={source.type} />
+                ))}
             </video>
         </div>
     );

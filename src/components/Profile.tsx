@@ -177,7 +177,7 @@ export default function Profile() {
                     />
                 </svg>
             ),
-            url: 'https://instagram.com/wagner.mi6',
+            url: 'https://instagram.com/wagnerai.me',
         },
         {
             name: 'LinkedIn',
@@ -648,125 +648,29 @@ export default function Profile() {
                         <div className="absolute top-0 bottom-0 right-0 w-20 bg-gradient-to-l from-black to-transparent z-10"></div>
 
                         {isMobile ? (
-                            // Versão animada para mobile - simplificada para melhor performance
-                            <>
-                                {/* Framer Motion Carousel para mobile - Primeira linha */}
-                                <motion.div
-                                    className="flex gap-4 py-4 mb-6"
-                                    animate={{ x: [0, -1200] }}
-                                    transition={{
-                                        x: {
-                                            repeat: Infinity,
-                                            repeatType: "loop",
-                                            duration: 40, // Mais lento para menor consumo de CPU
-                                            ease: "linear",
-                                        }
-                                    }}
-                                    style={{ willChange: "transform" }} // Otimização de performance
-                                >
-                                    {/* Reduzindo o número de itens no carrossel */}
-                                    {[...technologies].map((tech, index) => (
-                                        <motion.div
-                                            key={`${tech.name}-mobile-${index}`}
-                                            className="flex-shrink-0 w-24 h-24 bg-neutral-900/30 backdrop-blur-sm border border-neutral-800/30 rounded-xl flex flex-col items-center justify-center p-3 relative"
-                                            style={{ willChange: "auto" }} // Desativando willChange quando não é necessário
-                                        >
-                                            <div className="h-10 w-10 mb-2 flex items-center justify-center relative z-10">
-                                                <Image
-                                                    src={tech.logo}
-                                                    alt={tech.name}
-                                                    width={36}
-                                                    height={36}
-                                                    className="object-contain max-h-10"
-                                                    style={{ width: "auto", height: "auto" }}
-                                                    loading="lazy"
-                                                    sizes="36px"
-                                                />
-                                            </div>
-                                            <p className="text-xs font-medium text-neutral-300 text-center relative z-10">{tech.name}</p>
-                                        </motion.div>
-                                    ))}
-                                    {/* Adicionando apenas 5 itens duplicados em vez de todos */}
-                                    {technologies.slice(0, 5).map((tech, index) => (
-                                        <motion.div
-                                            key={`${tech.name}-mobile-dup-${index}`}
-                                            className="flex-shrink-0 w-24 h-24 bg-neutral-900/30 backdrop-blur-sm border border-neutral-800/30 rounded-xl flex flex-col items-center justify-center p-3 relative"
-                                        >
-                                            <div className="h-10 w-10 mb-2 flex items-center justify-center relative z-10">
-                                                <Image
-                                                    src={tech.logo}
-                                                    alt={tech.name}
-                                                    width={36}
-                                                    height={36}
-                                                    className="object-contain max-h-10"
-                                                    style={{ width: "auto", height: "auto" }}
-                                                    loading="lazy"
-                                                    sizes="36px"
-                                                />
-                                            </div>
-                                            <p className="text-xs font-medium text-neutral-300 text-center relative z-10">{tech.name}</p>
-                                        </motion.div>
-                                    ))}
-                                </motion.div>
-
-                                {/* Framer Motion Carousel para mobile - Segunda linha (direção oposta) */}
-                                <motion.div
-                                    className="flex gap-4 py-4"
-                                    animate={{ x: [-1200, 0] }}
-                                    transition={{
-                                        x: {
-                                            repeat: Infinity,
-                                            repeatType: "loop",
-                                            duration: 45, // Mais lento para menor consumo de CPU
-                                            ease: "linear",
-                                        }
-                                    }}
-                                    style={{ willChange: "transform" }} // Otimização de performance
-                                >
-                                    {/* Reduzindo o número de itens no carrossel */}
-                                    {[...technologies].reverse().map((tech, index) => (
-                                        <motion.div
-                                            key={`${tech.name}-mobile-reverse-${index}`}
-                                            className="flex-shrink-0 w-24 h-24 bg-neutral-900/30 backdrop-blur-sm border border-neutral-800/30 rounded-xl flex flex-col items-center justify-center p-3 relative"
-                                        >
-                                            <div className="h-10 w-10 mb-2 flex items-center justify-center relative z-10">
-                                                <Image
-                                                    src={tech.logo}
-                                                    alt={tech.name}
-                                                    width={36}
-                                                    height={36}
-                                                    className="object-contain max-h-10"
-                                                    style={{ width: "auto", height: "auto" }}
-                                                    loading="lazy"
-                                                    sizes="36px"
-                                                />
-                                            </div>
-                                            <p className="text-xs font-medium text-neutral-300 text-center relative z-10">{tech.name}</p>
-                                        </motion.div>
-                                    ))}
-                                    {/* Adicionando apenas 5 itens duplicados em vez de todos */}
-                                    {technologies.slice(0, 5).reverse().map((tech, index) => (
-                                        <motion.div
-                                            key={`${tech.name}-mobile-rev-dup-${index}`}
-                                            className="flex-shrink-0 w-24 h-24 bg-neutral-900/30 backdrop-blur-sm border border-neutral-800/30 rounded-xl flex flex-col items-center justify-center p-3 relative"
-                                        >
-                                            <div className="h-10 w-10 mb-2 flex items-center justify-center relative z-10">
-                                                <Image
-                                                    src={tech.logo}
-                                                    alt={tech.name}
-                                                    width={36}
-                                                    height={36}
-                                                    className="object-contain max-h-10"
-                                                    style={{ width: "auto", height: "auto" }}
-                                                    loading="lazy"
-                                                    sizes="36px"
-                                                />
-                                            </div>
-                                            <p className="text-xs font-medium text-neutral-300 text-center relative z-10">{tech.name}</p>
-                                        </motion.div>
-                                    ))}
-                                </motion.div>
-                            </>
+                            // Versão estática para mobile para melhor performance
+                            <div className="flex flex-wrap justify-center gap-3 px-2">
+                                {technologies.slice(0, 12).map((tech, index) => (
+                                    <div
+                                        key={`${tech.name}-mobile-${index}`}
+                                        className="flex-shrink-0 w-24 h-24 bg-neutral-900/30 backdrop-blur-sm border border-neutral-800/30 rounded-xl flex flex-col items-center justify-center p-3"
+                                    >
+                                        <div className="h-10 w-10 mb-2 flex items-center justify-center">
+                                            <Image
+                                                src={tech.logo}
+                                                alt={tech.name}
+                                                width={36}
+                                                height={36}
+                                                className="object-contain max-h-10"
+                                                style={{ width: "auto", height: "auto" }}
+                                                loading="lazy"
+                                                sizes="36px"
+                                            />
+                                        </div>
+                                        <p className="text-xs font-medium text-neutral-300 text-center">{tech.name}</p>
+                                    </div>
+                                ))}
+                            </div>
                         ) : (
                             // Versão animada para desktop - otimizada
                             <>

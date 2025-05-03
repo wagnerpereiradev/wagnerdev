@@ -6,16 +6,18 @@ import Script from 'next/script';
 // Configuração das fontes
 const geistSans = GeistSans({
   subsets: ["latin"],
-  display: "swap",
+  display: "optional",
   variable: "--font-geist-sans",
-  weight: ["400", "500", "600", "700"]
+  weight: ["400", "500", "700"],
+  preload: true
 });
 
 const geistMono = GeistMono({
   subsets: ["latin"],
-  display: "swap",
+  display: "optional",
   variable: "--font-geist-mono",
-  weight: ["400", "500", "700"]
+  weight: ["400", "700"],
+  preload: true
 });
 
 export const metadata: Metadata = {

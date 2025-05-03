@@ -1,0 +1,167 @@
+[
+  {
+    "fileName": "Projects.tsx",
+    "filePath": "/src/components/Projects.tsx",
+    "totalElements": 215,
+    "divCount": 46,
+    "spanCount": 15,
+    "tailwindClassCount": 681,
+    "uniqueTailwindClassCount": 237,
+    "maxNesting": 28,
+    "manyItemsCount": 0,
+    "lineCount": 815,
+    "suggestions": [
+      "Reduza o número de elementos (215). Considere paginar, virtualizar listas ou fragmentar o componente.",
+      "Reduza o aninhamento de elementos (28 níveis). Divida em subcomponentes ou simplifique a estrutura HTML.",
+      "Usa 681 classes Tailwind (237 únicas). Considere criar classes utilitárias ou componentes para reutilização.",
+      "Componente muito grande (815 linhas). Divida em subcomponentes menores ou use React.memo para otimizar renderizações."
+    ]
+  },
+  {
+    "fileName": "Footer.tsx",
+    "filePath": "/src/components/Footer.tsx",
+    "totalElements": 187,
+    "divCount": 45,
+    "spanCount": 18,
+    "tailwindClassCount": 550,
+    "uniqueTailwindClassCount": 216,
+    "maxNesting": 27,
+    "manyItemsCount": 2,
+    "lineCount": 580,
+    "suggestions": [
+      "Reduza o aninhamento de elementos (27 níveis). Divida em subcomponentes ou simplifique a estrutura HTML.",
+      "Usa 550 classes Tailwind (216 únicas). Considere criar classes utilitárias ou componentes para reutilização.",
+      "Componente muito grande (580 linhas). Divida em subcomponentes menores ou use React.memo para otimizar renderizações."
+    ]
+  },
+  {
+    "fileName": "Contact.tsx",
+    "filePath": "/src/components/Contact.tsx",
+    "totalElements": 177,
+    "divCount": 39,
+    "spanCount": 9,
+    "tailwindClassCount": 515,
+    "uniqueTailwindClassCount": 216,
+    "maxNesting": 20,
+    "manyItemsCount": 1,
+    "lineCount": 816,
+    "suggestions": [
+      "Reduza o aninhamento de elementos (20 níveis). Divida em subcomponentes ou simplifique a estrutura HTML.",
+      "Usa 515 classes Tailwind (216 únicas). Considere criar classes utilitárias ou componentes para reutilização.",
+      "Componente muito grande (816 linhas). Divida em subcomponentes menores ou use React.memo para otimizar renderizações."
+    ]
+  },
+  {
+    "fileName": "Profile.tsx",
+    "filePath": "/src/components/Profile.tsx",
+    "totalElements": 172,
+    "divCount": 40,
+    "spanCount": 14,
+    "tailwindClassCount": 693,
+    "uniqueTailwindClassCount": 257,
+    "maxNesting": 24,
+    "manyItemsCount": 0,
+    "lineCount": 835,
+    "suggestions": [
+      "Reduza o aninhamento de elementos (24 níveis). Divida em subcomponentes ou simplifique a estrutura HTML.",
+      "Usa 693 classes Tailwind (257 únicas). Considere criar classes utilitárias ou componentes para reutilização.",
+      "Componente muito grande (835 linhas). Divida em subcomponentes menores ou use React.memo para otimizar renderizações."
+    ]
+  },
+  {
+    "fileName": "ClientBlogPost.tsx",
+    "filePath": "/src/components/blog/ClientBlogPost.tsx",
+    "totalElements": 104,
+    "divCount": 30,
+    "spanCount": 5,
+    "tailwindClassCount": 277,
+    "uniqueTailwindClassCount": 157,
+    "maxNesting": 19,
+    "manyItemsCount": 0,
+    "lineCount": 271,
+    "suggestions": [
+      "Reduza o aninhamento de elementos (19 níveis). Divida em subcomponentes ou simplifique a estrutura HTML.",
+      "Usa 277 classes Tailwind (157 únicas). Considere criar classes utilitárias ou componentes para reutilização."
+    ]
+  },
+  {
+    "fileName": "Navbar.tsx",
+    "filePath": "/src/components/Navbar.tsx",
+    "totalElements": 67,
+    "divCount": 17,
+    "spanCount": 2,
+    "tailwindClassCount": 212,
+    "uniqueTailwindClassCount": 109,
+    "maxNesting": 10,
+    "manyItemsCount": 1,
+    "lineCount": 579,
+    "suggestions": [
+      "Reduza o aninhamento de elementos (10 níveis). Divida em subcomponentes ou simplifique a estrutura HTML.",
+      "Usa 212 classes Tailwind (109 únicas). Considere criar classes utilitárias ou componentes para reutilização.",
+      "Componente muito grande (579 linhas). Divida em subcomponentes menores ou use React.memo para otimizar renderizações."
+    ]
+  },
+  {
+    "fileName": "AdBanner.tsx",
+    "filePath": "/src/components/blog/AdBanner.tsx",
+    "totalElements": 58,
+    "divCount": 18,
+    "spanCount": 4,
+    "tailwindClassCount": 246,
+    "uniqueTailwindClassCount": 131,
+    "maxNesting": 10,
+    "manyItemsCount": 0,
+    "lineCount": 340,
+    "suggestions": [
+      "Reduza o aninhamento de elementos (10 níveis). Divida em subcomponentes ou simplifique a estrutura HTML.",
+      "Usa 246 classes Tailwind (131 únicas). Considere criar classes utilitárias ou componentes para reutilização."
+    ]
+  },
+  {
+    "fileName": "BlogCard.tsx",
+    "filePath": "/src/components/blog/BlogCard.tsx",
+    "totalElements": 55,
+    "divCount": 17,
+    "spanCount": 4,
+    "tailwindClassCount": 165,
+    "uniqueTailwindClassCount": 98,
+    "maxNesting": 10,
+    "manyItemsCount": 0,
+    "lineCount": 218,
+    "suggestions": [
+      "Reduza o aninhamento de elementos (10 níveis). Divida em subcomponentes ou simplifique a estrutura HTML.",
+      "Usa 165 classes Tailwind (98 únicas). Considere criar classes utilitárias ou componentes para reutilização."
+    ]
+  },
+  {
+    "fileName": "Hero.tsx",
+    "filePath": "/src/components/Hero.tsx",
+    "totalElements": 47,
+    "divCount": 7,
+    "spanCount": 8,
+    "tailwindClassCount": 201,
+    "uniqueTailwindClassCount": 100,
+    "maxNesting": 9,
+    "manyItemsCount": 0,
+    "lineCount": 208,
+    "suggestions": [
+      "Reduza o aninhamento de elementos (9 níveis). Divida em subcomponentes ou simplifique a estrutura HTML.",
+      "Usa 201 classes Tailwind (100 únicas). Considere criar classes utilitárias ou componentes para reutilização."
+    ]
+  },
+  {
+    "fileName": "CodeRenderer.tsx",
+    "filePath": "/src/components/blog/CodeRenderer.tsx",
+    "totalElements": 28,
+    "divCount": 7,
+    "spanCount": 3,
+    "tailwindClassCount": 52,
+    "uniqueTailwindClassCount": 32,
+    "maxNesting": 7,
+    "manyItemsCount": 0,
+    "lineCount": 66,
+    "suggestions": [
+      "Reduza o aninhamento de elementos (7 níveis). Divida em subcomponentes ou simplifique a estrutura HTML."
+    ]
+  }
+]

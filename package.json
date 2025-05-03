@@ -9,6 +9,9 @@
     "lint": "next lint",
     "optimize-video": "node scripts/video-optimizer.js",
     "optimize-imports": "node scripts/optimize-imports.js",
+    "optimize-dom": "node scripts/optimize-dom.js",
+    "optimize-lcp": "node scripts/optimize-lcp.js",
+    "optimize-all": "node scripts/optimize-all.js",
     "analyze": "ANALYZE=true next build"
   },
   "dependencies": {

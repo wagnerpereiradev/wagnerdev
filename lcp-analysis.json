@@ -1,0 +1,93 @@
+[
+  {
+    "fileName": "Hero.tsx",
+    "filePath": "/src/components/Hero.tsx",
+    "lcpCandidates": [
+      {
+        "lineNumber": 21,
+        "element": "export default function Hero() {",
+        "isImage": false,
+        "hasSrc": false,
+        "hasSizes": false,
+        "hasPriority": false,
+        "hasLoading": false,
+        "suggestions": []
+      },
+      {
+        "lineNumber": 84,
+        "element": "<Image",
+        "isImage": true,
+        "hasSrc": false,
+        "hasSizes": false,
+        "hasPriority": false,
+        "hasLoading": false,
+        "suggestions": []
+      },
+      {
+        "lineNumber": 90,
+        "element": "className=\"w-full h-full object-cover\"",
+        "isImage": false,
+        "hasSrc": false,
+        "hasSizes": false,
+        "hasPriority": false,
+        "hasLoading": false,
+        "suggestions": []
+      },
+      {
+        "lineNumber": 128,
+        "element": "<h1 className=\"text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold mb-6 sm:mb-8 text-center leadi...",
+        "isImage": false,
+        "hasSrc": false,
+        "hasSizes": false,
+        "hasPriority": false,
+        "hasLoading": false,
+        "suggestions": [
+          "Use a propriedade 'font-display: optional' para fontes críticas",
+          "Considere preload para a fonte usada neste texto"
+        ]
+      }
+    ]
+  },
+  {
+    "fileName": "page.tsx",
+    "filePath": "/src/app/page.tsx",
+    "lcpCandidates": [
+      {
+        "lineNumber": 1,
+        "element": "import Hero from '@/components/Hero';",
+        "isImage": false,
+        "hasSrc": false,
+        "hasSizes": false,
+        "hasPriority": false,
+        "hasLoading": false,
+        "suggestions": []
+      },
+      {
+        "lineNumber": 12,
+        "element": "<Hero />",
+        "isImage": false,
+        "hasSrc": false,
+        "hasSizes": false,
+        "hasPriority": false,
+        "hasLoading": false,
+        "suggestions": []
+      }
+    ]
+  },
+  {
+    "fileName": "layout.tsx",
+    "filePath": "/src/app/layout.tsx",
+    "lcpCandidates": [
+      {
+        "lineNumber": 94,
+        "element": "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, viewport-fit=cover\" />",
+        "isImage": false,
+        "hasSrc": false,
+        "hasSizes": false,
+        "hasPriority": false,
+        "hasLoading": false,
+        "suggestions": []
+      }
+    ]
+  }
+]
