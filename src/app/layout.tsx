@@ -77,6 +77,7 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="https://avatars.githubusercontent.com" />
         <link rel="dns-prefetch" href="https://upload.wikimedia.org" />
         <link rel="dns-prefetch" href="https://api.dicebear.com" />
+        <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
 
         {/* Favicons e ícones */}
         <link rel="icon" href="/favicon.ico" sizes="any" />
@@ -94,25 +95,34 @@ export default function RootLayout({
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-
-        {/* Google Analytics */}
-        <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-XRTG4BZY8F"
-          strategy="afterInteractive"
-        />
-        <Script id="google-analytics" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-XRTG4BZY8F');
-          `}
-        </Script>
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} font-sans antialiased bg-neutral-950 text-neutral-100`}
       >
         {children}
+
+        {/* Google Analytics - Movido para o final do body e com configuração lazy */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-XRTG4BZY8F"
+          strategy="lazyOnload"
+          defer
+        />
+        <Script id="google-analytics" strategy="lazyOnload">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XRTG4BZY8F', {
+              send_page_view: false,
+              'anonymize_ip': true,
+              'cookie_flags': 'SameSite=None;Secure'
+            });
+            // Enviar pageview apenas depois que o site estiver carregado
+            window.addEventListener('load', function() {
+              gtag('event', 'page_view');
+            });
+          `}
+        </Script>
       </body>
     </html>
   );

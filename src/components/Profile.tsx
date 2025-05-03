@@ -18,9 +18,9 @@ export default function Profile() {
     const opacity = useTransform(scrollY, [0, 300], [0, 1]);
     const y = useTransform(scrollY, [0, 300], [100, 0]);
 
-    // Efeito para rastrear a posição do mouse - otimizado com useCallback
+    // Efeito para rastrear a posição do mouse - otimizado com useCallback e throttling
     const mouseMove = useCallback((e: MouseEvent) => {
-        // Throttle para limitar atualizações excessivas
+        // Usando requestAnimationFrame para limitar atualizações
         if (!window.requestAnimationFrame) {
             setMousePosition({
                 x: e.clientX,
@@ -28,6 +28,9 @@ export default function Profile() {
             });
             return;
         }
+
+        // Throttling para reduzir updates em dispositivos móveis
+        if (window.innerWidth < 768) return;
 
         window.requestAnimationFrame(() => {
             setMousePosition({
@@ -38,37 +41,70 @@ export default function Profile() {
     }, []);
 
     useEffect(() => {
-        window.addEventListener('mousemove', mouseMove);
+        // Não adiciona o listener em dispositivos móveis
+        if (window.innerWidth < 768) return;
+
+        window.addEventListener('mousemove', mouseMove, { passive: true });
         return () => {
             window.removeEventListener('mousemove', mouseMove);
         };
     }, [mouseMove]);
 
-    // Efeito de digitação
+    // Efeito de digitação com performance melhorada
     useEffect(() => {
+        // Usando requestAnimationFrame para melhor performance
         let currentIndex = 0;
-        const interval = setInterval(() => {
-            if (currentIndex <= fullText.length) {
-                setTypingText(fullText.slice(0, currentIndex));
-                currentIndex++;
-            } else {
-                clearInterval(interval);
-            }
-        }, 20);
+        let rafId: number;
+        let lastUpdateTime = 0;
+        const typingSpeed = 20; // ms entre cada caractere
 
-        return () => clearInterval(interval);
-    }, []);
+        const updateTyping = (timestamp: number) => {
+            if (!lastUpdateTime) lastUpdateTime = timestamp;
+
+            const deltaTime = timestamp - lastUpdateTime;
+
+            if (deltaTime >= typingSpeed) {
+                if (currentIndex <= fullText.length) {
+                    setTypingText(fullText.slice(0, currentIndex));
+                    currentIndex++;
+                    lastUpdateTime = timestamp;
+                }
+            }
+
+            if (currentIndex <= fullText.length) {
+                rafId = requestAnimationFrame(updateTyping);
+            }
+        };
+
+        rafId = requestAnimationFrame(updateTyping);
+
+        return () => {
+            if (rafId) cancelAnimationFrame(rafId);
+        };
+    }, [fullText]);
 
     // Detectar dispositivo móvel no lado do cliente
     useEffect(() => {
-        setIsMobile(window.innerWidth < 768);
-
-        const handleResize = () => {
+        const checkMobile = () => {
             setIsMobile(window.innerWidth < 768);
         };
 
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
+        checkMobile();
+
+        // Usar throttling no evento de resize
+        let resizeTimeout: NodeJS.Timeout;
+        const handleResize = () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                checkMobile();
+            }, 200);
+        };
+
+        window.addEventListener('resize', handleResize, { passive: true });
+        return () => {
+            window.removeEventListener('resize', handleResize);
+            clearTimeout(resizeTimeout);
+        };
     }, []);
 
     // Variantes para o cursor
@@ -612,25 +648,48 @@ export default function Profile() {
                         <div className="absolute top-0 bottom-0 right-0 w-20 bg-gradient-to-l from-black to-transparent z-10"></div>
 
                         {isMobile ? (
-                            // Versão animada para mobile
+                            // Versão animada para mobile - simplificada para melhor performance
                             <>
                                 {/* Framer Motion Carousel para mobile - Primeira linha */}
                                 <motion.div
                                     className="flex gap-4 py-4 mb-6"
-                                    animate={{ x: [0, -1500] }}
+                                    animate={{ x: [0, -1200] }}
                                     transition={{
                                         x: {
                                             repeat: Infinity,
                                             repeatType: "loop",
-                                            duration: 30, // Mais rápido no mobile
+                                            duration: 40, // Mais lento para menor consumo de CPU
                                             ease: "linear",
                                         }
                                     }}
+                                    style={{ willChange: "transform" }} // Otimização de performance
                                 >
-                                    {/* Duplicamos as tecnologias para um loop contínuo */}
-                                    {[...technologies, ...technologies].map((tech, index) => (
+                                    {/* Reduzindo o número de itens no carrossel */}
+                                    {[...technologies].map((tech, index) => (
                                         <motion.div
                                             key={`${tech.name}-mobile-${index}`}
+                                            className="flex-shrink-0 w-24 h-24 bg-neutral-900/30 backdrop-blur-sm border border-neutral-800/30 rounded-xl flex flex-col items-center justify-center p-3 relative"
+                                            style={{ willChange: "auto" }} // Desativando willChange quando não é necessário
+                                        >
+                                            <div className="h-10 w-10 mb-2 flex items-center justify-center relative z-10">
+                                                <Image
+                                                    src={tech.logo}
+                                                    alt={tech.name}
+                                                    width={36}
+                                                    height={36}
+                                                    className="object-contain max-h-10"
+                                                    style={{ width: "auto", height: "auto" }}
+                                                    loading="lazy"
+                                                    sizes="36px"
+                                                />
+                                            </div>
+                                            <p className="text-xs font-medium text-neutral-300 text-center relative z-10">{tech.name}</p>
+                                        </motion.div>
+                                    ))}
+                                    {/* Adicionando apenas 5 itens duplicados em vez de todos */}
+                                    {technologies.slice(0, 5).map((tech, index) => (
+                                        <motion.div
+                                            key={`${tech.name}-mobile-dup-${index}`}
                                             className="flex-shrink-0 w-24 h-24 bg-neutral-900/30 backdrop-blur-sm border border-neutral-800/30 rounded-xl flex flex-col items-center justify-center p-3 relative"
                                         >
                                             <div className="h-10 w-10 mb-2 flex items-center justify-center relative z-10">
@@ -653,20 +712,42 @@ export default function Profile() {
                                 {/* Framer Motion Carousel para mobile - Segunda linha (direção oposta) */}
                                 <motion.div
                                     className="flex gap-4 py-4"
-                                    animate={{ x: [-1500, 0] }}
+                                    animate={{ x: [-1200, 0] }}
                                     transition={{
                                         x: {
                                             repeat: Infinity,
                                             repeatType: "loop",
-                                            duration: 35, // Mais rápido no mobile
+                                            duration: 45, // Mais lento para menor consumo de CPU
                                             ease: "linear",
                                         }
                                     }}
+                                    style={{ willChange: "transform" }} // Otimização de performance
                                 >
-                                    {/* Tecnologias em ordem reversa para variedade visual */}
-                                    {[...technologies, ...technologies].reverse().map((tech, index) => (
+                                    {/* Reduzindo o número de itens no carrossel */}
+                                    {[...technologies].reverse().map((tech, index) => (
                                         <motion.div
                                             key={`${tech.name}-mobile-reverse-${index}`}
+                                            className="flex-shrink-0 w-24 h-24 bg-neutral-900/30 backdrop-blur-sm border border-neutral-800/30 rounded-xl flex flex-col items-center justify-center p-3 relative"
+                                        >
+                                            <div className="h-10 w-10 mb-2 flex items-center justify-center relative z-10">
+                                                <Image
+                                                    src={tech.logo}
+                                                    alt={tech.name}
+                                                    width={36}
+                                                    height={36}
+                                                    className="object-contain max-h-10"
+                                                    style={{ width: "auto", height: "auto" }}
+                                                    loading="lazy"
+                                                    sizes="36px"
+                                                />
+                                            </div>
+                                            <p className="text-xs font-medium text-neutral-300 text-center relative z-10">{tech.name}</p>
+                                        </motion.div>
+                                    ))}
+                                    {/* Adicionando apenas 5 itens duplicados em vez de todos */}
+                                    {technologies.slice(0, 5).reverse().map((tech, index) => (
+                                        <motion.div
+                                            key={`${tech.name}-mobile-rev-dup-${index}`}
                                             className="flex-shrink-0 w-24 h-24 bg-neutral-900/30 backdrop-blur-sm border border-neutral-800/30 rounded-xl flex flex-col items-center justify-center p-3 relative"
                                         >
                                             <div className="h-10 w-10 mb-2 flex items-center justify-center relative z-10">
@@ -687,34 +768,35 @@ export default function Profile() {
                                 </motion.div>
                             </>
                         ) : (
-                            // Versão animada para desktop
+                            // Versão animada para desktop - otimizada
                             <>
                                 {/* Framer Motion Carousel - Primeira linha - animação para direita */}
                                 <motion.div
                                     className="flex gap-8 py-4 mb-8"
-                                    animate={{ x: [0, -1920] }}
+                                    animate={{ x: [0, -1500] }}
                                     transition={{
                                         x: {
                                             repeat: Infinity,
                                             repeatType: "loop",
-                                            duration: 50,
+                                            duration: 60, // Mais lento para melhor performance
                                             ease: "linear",
                                         }
                                     }}
+                                    style={{ willChange: "transform" }} // Otimização de performance
                                 >
-                                    {/* Duplicamos as tecnologias para um loop contínuo */}
-                                    {[...technologies, ...technologies].map((tech, index) => (
+                                    {/* Reduzindo o número de duplicações */}
+                                    {[...technologies].map((tech, index) => (
                                         <motion.div
                                             key={`${tech.name}-${index}`}
                                             className="flex-shrink-0 w-32 h-32 bg-neutral-900/30 backdrop-blur-sm border border-neutral-800/30 rounded-xl flex flex-col items-center justify-center p-4 relative group"
                                             whileHover={{
-                                                y: -10,
-                                                scale: 1.05,
+                                                y: -5, // Reduzido de -10 para -5
+                                                scale: 1.03, // Reduzido de 1.05 para 1.03
                                                 transition: { duration: 0.2 }
                                             }}
                                         >
-                                            {/* Efeito de brilho ao passar o mouse - simplificado */}
-                                            <div className="absolute inset-0 bg-gradient-to-r from-[#3d43dd]/0 via-[#3d43dd]/30 to-[#3d43dd]/0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                            {/* Efeito simplificado ao passar o mouse */}
+                                            <div className="absolute inset-0 bg-[#3d43dd]/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
 
                                             <div className="h-16 w-16 mb-3 flex items-center justify-center relative z-10">
                                                 <Image
@@ -722,7 +804,35 @@ export default function Profile() {
                                                     alt={tech.name}
                                                     width={50}
                                                     height={50}
-                                                    className="object-contain max-h-16 group-hover:scale-110 transition-transform"
+                                                    className="object-contain max-h-16 group-hover:scale-105 transition-transform"
+                                                    style={{ width: "auto", height: "auto" }}
+                                                    loading="lazy"
+                                                    sizes="50px"
+                                                />
+                                            </div>
+                                            <p className="text-sm font-medium text-neutral-300 group-hover:text-white transition-colors text-center relative z-10">{tech.name}</p>
+                                        </motion.div>
+                                    ))}
+                                    {/* Adicionando menos itens duplicados */}
+                                    {technologies.slice(0, 8).map((tech, index) => (
+                                        <motion.div
+                                            key={`${tech.name}-dup-${index}`}
+                                            className="flex-shrink-0 w-32 h-32 bg-neutral-900/30 backdrop-blur-sm border border-neutral-800/30 rounded-xl flex flex-col items-center justify-center p-4 relative group"
+                                            whileHover={{
+                                                y: -5,
+                                                scale: 1.03,
+                                                transition: { duration: 0.2 }
+                                            }}
+                                        >
+                                            <div className="absolute inset-0 bg-[#3d43dd]/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+
+                                            <div className="h-16 w-16 mb-3 flex items-center justify-center relative z-10">
+                                                <Image
+                                                    src={tech.logo}
+                                                    alt={tech.name}
+                                                    width={50}
+                                                    height={50}
+                                                    className="object-contain max-h-16 group-hover:scale-105 transition-transform"
                                                     style={{ width: "auto", height: "auto" }}
                                                     loading="lazy"
                                                     sizes="50px"
@@ -736,29 +846,29 @@ export default function Profile() {
                                 {/* Framer Motion Carousel - Segunda linha - animação para esquerda (direção oposta) */}
                                 <motion.div
                                     className="flex gap-8 py-4"
-                                    animate={{ x: [-1920, 0] }}
+                                    animate={{ x: [-1500, 0] }}
                                     transition={{
                                         x: {
                                             repeat: Infinity,
                                             repeatType: "loop",
-                                            duration: 60,
+                                            duration: 70, // Mais lento para melhor performance
                                             ease: "linear",
                                         }
                                     }}
+                                    style={{ willChange: "transform" }} // Otimização de performance
                                 >
-                                    {/* Tecnologias em ordem reversa para variedade visual */}
-                                    {[...technologies, ...technologies].reverse().map((tech, index) => (
+                                    {/* Tecnologias em ordem reversa para variedade visual, com menos duplicações */}
+                                    {[...technologies].reverse().map((tech, index) => (
                                         <motion.div
                                             key={`${tech.name}-reverse-${index}`}
                                             className="flex-shrink-0 w-32 h-32 bg-neutral-900/30 backdrop-blur-sm border border-neutral-800/30 rounded-xl flex flex-col items-center justify-center p-4 relative group"
                                             whileHover={{
-                                                y: -10,
-                                                scale: 1.05,
+                                                y: -5,
+                                                scale: 1.03,
                                                 transition: { duration: 0.2 }
                                             }}
                                         >
-                                            {/* Efeito de brilho ao passar o mouse - simplificado */}
-                                            <div className="absolute inset-0 bg-gradient-to-r from-[#3d43dd]/0 via-[#3d43dd]/30 to-[#3d43dd]/0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                            <div className="absolute inset-0 bg-[#3d43dd]/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
 
                                             <div className="h-16 w-16 mb-3 flex items-center justify-center relative z-10">
                                                 <Image
@@ -766,7 +876,35 @@ export default function Profile() {
                                                     alt={tech.name}
                                                     width={50}
                                                     height={50}
-                                                    className="object-contain max-h-16 group-hover:scale-110 transition-transform"
+                                                    className="object-contain max-h-16 group-hover:scale-105 transition-transform"
+                                                    style={{ width: "auto", height: "auto" }}
+                                                    loading="lazy"
+                                                    sizes="50px"
+                                                />
+                                            </div>
+                                            <p className="text-sm font-medium text-neutral-300 group-hover:text-white transition-colors text-center relative z-10">{tech.name}</p>
+                                        </motion.div>
+                                    ))}
+                                    {/* Adicionando menos itens duplicados */}
+                                    {technologies.slice(0, 8).reverse().map((tech, index) => (
+                                        <motion.div
+                                            key={`${tech.name}-rev-dup-${index}`}
+                                            className="flex-shrink-0 w-32 h-32 bg-neutral-900/30 backdrop-blur-sm border border-neutral-800/30 rounded-xl flex flex-col items-center justify-center p-4 relative group"
+                                            whileHover={{
+                                                y: -5,
+                                                scale: 1.03,
+                                                transition: { duration: 0.2 }
+                                            }}
+                                        >
+                                            <div className="absolute inset-0 bg-[#3d43dd]/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+
+                                            <div className="h-16 w-16 mb-3 flex items-center justify-center relative z-10">
+                                                <Image
+                                                    src={tech.logo}
+                                                    alt={tech.name}
+                                                    width={50}
+                                                    height={50}
+                                                    className="object-contain max-h-16 group-hover:scale-105 transition-transform"
                                                     style={{ width: "auto", height: "auto" }}
                                                     loading="lazy"
                                                     sizes="50px"

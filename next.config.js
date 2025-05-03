@@ -26,12 +26,15 @@ const nextConfig = {
   // Otimização de ReactStrictMode
   reactStrictMode: true,
   experimental: {
+    // Ativando optimizeCss 
     optimizeCss: true,
     // Melhorar o carregamento de módulos
     optimizePackageImports: [
       'framer-motion',
       'react-type-animation'
     ],
+    // Tree shaking avançado
+    optimisticClientCache: true,
   },
   // Configuração de headers para melhorar caching e performance
   async headers() {
@@ -67,8 +70,35 @@ const nextConfig = {
           },
         ],
       },
+      {
+        // Caching para SVGs
+        source: '/images/(grid-pattern|noise-pattern).svg',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      {
+        // Caching para videos
+        source: '/videos/(.*).mp4',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
     ];
   },
 };
 
-module.exports = nextConfig;
+// Adiciona o bundle analyzer em modo de análise
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
+})
+
+module.exports = process.env.ANALYZE === 'true'
+  ? withBundleAnalyzer(nextConfig)
+  : nextConfig;

@@ -6,7 +6,10 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "optimize-video": "node scripts/video-optimizer.js",
+    "optimize-imports": "node scripts/optimize-imports.js",
+    "analyze": "ANALYZE=true next build"
   },
   "dependencies": {
     "@edge-csrf/nextjs": "^2.5.3-cloudflare-rc1",
@@ -32,6 +35,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@next/bundle-analyzer": "^15.3.1",
     "@tailwindcss/postcss": "^4.1.4",
     "@types/node": "^20",
     "@types/react": "^19",
@@ -39,6 +43,7 @@
     "autoprefixer": "^10.4.21",
     "eslint": "^9",
     "eslint-config-next": "15.3.1",
+    "glob": "^10.3.10",
     "tailwindcss": "^4.1.4",
     "typescript": "^5"
   }
