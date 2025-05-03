@@ -15,7 +15,6 @@ interface AdBannerProps {
 export default function AdBanner({ ad, className = '', featured = false }: AdBannerProps) {
     const [isHovered, setIsHovered] = useState(false);
     const linkRef = useRef<HTMLAnchorElement>(null);
-    const [stats, setStats] = useState(ad.stats || { impressions: 0, clicks: 0, conversionRate: 0 });
 
     // Usar o campo featured do anúncio se fornecido
     const isFeatured = ad.featured !== undefined ? ad.featured : featured;
@@ -23,12 +22,11 @@ export default function AdBanner({ ad, className = '', featured = false }: AdBan
     // Efeito para contar uma impressão quando o anúncio é renderizado
     useEffect(() => {
         // Aqui você implementaria a lógica real para registrar impressões
-        // Neste exemplo, apenas atualizamos o estado local
-        setStats(prev => ({
-            ...prev,
-            impressions: (prev.impressions || 0) + 1
-        }));
-    }, []);
+        // Por enquanto, apenas registramos o console para desenvolvimento
+        if (process.env.NODE_ENV === 'development') {
+            console.log(`Ad impression: ${ad.id || 'unknown'}`);
+        }
+    }, [ad.id]);
 
     // Função para verificar se uma string é um código hexadecimal válido
     function isValidHexColor(hex: string): boolean {
@@ -120,12 +118,10 @@ export default function AdBanner({ ad, className = '', featured = false }: AdBan
 
     // Função para clicar no banner inteiro
     const handleBannerClick = () => {
-        // Registrar clique
-        setStats(prev => ({
-            ...prev,
-            clicks: (prev.clicks || 0) + 1,
-            conversionRate: prev.impressions ? ((prev.clicks || 0) + 1) / prev.impressions * 100 : 0
-        }));
+        // Registrar clique para desenvolvimento
+        if (process.env.NODE_ENV === 'development') {
+            console.log(`Ad click: ${ad.id || 'unknown'}`);
+        }
 
         linkRef.current?.click();
     };

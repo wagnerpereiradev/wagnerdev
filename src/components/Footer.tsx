@@ -3,12 +3,14 @@
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { useState } from 'react';
+import { useToast } from '@/components/ui/Toast';
 
 export default function Footer() {
     const currentYear = new Date().getFullYear();
     const [hoveredLink, setHoveredLink] = useState<number | null>(null);
     const [hoveredSocial, setHoveredSocial] = useState<number | null>(null);
     const [emailInput, setEmailInput] = useState('');
+    const { showToast, ToastComponent } = useToast();
 
     const footerLinks = [
         { title: 'Início', href: '#hero' },
@@ -76,6 +78,7 @@ export default function Footer() {
 
     return (
         <footer className="relative py-24 px-4 sm:px-6 lg:px-8 overflow-hidden bg-black">
+            {ToastComponent}
             {/* Fundo moderno com gradiente e partículas */}
             <div className="absolute inset-0 z-0">
                 {/* Gradiente de fundo estilo Apple */}
@@ -376,7 +379,53 @@ export default function Footer() {
                                 </p>
 
                                 {/* Formulário com design moderno */}
-                                <form className="relative z-10">
+                                <form className="relative z-10" onSubmit={async (e) => {
+                                    e.preventDefault();
+
+                                    if (!emailInput || !emailInput.includes('@')) {
+                                        showToast('Por favor, informe um email válido.', 'warning');
+                                        return;
+                                    }
+
+                                    // Estado local para controlar o estado do formulário
+                                    const buttonEl = e.currentTarget.querySelector('button');
+                                    const originalText = buttonEl?.innerHTML || '';
+
+                                    try {
+                                        if (buttonEl) {
+                                            buttonEl.innerHTML = '<svg class="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>';
+                                            buttonEl.disabled = true;
+                                        }
+
+                                        const response = await fetch('/api/newsletter', {
+                                            method: 'POST',
+                                            headers: {
+                                                'Content-Type': 'application/json',
+                                            },
+                                            body: JSON.stringify({ email: emailInput }),
+                                        });
+
+                                        const data = await response.json();
+
+                                        if (!response.ok) {
+                                            throw new Error(data.message || 'Erro ao processar inscrição');
+                                        }
+
+                                        // Sucesso
+                                        setEmailInput('');
+                                        showToast('Inscrição realizada com sucesso! Verifique seu email para confirmar.', 'success');
+
+                                    } catch (error) {
+                                        console.error('Erro ao enviar formulário:', error);
+                                        showToast(error instanceof Error ? error.message : 'Ocorreu um erro ao processar sua inscrição. Tente novamente.', 'error');
+                                    } finally {
+                                        // Restaura o botão
+                                        if (buttonEl) {
+                                            buttonEl.innerHTML = originalText;
+                                            buttonEl.disabled = false;
+                                        }
+                                    }
+                                }}>
                                     <div className="relative">
                                         <input
                                             type="email"

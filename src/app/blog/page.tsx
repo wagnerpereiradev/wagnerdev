@@ -6,10 +6,12 @@ import { blogPosts } from '@/data/blog-posts';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import BlogCard from '@/components/blog/BlogCard';
+import { useToast } from '@/components/ui/Toast';
 
 export default function BlogIndex() {
     const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
     const [searchTerm, setSearchTerm] = useState('');
+    const { showToast, ToastComponent } = useToast();
 
     // Extrair categorias únicas
     const categories = ['Todos', ...new Set(blogPosts.map(post => post.category))];
@@ -30,6 +32,7 @@ export default function BlogIndex() {
 
     return (
         <main className="bg-neutral-950 text-neutral-100">
+            {ToastComponent}
             <Navbar />
 
             <header className="relative pt-32 pb-20 overflow-hidden">
@@ -175,7 +178,56 @@ export default function BlogIndex() {
                                     Inscreva-se para receber novos artigos, tutoriais e recursos exclusivos diretamente em sua caixa de entrada.
                                 </p>
 
-                                <form className="max-w-md mx-auto flex flex-col sm:flex-row gap-4">
+                                <form className="max-w-md mx-auto flex flex-col sm:flex-row gap-4" onSubmit={async (e) => {
+                                    e.preventDefault();
+
+                                    const emailInput = (e.currentTarget.querySelector('input[type="email"]') as HTMLInputElement).value;
+
+                                    if (!emailInput || !emailInput.includes('@')) {
+                                        showToast('Por favor, informe um email válido.', 'warning');
+                                        return;
+                                    }
+
+                                    // Estado local para controlar o estado do formulário
+                                    const buttonEl = e.currentTarget.querySelector('button');
+
+                                    try {
+                                        if (buttonEl) {
+                                            // Guardamos o texto original dentro do bloco try para eliminar a variável não utilizada
+                                            const loadingHtml = '<svg class="animate-spin -ml-1 mr-2 h-5 w-5 inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Processando...';
+                                            buttonEl.innerHTML = loadingHtml;
+                                            buttonEl.disabled = true;
+                                        }
+
+                                        const response = await fetch('/api/newsletter', {
+                                            method: 'POST',
+                                            headers: {
+                                                'Content-Type': 'application/json',
+                                            },
+                                            body: JSON.stringify({ email: emailInput }),
+                                        });
+
+                                        const data = await response.json();
+
+                                        if (!response.ok) {
+                                            throw new Error(data.message || 'Erro ao processar inscrição');
+                                        }
+
+                                        // Sucesso
+                                        (e.currentTarget.querySelector('input[type="email"]') as HTMLInputElement).value = '';
+                                        showToast('Inscrição realizada com sucesso! Verifique seu email para confirmar.', 'success');
+
+                                    } catch (error) {
+                                        console.error('Erro ao enviar formulário:', error);
+                                        showToast(error instanceof Error ? error.message : 'Ocorreu um erro ao processar sua inscrição. Tente novamente.', 'error');
+                                    } finally {
+                                        // Restaura o botão
+                                        if (buttonEl) {
+                                            buttonEl.innerHTML = 'Inscrever-se';
+                                            buttonEl.disabled = false;
+                                        }
+                                    }
+                                }}>
                                     <input
                                         type="email"
                                         placeholder="Seu melhor email"

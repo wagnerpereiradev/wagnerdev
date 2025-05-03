@@ -2,7 +2,7 @@
 const nextConfig = {
   eslint: {
     // Desativando temporariamente para resolver problema de tipagem
-    ignoreDuringBuilds: true,
+    // ignoreDuringBuilds: true,
   },
   images: {
     remotePatterns: [

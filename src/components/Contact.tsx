@@ -2,6 +2,7 @@
 
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 import { useRef, useState, useEffect, useMemo } from 'react';
+import { useToast } from './ui/Toast';
 
 // /**
 //  * Interface that defines the structure of contact methods
@@ -42,6 +43,8 @@ export default function Contact() {
         subject: '',
         message: ''
     });
+
+    const { showToast, ToastComponent } = useToast();
 
     const contactInfo = useMemo(() => [
         {
@@ -224,28 +227,41 @@ export default function Contact() {
 
         // Validation
         if (!formData.name || !formData.email || !formData.message) {
-            alert('Por favor, preencha todos os campos.');
+            showToast('Por favor, preencha todos os campos obrigatórios.', 'warning');
             return;
         }
 
-        // Submit form logic (mock for now)
+        // Submit form logic
         setFormStatus('submitting');
 
         try {
-            // Simulating API call with timeout
-            await new Promise(resolve => setTimeout(resolve, 1500));
+            const response = await fetch('/api/contact', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.message || 'Erro ao enviar mensagem');
+            }
 
             // Success!
             setFormStatus('success');
             setFormData({ name: '', email: '', subject: '', message: '' });
+            showToast('Sua mensagem foi enviada com sucesso! Retornarei em breve.', 'success');
 
             // Reset form after 3 seconds
             setTimeout(() => {
                 setFormStatus('idle');
             }, 3000);
         } catch (error) {
-            console.error('Error submitting form:', error);
+            console.error('Erro ao enviar formulário:', error);
             setFormStatus('error');
+            showToast(error instanceof Error ? error.message : 'Ocorreu um erro ao enviar sua mensagem. Por favor, tente novamente.', 'error');
 
             // Reset error state after 3 seconds
             setTimeout(() => {
@@ -256,6 +272,9 @@ export default function Contact() {
 
     return (
         <section id="contact" className="relative py-32 px-4 sm:px-6 lg:px-8 overflow-hidden">
+            {/* Componente Toast */}
+            {ToastComponent}
+
             {/* Fundo com gradiente mais escuro */}
             <div className="absolute inset-0">
                 <div className="absolute inset-0 bg-gradient-to-b from-black via-black to-neutral-950">

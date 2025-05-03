@@ -1,7 +1,7 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
-import { getAdsByIds, getRandomAdByPosition, getAdById } from '@/data/ads';
+import { useState, useEffect, useRef, useCallback } from 'react';
+import { getRandomAdByPosition, getAdById } from '@/data/ads';
 import AdBanner from './AdBanner';
 import { Ad } from '@/types/ad';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -77,8 +77,21 @@ export default function AdContainer({
         setIsLoaded(true);
     }, [adIds, position, maxAds]);
 
-    // Configurar/limpar intervalos para rotação
-    const setupIntervals = () => {
+    // Limpar intervalos
+    const clearIntervals = useCallback(() => {
+        if (intervalRef.current) {
+            clearInterval(intervalRef.current);
+            intervalRef.current = null;
+        }
+
+        if (countdownRef.current) {
+            clearInterval(countdownRef.current);
+            countdownRef.current = null;
+        }
+    }, []);
+
+    // Configurar/limpar intervalos para rotação - usando useCallback para evitar recriações desnecessárias
+    const setupIntervals = useCallback(() => {
         if (isPaused || ads.length <= 1) return;
 
         // Limpar intervalos existentes
@@ -95,20 +108,7 @@ export default function AdContainer({
         countdownRef.current = setInterval(() => {
             setRemainingTime(prev => Math.max(0, prev - 1));
         }, 1000);
-    };
-
-    // Limpar intervalos
-    const clearIntervals = () => {
-        if (intervalRef.current) {
-            clearInterval(intervalRef.current);
-            intervalRef.current = null;
-        }
-
-        if (countdownRef.current) {
-            clearInterval(countdownRef.current);
-            countdownRef.current = null;
-        }
-    };
+    }, [isPaused, ads.length, rotationInterval, clearIntervals]);
 
     // Efeito para rotação automática de anúncios
     useEffect(() => {
@@ -120,7 +120,7 @@ export default function AdContainer({
 
         // Limpar intervalos quando o componente for desmontado
         return clearIntervals;
-    }, [ads.length, rotationInterval, currentAdIndex, isPaused]);
+    }, [ads.length, rotationInterval, currentAdIndex, isPaused, setupIntervals, clearIntervals]);
 
     // Mudar para um anúncio específico
     const handleIndicatorClick = (index: number) => {

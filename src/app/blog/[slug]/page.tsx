@@ -2,8 +2,8 @@ import { Metadata } from 'next';
 import { getPostBySlug } from '@/data/blog-posts';
 import ClientBlogPost from '@/components/blog/ClientBlogPost';
 
-// @ts-ignore - Contornando problema de tipagem com Next.js 15.3.1
-export async function generateMetadata({ params }: any): Promise<Metadata> {
+// @ts-expect-error - TypeScript não reconhece corretamente a assinatura do Next.js para páginas dinâmicas
+export async function generateMetadata({ params }): Promise<Metadata> {
     // Aguardando os parâmetros conforme requerido pelo Next.js 15
     const resolvedParams = await params;
     const slug = resolvedParams.slug;
@@ -48,8 +48,8 @@ export async function generateMetadata({ params }: any): Promise<Metadata> {
     };
 }
 
-// @ts-ignore - Contornando problema de tipagem com Next.js 15.3.1
-export default async function Page({ params }: any) {
+// @ts-expect-error - TypeScript não reconhece corretamente a assinatura do Next.js para páginas dinâmicas
+export default async function Page({ params }) {
     // Aguardando os parâmetros conforme requerido pelo Next.js 15
     const resolvedParams = await params;
     return <ClientBlogPost slug={resolvedParams.slug} />;
