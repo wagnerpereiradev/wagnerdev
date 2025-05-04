@@ -298,7 +298,7 @@ export default function Profile() {
                             >
                                 <div className="absolute inset-0 bg-gradient-to-tl from-[#3d43dd]/20 via-transparent to-transparent mix-blend-overlay z-10" />
                                 <Image
-                                    src="https://avatars.githubusercontent.com/u/99822078?v=4"
+                                    src="/images/wagner-portait.png"
                                     alt="Foto do perfil"
                                     fill
                                     sizes="(max-width: 640px) 224px, (max-width: 768px) 256px, 320px"
