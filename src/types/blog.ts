@@ -4,6 +4,13 @@ export interface Author {
     avatar_url?: string;
 }
 
+// Cores do tema para uso consistente em toda a aplicação
+export const THEME_COLORS = {
+    primary: '#3d43dd',
+    primaryLight: '#777bed',
+    secondary: '#6366f1'
+};
+
 export interface ImageMetadata {
     alt: string;
     caption?: string;
@@ -23,6 +30,12 @@ export interface SocialLinks {
     twitter?: string;
     website?: string;
     instagram?: string;
+}
+
+export interface Source {
+    title: string;
+    url: string;
+    accessed: string;
 }
 
 export interface MarkdownBlock {
@@ -84,4 +97,6 @@ export interface BlogPost {
     body: ContentBlock[];
     /** IDs dos anúncios que devem aparecer neste post */
     ads?: string[];
+    /** Fontes do artigo com título, URL e data de acesso */
+    sources?: Source[];
 } 

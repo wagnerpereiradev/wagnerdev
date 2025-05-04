@@ -2,6 +2,80 @@ import { BlogPost } from '@/types/blog';
 
 export const blogPosts: BlogPost[] = [
     {
+        headline: "IA no e-commerce: eficiência sem drama e vitrine sob medida",
+        slug: "ia-no-ecommerce-eficiencia-personalizacao",
+        author: {
+            name: "Wagner Pereira",
+            profile_url: "https://instagram.com/wagnerai.me",
+            avatar_url: "/images/authors/certified-wagner.png"
+        },
+        date: "2025-05-04T05:10:00Z",
+        category: "E-commerce",
+        tags: ["ecommerce", "ia", "tecnologia", "logistica", "personalizacao"],
+        cover_image: {
+            url: "/images/blog/ia-eccomerce-cover.png",
+            alt: "Imagem Abstrata de IA com escrita AI",
+            caption: "Imagem gerada por GPT 4o"
+        },
+        reading_time: "5 min",
+        summary: "Da vitrine que entende seu gosto à entrega que chega antes da notificação: veja por que a IA virou item obrigatório no carrinho das lojas on-line — e o recado reto do CEO da Shopify para quem ainda está dormindo.",
+        social: {
+            linkedin: "https://linkedin.com/in/owrp",
+            github: "https://github.com/wagnerpereiradev",
+            twitter: "https://x.com/wagnerdvlpr",
+            instagram: "https://instagram.com/wagnerai.me",
+        },
+        ads: ['wagnerdev'],
+        "body": [
+            {
+                type: "markdown",
+                "content": "## IA no e-commerce: eficiência sem drama e vitrine sob medida\n\nSe ainda parece hype, espere até ver o impacto nos números — é jogo virado."
+            },
+            {
+                type: "markdown",
+                "content": "### Onde estamos\n\nO e-commerce brasileiro faturou **R$ 204 bi em 2024** e deve bater **R$ 234,9 bi em 2025**, com ticket médio previsto de **R$ 539,28**."
+            },
+            {
+                type: "markdown",
+                "content": "### IA é o novo frete grátis (só que melhor)\n\n1. **Vitrine que vende** – Algoritmos de recomendação comparam histórico de compras, cliques e contexto em tempo real para mostrar o produto certo na hora certa. Resultado: mais conversão e ticket médio maior.\n2. **Logística que adivinha** – Modelos preditivos antecipam demanda, traçam rotas e reduzem estoque encalhado. Menos custo no *last-mile* e entregas mais rápidas.\n3. **Atendimento 24/7 que não cansa** – Chatbots treinados em LLMs já resolvem até **79 %** das perguntas básicas sem escalar para um humano. Cliente contente, CAC lá embaixo.\n4. **Operação enxuta** – IA gera descrição de produto, ajusta preço em tempo real, detecta fraude e faz cadastro automático. Menos tarefas repetitivas, mais gente focada em crescimento."
+            },
+            {
+                type: "markdown",
+                "content": "### O recado direto de Tobi Lütke (Shopify)\n\nO CEO da Shopify enviou um memorando com o título **“Usar IA não é bônus, é requisito”**. Três pontos diretos:\n\n* **Métrica de performance** – todo dev, designer e PM agora é avaliado por quanto incorpora IA no dia a dia.\n* **MVP *AI-first*** – nenhum protótipo ganha orçamento se não apontar onde a IA entra.\n* **Compartilhamento de prompts** – achou um prompt que resolve? Espalha pra equipe.\n\n> “Antes de pedir mais gente, prove que a IA não resolve.” – **Tobi, sem rodeios.**"
+            },
+            {
+                type: "markdown",
+                "content": "### Checklist rápido para quem quer começar já\n\n| Objetivo | Ferramenta indicada | Indicador-chave |\n|---|---|---|\n| Recomendação de produtos | Algolia Recommend / AWS Personalize | + conversão, + ticket médio |\n| Precificação dinâmica | Feedzai ou modelo próprio | Margem ↑, rupturas ↓ |\n| Chat 24/7 | ChatGPT Assistants + FAQ | CSAT > 85 %, tempo de resposta < 30 s |\n| Planejamento de estoque | Prophet + dados do ERP | OTIF ↑, giro de estoque ↑ |\n| Conteúdo automático | Shopify Magic / Jasper | Upload de novo item < 5 min |\n\nComece pequeno: escolha um produto campeão, rode A/B e só escale depois que o ROI aparecer."
+            },
+            {
+                type: "markdown",
+                "content": "### O que vem agora\n\nLá fora a IA já é padrão; aqui ainda tem muita operação manual. Quem adotar primeiro leva a medalha (e o faturamento). Se 2024 foi o ano das POCs, **2025 é o ano da produção**.\n\n**Moral da história:** ou você coloca a IA para trabalhar na sua loja, ou seu concorrente coloca — e ainda entrega mais rápido. Decida logo."
+            }
+        ],
+        sources: [
+            {
+                title: "ABComm – E-commerce pode faturar perto de R$ 235 bilhões em 2025",
+                url: "https://www.ecommercebrasil.com.br/noticias/e-commerce-pode-faturar-perto-de-r-235-bilhoes-em-2025",
+                accessed: "2025-05-04"
+            },
+            {
+                title: "ABComm – E-commerce brasileiro fatura R$ 204,3 bilhões em 2024",
+                url: "https://www.ecommercebrasil.com.br/noticias/e-commerce-resultados-2024-brasil-abcomm",
+                accessed: "2025-05-04"
+            },
+            {
+                title: "The Verge – Shopify CEO says no new hires without proof AI can’t do the job",
+                url: "https://www.theverge.com/news/644943/shopify-ceo-memo-ai-hires-job",
+                accessed: "2025-05-04"
+            },
+            {
+                title: "Botpress – Key Chatbot Statistics for 2025",
+                url: "https://botpress.com/blog/key-chatbot-statistics",
+                accessed: "2025-05-04"
+            }
+        ]
+    },
+    {
         headline: "GPT-4o e o Efeito Bajulador: Quando a IA para de pensar e só quer agradar",
         slug: "gpt-4o-efeito-bajulador-ia-agradar",
         author: {

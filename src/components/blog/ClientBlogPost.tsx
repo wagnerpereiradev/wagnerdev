@@ -205,6 +205,77 @@ export default function ClientBlogPost({ slug }: ClientBlogPostProps) {
             <div ref={contentRef} className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
                 <ContentRenderer blocks={post.body} />
 
+                {/* Exibir fontes se disponíveis */}
+                {post.sources && post.sources.length > 0 && (
+                    <div className="mt-16 border-t border-neutral-800 pt-8">
+                        <h3 className="text-xl font-bold mb-6 flex items-center gap-2">
+                            <svg className="w-5 h-5 text-[#777bed]" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 6.25278V19.2528M12 6.25278C10.8321 5.47686 9.24649 5 7.5 5C5.75351 5 4.16789 5.47686 3 6.25278V19.2528C4.16789 18.4769 5.75351 18 7.5 18C9.24649 18 10.8321 18.4769 12 19.2528M12 6.25278C13.1679 5.47686 14.7535 5 16.5 5C18.2465 5 19.8321 5.47686 21 6.25278V19.2528C19.8321 18.4769 18.2465 18 16.5 18C14.7535 18 13.1679 18.4769 12 19.2528"
+                                    stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                            </svg>
+                            <span>Referências bibliográficas</span>
+                        </h3>
+                        <div className="bg-neutral-900/50 backdrop-blur-sm border border-neutral-800 rounded-xl p-5">
+                            <ul className="space-y-4">
+                                {post.sources.map((source, index) => {
+                                    // Extrair o domínio da URL para exibição
+                                    const url = new URL(source.url);
+                                    const domain = url.hostname.replace('www.', '');
+                                    // Formatar data
+                                    const formattedDate = new Date(source.accessed).toLocaleDateString('pt-BR');
+
+                                    return (
+                                        <li key={`source-${index}`} className="group pt-4 first:pt-0">
+                                            <div className="flex items-start">
+                                                <span className="flex-shrink-0 flex items-center justify-center w-7 h-7 rounded-full bg-neutral-800 text-neutral-300 text-sm font-medium mr-3">
+                                                    {index + 1}
+                                                </span>
+                                                <div className="flex-1">
+                                                    <a
+                                                        href={source.url}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        className="font-medium text-neutral-200 group-hover:text-[#777bed] transition-colors inline-flex items-center"
+                                                    >
+                                                        {source.title}
+                                                    </a>
+                                                    <div className="flex flex-wrap items-center mt-1 text-sm text-neutral-500 gap-2">
+                                                        <span className="bg-neutral-800 px-2 py-0.5 rounded-full text-neutral-400 text-xs flex items-center gap-1">
+                                                            <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"
+                                                                    stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                                            </svg>
+                                                            {domain}
+                                                        </span>
+                                                        <span className="flex items-center gap-1">
+                                                            <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M8 7V3M16 7V3M7 11H17M5 21H19C20.1046 21 21 20.1046 21 19V7C21 5.89543 20.1046 5 19 5H5C3.89543 5 3 5.89543 3 7V19C3 20.1046 3.89543 21 5 21Z"
+                                                                    stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                                            </svg>
+                                                            <time dateTime={source.accessed}>{formattedDate}</time>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <a
+                                                    href={source.url}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="ml-2 p-2 rounded-lg text-neutral-400 group-hover:text-white group-hover:bg-[#777bed]/10 transition-all"
+                                                >
+                                                    <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M10 6H6C4.89543 6 4 6.89543 4 8V18C4 19.1046 4.89543 20 6 20H16C17.1046 20 18 19.1046 18 18V14M14 4H20M20 4V10M20 4L10 14"
+                                                            stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                                    </svg>
+                                                </a>
+                                            </div>
+                                        </li>
+                                    );
+                                })}
+                            </ul>
+                        </div>
+                    </div>
+                )}
+
                 {/* Botões de compartilhamento e autor */}
                 <div className="mt-16 sm:mt-20 border-t border-neutral-800 pt-8">
                     <ShareButtons
