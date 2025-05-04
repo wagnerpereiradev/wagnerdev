@@ -13,7 +13,7 @@ export const blogPosts: BlogPost[] = [
         category: "E-commerce",
         tags: ["ecommerce", "ia", "tecnologia", "logistica", "personalizacao"],
         cover_image: {
-            url: "/images/blog/ia-eccomerce-cover.png",
+            url: "https://wagnerai.me/images/blog/ia-eccomerce-cover.png",
             alt: "Imagem Abstrata de IA com escrita AI",
             caption: "Imagem gerada por GPT 4o"
         },
