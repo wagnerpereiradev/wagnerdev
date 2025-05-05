@@ -30,6 +30,17 @@ export const metadata: Metadata = {
   robots: {
     index: true,
     follow: true,
+    nocache: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  alternates: {
+    canonical: 'https://wagnerai.me'
   },
   openGraph: {
     type: 'website',
@@ -54,6 +65,9 @@ export const metadata: Metadata = {
     creator: '@wagnerpereiradev',
     images: ['/images/og-image.png'],
   },
+  verification: {
+    google: 'adicione-seu-codigo-de-verificacao-google',
+  }
 };
 
 export const viewport: Viewport = {

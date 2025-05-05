@@ -7,6 +7,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import BlogCard from '@/components/blog/BlogCard';
 import { useToast } from '@/components/ui/Toast';
+import { ContentBlock } from '@/types/blog';
 
 export default function BlogIndex() {
     const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
@@ -19,15 +20,40 @@ export default function BlogIndex() {
     // Ordenar posts por data (do mais recente para o mais antigo)
     const sortedPosts = [...blogPosts].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
+    // Função auxiliar para buscar texto no conteúdo do post
+    const searchInContent = (blocks: ContentBlock[], term: string): boolean => {
+        const lowerTerm = term.toLowerCase();
+        return blocks.some(block => {
+            if (block.type === 'markdown') {
+                return block.content.toLowerCase().includes(lowerTerm);
+            }
+            if (block.type === 'code') {
+                return block.content.toLowerCase().includes(lowerTerm);
+            }
+            return false;
+        });
+    };
+
     // Filtrar posts com base na categoria e pesquisa
     const filteredPosts = sortedPosts.filter(post => {
         const matchesCategory = !selectedCategory || selectedCategory === 'Todos' || post.category === selectedCategory;
-        const matchesSearch = searchTerm === '' ||
+
+        // Se não há termo de busca, apenas verifica a categoria
+        if (searchTerm === '') {
+            return matchesCategory;
+        }
+
+        // Busca principal nos metadados
+        const matchesMetadata =
             post.headline.toLowerCase().includes(searchTerm.toLowerCase()) ||
             post.summary.toLowerCase().includes(searchTerm.toLowerCase()) ||
             post.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()));
 
-        return matchesCategory && matchesSearch;
+        // Busca no conteúdo do corpo do post
+        const matchesContent = searchInContent(post.body, searchTerm);
+
+        // Post corresponde se está na categoria selecionada e encontrou o termo em qualquer lugar
+        return matchesCategory && (matchesMetadata || matchesContent);
     });
 
     return (
@@ -123,7 +149,7 @@ export default function BlogIndex() {
                         <div className="relative w-full md:w-auto">
                             <input
                                 type="text"
-                                placeholder="Buscar artigos..."
+                                placeholder="Buscar em todo o conteúdo..."
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
                                 className="w-full md:w-64 px-4 py-2 pl-10 bg-neutral-900/50 border border-neutral-800/50 rounded-lg text-white focus:border-[#3d43dd]/50 focus:outline-none focus:ring-1 focus:ring-[#3d43dd]/30"

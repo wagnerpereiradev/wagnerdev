@@ -1,0 +1,85 @@
+{
+    "@context": "https://schema.org",
+    "@graph": [
+        {
+            "@type": "WebSite",
+            "@id": "https://wagnerai.me/#website",
+            "url": "https://wagnerai.me",
+            "name": "Wagner Pereira - Desenvolvedor Full Stack",
+            "description": "Desenvolvedor Full Stack especializado em criar experiências digitais modernas.",
+            "potentialAction": [
+                {
+                    "@type": "SearchAction",
+                    "target": {
+                        "@type": "EntryPoint",
+                        "urlTemplate": "https://wagnerai.me/blog?s={search_term_string}"
+                    },
+                    "query-input": "required name=search_term_string"
+                }
+            ],
+            "inLanguage": "pt-BR"
+        },
+        {
+            "@type": "Person",
+            "@id": "https://wagnerai.me/#person",
+            "name": "Wagner Pereira",
+            "image": {
+                "@type": "ImageObject",
+                "@id": "https://wagnerai.me/#personImage",
+                "inLanguage": "pt-BR",
+                "url": "https://wagnerai.me/images/profile.jpg",
+                "contentUrl": "https://wagnerai.me/images/profile.jpg",
+                "caption": "Wagner Pereira"
+            },
+            "description": "Desenvolvedor Full Stack especializado em criar experiências digitais modernas.",
+            "sameAs": [
+                "https://github.com/wagnerpereiradev",
+                "https://linkedin.com/in/owrp",
+                "https://instagram.com/wagnerai.me",
+                "https://x.com/wagnerdvlpr"
+            ],
+            "jobTitle": "Desenvolvedor Full Stack",
+            "worksFor": {
+                "@type": "Organization",
+                "name": "Wagner Pereira Dev"
+            },
+            "url": "https://wagnerai.me"
+        },
+        {
+            "@type": "WebPage",
+            "@id": "https://wagnerai.me/#webpage",
+            "url": "https://wagnerai.me",
+            "name": "Wagner Pereira | Desenvolvedor Full Stack",
+            "isPartOf": {
+                "@id": "https://wagnerai.me/#website"
+            },
+            "about": {
+                "@id": "https://wagnerai.me/#person"
+            },
+            "description": "Desenvolvedor Full Stack especializado em criar experiências digitais modernas.",
+            "breadcrumb": {
+                "@id": "https://wagnerai.me/#breadcrumb"
+            },
+            "inLanguage": "pt-BR",
+            "potentialAction": [
+                {
+                    "@type": "ReadAction",
+                    "target": [
+                        "https://wagnerai.me"
+                    ]
+                }
+            ]
+        },
+        {
+            "@type": "BreadcrumbList",
+            "@id": "https://wagnerai.me/#breadcrumb",
+            "itemListElement": [
+                {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": "Home"
+                }
+            ]
+        }
+    ]
+}

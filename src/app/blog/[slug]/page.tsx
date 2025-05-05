@@ -1,6 +1,13 @@
 import { Metadata } from 'next';
-import { getPostBySlug } from '@/data/blog-posts';
+import { getPostBySlug, getAllPostsSlugs } from '@/data/blog-posts';
 import ClientBlogPost from '@/components/blog/ClientBlogPost';
+import { notFound } from 'next/navigation';
+
+// Função para gerar os caminhos estáticos em tempo de build
+export async function generateStaticParams() {
+    const slugs = getAllPostsSlugs();
+    return slugs.map(slug => ({ slug }));
+}
 
 // @ts-expect-error - TypeScript não reconhece corretamente a assinatura do Next.js para páginas dinâmicas
 export async function generateMetadata({ params }): Promise<Metadata> {
@@ -16,13 +23,18 @@ export async function generateMetadata({ params }): Promise<Metadata> {
         };
     }
 
+    const postUrl = `https://wagnerai.me/blog/${post.slug}`;
+
     return {
         title: `${post.headline} | Wagner Pereira`,
         description: post.summary,
+        alternates: {
+            canonical: postUrl,
+        },
         openGraph: {
             title: post.headline,
             description: post.summary,
-            url: `https://wagnerai.me/blog/${post.slug}`,
+            url: postUrl,
             siteName: 'Wagner Pereira - Desenvolvedor Full Stack',
             images: [
                 {
@@ -64,9 +76,24 @@ export async function generateMetadata({ params }): Promise<Metadata> {
     };
 }
 
-// @ts-expect-error - TypeScript não reconhece corretamente a assinatura do Next.js para páginas dinâmicas
-export default async function Page({ params }) {
-    // Aguardando os parâmetros conforme requerido pelo Next.js 15
+interface PageProps {
+    params: Promise<{
+        slug: string;
+    }>;
+}
+
+export default async function Page({ params }: PageProps) {
+    // Aguardar a resolução dos parâmetros antes de usá-los
     const resolvedParams = await params;
-    return <ClientBlogPost slug={resolvedParams.slug} />;
+    const { slug } = resolvedParams;
+
+    // Verificar se o post existe
+    const post = getPostBySlug(slug);
+
+    // Se o post não existir, retornar 404
+    if (!post) {
+        notFound();
+    }
+
+    return <ClientBlogPost slug={slug} />;
 } 

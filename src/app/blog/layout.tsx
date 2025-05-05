@@ -3,6 +3,10 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
     title: "Blog | Wagner Pereira - Desenvolvedor Full Stack",
     description: "Artigos, tutoriais e dicas sobre desenvolvimento web, programação, design e muito mais.",
+    keywords: "blog, desenvolvimento web, programação, tecnologia, dicas, tutoriais, nextjs, react, javascript, typescript",
+    alternates: {
+        canonical: "https://wagnerai.me/blog",
+    },
     openGraph: {
         title: "Blog | Wagner Pereira - Desenvolvedor Full Stack",
         description: "Artigos, tutoriais e dicas sobre desenvolvimento web, programação, design e muito mais.",
