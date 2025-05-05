@@ -97,39 +97,34 @@ export const blogPosts: BlogPost[] = [
         ],
         sources: [
             {
-                title: 'The Business Value of AI Agents: 2025 Outlook Report',
-                url: 'https://www.mckinsey.com/capabilities/quantumblack/our-insights/the-business-value-of-ai-agents-2025-outlook',
-                accessed: '2025-05-04'
+                title: 'Agentes de IA em 2025: expectativas vs. realidade',
+                url: 'https://www.ibm.com/br-pt/think/insights/ai-agents-2025-expectations-vs-reality',
+                accessed: '2025-05-05'
             },
             {
                 title: 'Transform work with autonomous agents across your business processes',
                 url: 'https://www.microsoft.com/en-us/dynamics-365/blog/business-leader/2024/10/21/transform-work-with-autonomous-agents-across-your-business-processes/',
-                accessed: '2025-05-03'
+                accessed: '2025-05-05'
             },
             {
-                title: 'The Future of Work: Human-AI Collaboration Framework',
-                url: 'https://hbr.org/2025/03/the-future-of-work-human-ai-collaboration-framework',
-                accessed: '2025-05-02'
+                title: '5 top business use cases for AI agents',
+                url: 'https://www.cio.com/article/3843379/5-top-business-use-cases-for-ai-agents.html',
+                accessed: '2025-05-05'
             },
             {
-                title: 'Autonomous AI Agents: Enterprise Implementation Playbook',
-                url: 'https://www.gartner.com/en/documents/autonomous-ai-agents-enterprise-implementation',
-                accessed: '2025-05-01'
+                title: '15 Examples & Use Cases of AI Agents in 2025',
+                url: 'http://team-gpt.com/blog/ai-agents-examples/',
+                accessed: '2025-05-05'
             },
             {
-                title: 'The State of AI Agents in 2025',
-                url: 'https://www.ibm.com/br-pt/think/insights/ai-agents-2025-state-of-the-industry',
-                accessed: '2025-04-30'
+                title: 'Top AI Agent Frameworks in 2025 – LangChain, AutoGen & CrewAI',
+                url: 'https://medium.com/@elisowski/top-ai-agent-frameworks-in-2025-9bcedab2e239',
+                accessed: '2025-05-05'
             },
             {
-                title: 'Breakthrough AI Agent Frameworks: Technical Comparison',
-                url: 'https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4587392',
-                accessed: '2025-04-28'
-            },
-            {
-                title: 'Ethical Guidelines for Autonomous Agent Deployment',
-                url: 'https://www.weforum.org/publications/ethical-guidelines-autonomous-agents-2025',
-                accessed: '2025-04-25'
+                title: 'AI Agent Frameworks You Should Know in 2025',
+                url: 'https://www.linkedin.com/pulse/ai-agent-frameworks-you-should-know-2025-mishita-maggo-0uxve',
+                accessed: '2025-05-05'
             }
         ]
     },
