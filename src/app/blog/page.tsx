@@ -106,7 +106,7 @@ export default function BlogIndex() {
                         </span>
                         {" "}
                         <span className="relative inline-block">
-                            Técnico
+                            Trendbyte
                             <div className="absolute -bottom-2 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#3d43dd]/50 to-transparent"></div>
                         </span>
                     </motion.h1>
