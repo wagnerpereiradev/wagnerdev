@@ -1,6 +1,0 @@
-User-agent: *
-Allow: /
-Allow: /_next/
-Disallow: /api/
-
-Sitemap: https://wagnerai.me/sitemap.xml 
