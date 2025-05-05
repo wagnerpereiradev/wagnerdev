@@ -8,7 +8,7 @@ export const ads: Ad[] = [
         id: 'perrin',
         title: 'PerrinXisZ no YouTube',
         description: 'Live todos os dias as 18 até as 22!',
-        imageUrl: 'https://yt3.googleusercontent.com/jYJgQnyugcTkol1u0w2INgVgx_peJywMx2FIIJANNm1xj5ILN62YJ1QGQ3TiNW9QJa78gBaOaw=s160-c-k-c0x00ffffff-no-rj',
+        imageUrl: 'https://yt3.googleusercontent.com/nEd2sdGUo2I-0NUXaTi6I5f4AWKppflEagwFOoTABUL4DmOpt_YQwjqclNLOy93DLz5sDaqef3w=s160-c-k-c0x00ffffff-no-rj',
         alt: 'PerrinXisZ no YouTube',
         cta: 'Inscreva-se',
         link: 'https://www.youtube.com/@perrinxisz',
