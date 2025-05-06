@@ -8,6 +8,11 @@ export default function robots(): MetadataRoute.Robots {
                 allow: '/',
                 disallow: ['/api/'],
             },
+            {
+                // Permitir acesso explícito aos arquivos de favicon
+                userAgent: 'Googlebot-Image',
+                allow: ['/favicon.ico', '/favicon-*.png', '/android-chrome-*.png', '/apple-touch-icon.png'],
+            },
         ],
         sitemap: [
             'https://wagnerai.me/sitemap.xml',

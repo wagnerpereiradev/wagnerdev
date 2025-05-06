@@ -67,7 +67,28 @@ export const metadata: Metadata = {
   },
   verification: {
     google: 'adicione-seu-codigo-de-verificacao-google',
-  }
+  },
+  icons: {
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+    ],
+    apple: [
+      { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
+    ],
+    other: [
+      {
+        rel: 'mask-icon',
+        url: '/android-chrome-192x192.png',
+        color: '#3d43dd', // Cor principal do seu site
+      },
+      {
+        rel: 'shortcut icon',
+        url: '/favicon.ico',
+      },
+    ],
+  },
 };
 
 export const viewport: Viewport = {
@@ -95,11 +116,7 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="https://api.dicebear.com" />
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
 
-        {/* Favicons e ícones */}
-        <link rel="icon" href="/favicon.ico" sizes="any" />
-        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+        {/* Favicons e ícones - removidos pois estão configurados no metadata */}
         <link rel="manifest" href="/site.webmanifest" />
         <meta name="msapplication-TileColor" content="#3d43dd" />
         <meta name="theme-color" content="#0F0F0F" />
