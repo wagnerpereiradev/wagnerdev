@@ -9,6 +9,10 @@ export default function robots(): MetadataRoute.Robots {
                 disallow: ['/api/'],
             },
         ],
-        sitemap: 'https://wagnerai.me/sitemap.xml',
+        sitemap: [
+            'https://wagnerai.me/sitemap.xml',
+            'https://wagnerai.me/sitemap-blogs.xml',
+            'https://wagnerai.me/sitemap-images.xml'
+        ],
     };
 } 

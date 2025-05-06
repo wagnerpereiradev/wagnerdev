@@ -1,7 +1,18 @@
-import { MetadataRoute } from 'next';
-import { getAllPostsSlugs } from '@/data/blog-posts';
+import { getAllPostsSlugs, getPostBySlug } from '@/data/blog-posts';
 
-export default function sitemap(): MetadataRoute.Sitemap {
+// Interface estendida para permitir imagens
+type SitemapEntry = {
+    url: string;
+    lastModified?: string | Date;
+    // Propriedade para imagens (será serializada no XML pela API do Next.js)
+    images?: Array<{
+        loc: string;
+        title?: string;
+        caption?: string;
+    }>;
+};
+
+export default function sitemap(): Array<SitemapEntry> {
     const baseUrl = 'https://wagnerai.me';
 
     // URLs estáticas
@@ -9,25 +20,36 @@ export default function sitemap(): MetadataRoute.Sitemap {
         {
             url: baseUrl,
             lastModified: new Date(),
-            changeFrequency: 'weekly' as const,
-            priority: 1.0,
         },
         {
             url: `${baseUrl}/blog`,
             lastModified: new Date(),
-            changeFrequency: 'daily' as const,
-            priority: 0.9,
         },
     ];
 
-    // URLs dos posts do blog
+    // URLs dos posts do blog com imagens
     const blogSlugs = getAllPostsSlugs();
-    const blogUrls = blogSlugs.map(slug => ({
-        url: `${baseUrl}/blog/${slug}`,
-        lastModified: new Date(),
-        changeFrequency: 'monthly' as const,
-        priority: 0.8,
-    }));
+    const blogUrls = blogSlugs.map(slug => {
+        const post = getPostBySlug(slug);
+        const entry: SitemapEntry = {
+            url: `${baseUrl}/blog/${slug}`,
+            lastModified: post?.date ? new Date(post.date) : new Date(),
+        };
+
+        // Adicionar a imagem de capa, se existir
+        if (post?.cover_image?.url) {
+            entry.images = [
+                {
+                    loc: post.cover_image.url.startsWith('http')
+                        ? post.cover_image.url
+                        : `${baseUrl}${post.cover_image.url}`,
+                    title: post.cover_image.alt || post.headline,
+                }
+            ];
+        }
+
+        return entry;
+    });
 
     return [...staticUrls, ...blogUrls];
 } 
