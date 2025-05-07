@@ -44,7 +44,7 @@ export const blogPosts: BlogPost[] = [
             },
             {
                 type: 'img',
-                url: '/images/blog/nodes-robots.png',
+                url: 'https://wagnerai.me/images/blog/nodes-robots.png',
                 metadata: {
                     alt: 'Rede neural representando comunicação entre agentes autônomos',
                     caption: 'A emergente "Internet de Bots" já processa mais mensagens LLM↔LLM diariamente que muitas intranets corporativas.',
