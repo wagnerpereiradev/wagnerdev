@@ -2,6 +2,118 @@ import { BlogPost } from '@/types/blog';
 
 export const blogPosts: BlogPost[] = [
     {
+        headline: "One-Shot Prompting: Compare Modelos de IA em Uma Única Tacada",
+        slug: "one-shot-prompting-comparar-modelos",
+        author: {
+            name: "Wagner Pereira",
+            profile_url: "https://instagram.com/wagnerai.me",
+            avatar_url: "/images/authors/certified-wagner.png"
+        },
+        date: "2025-05-07T10:00:00-03:00",
+        category: "Prompt Engineering",
+        tags: [
+            "prompt engineering",
+            "llm",
+            "in-context learning",
+            "one-shot",
+            "benchmark",
+            "comparação de modelos",
+            "avaliação de IA"
+        ],
+        cover_image: {
+            url: "https://wagnerai.me/images/blog/one-shot-prompt-wagnerai-me-blog-trendbyte.png",
+            alt: "Ilustração de um alvo com uma única flecha representando one-shot prompting",
+            caption: "Imagem gerada por GPT-4o"
+        },
+        reading_time: "8 min",
+        summary: "Descubra como utilizar a técnica de One-Shot Prompting para avaliar múltiplos modelos de IA simultaneamente, identificar qual generaliza melhor e economizar tokens de forma inteligente.",
+        social: {
+            linkedin: "https://linkedin.com/in/owrp",
+            github: "https://github.com/wagnerpereiradev",
+            twitter: "https://x.com/wagnerdvlpr",
+            instagram: "https://instagram.com/wagnerai.me"
+        },
+        ads: [
+            "wagnerdev"
+        ],
+        body: [
+            {
+                type: "markdown",
+                content: "## One-Shot Prompting: Compare Modelos de IA em Uma Única Tacada\n\nPrecisa descobrir rapidamente qual LLM entrega melhores resultados para seu caso de uso? Não tem tempo para construir benchmarks complexos? A técnica de One-Shot Prompting pode ser exatamente o que você precisa. Vamos direto ao ponto:"
+            },
+            {
+                type: "markdown",
+                content: "### O que é One-Shot Prompting\n\nOne-Shot Prompting é uma variante poderosa do **In-Context Learning (ICL)** onde você fornece **apenas um** par de \"entrada ➜ saída\" como exemplo antes da sua solicitação real. Em vez de gastar recursos com fine-tuning ou construir prompts complexos com múltiplos exemplos, você ensina o modelo com uma única demonstração clara do que espera.\n\nEsta abordagem funciona porque os LLMs modernos conseguem generalizar padrões a partir de exemplos mínimos, o que os pesquisadores chamam de 'aprendizado por exemplificação' (exemplar learning)."
+            },
+            {
+                type: "markdown",
+                content: "### Por que One-Shot é Perfeito para Comparação de Modelos\n\n* **Equalização do campo de testes** - Todos os modelos recebem exatamente o mesmo prompt com o mesmo exemplo, eliminando variáveis que poderiam contaminar os resultados.\n\n* **Equilíbrio ideal** - Oferece mais contexto que zero-shot (sem exemplos) e menos viés que few-shot (múltiplos exemplos). Este ponto médio frequentemente revela a verdadeira capacidade de generalização do modelo.\n\n* **Eficiência de recursos** - Economiza significativamente em tokens comparado a abordagens few-shot, permitindo executar dezenas ou centenas de testes sem explodir seu orçamento de API.\n\n* **Simplicidade metodológica** - Facilita a reprodução dos experimentos e a comparação direta entre modelos, até mesmo para equipes sem especialistas em IA."
+            },
+            {
+                type: "markdown",
+                content: "### Metodologia: Passo a Passo Detalhado\n\n1. **Escolha a tarefa certa** - Funciona melhor para classificação, extração de informações, tradução, geração de conteúdo curto ou tarefas bem definidas. Evite tarefas muito complexas ou subjetivas.\n\n2. **Desenvolva o exemplo-semente (seed)** - Este é o elemento mais crítico. Crie um único exemplo cristalino que:\n   - Demonstre claramente o formato da resposta esperada\n   - Seja representativo das entradas reais que você testará\n   - Contenha informações suficientes para definir a tarefa sem ambiguidade\n\n3. **Configure os parâmetros corretamente** - Para benchmarks confiáveis:\n   - Defina `temperature: 0` para maximizar determinismo\n   - Mantenha `top_p` nos valores padrão\n   - Fixe o `max_tokens` em um valor adequado para sua tarefa\n   - Registre e mantenha constantes todos os hiperparâmetros entre modelos\n\n4. **Defina métricas relevantes** - Selecione métricas que façam sentido para sua tarefa:\n   - Para classificação: accuracy, precision, recall, F1-score\n   - Para texto gerado: exact-match, BLEU, ROUGE, ou avaliação humana\n   - Para raciocínio: avaliação humana ou métricas compostas\n\n5. **Implemente o loop de testes** - Itere sistematicamente pelos modelos, salvando outputs e métricas em um formato que facilite comparações posteriores."
+            },
+            {
+                type: "code",
+                language: "javascript",
+                content: "import OpenAI from \"openai\";\nimport fs from \"fs/promises\";\n\nconst openai = new OpenAI({ apiKey: process.env.OPENAI_KEY });\n\n// Lista expandida de modelos para teste\nconst models = [\n  \"gpt-3.5-turbo\",\n  \"gpt-4o-mini\",\n  \"gpt-4o\",\n  \"claude-3-haiku-20240307\",\n  \"claude-3-sonnet-20240229\"\n];\n\n// Exemplos mais representativos e variados\nconst testInputs = [\n  \"Gostei muito do aplicativo, superou minhas expectativas!\",\n  \"O produto chegou no prazo estabelecido.\",\n  \"Extremamente decepcionado com o suporte ao cliente.\"\n];\n\n// Template de prompt mais detalhado\nconst promptTemplate = `Tarefa: Classifique o sentimento do texto como Positivo, Neutro ou Negativo.  \n\nExemplo:\nTexto: \"O atendimento foi péssimo e o produto veio com defeito.\"\nSentimento: Negativo\n\nTexto: \"{INPUT}\"\nSentimento:`;\n\nasync function runBenchmark() {\n  const results = [];\n  \n  for (const model of models) {\n    console.log(`Testando modelo: ${model}`);\n    \n    for (const input of testInputs) {\n      const prompt = promptTemplate.replace(\"{INPUT}\", input);\n      const startTime = Date.now();\n      \n      try {\n        const response = await openai.chat.completions.create({\n          model,\n          messages: [{ role: \"user\", content: prompt }],\n          temperature: 0,\n          max_tokens: 10\n        });\n        \n        const latency = Date.now() - startTime;\n        const output = response.choices[0].message.content.trim();\n        \n        results.push({\n          model,\n          input,\n          output,\n          latency_ms: latency,\n          tokens_used: response.usage.total_tokens\n        });\n        \n        console.log(`${model} -> \"${input}\" -> \"${output}\" (${latency}ms)`);\n      } catch (error) {\n        console.error(`Erro com ${model}:`, error.message);\n        results.push({\n          model,\n          input,\n          error: error.message\n        });\n      }\n    }\n  }\n  \n  // Salvar resultados para análise\n  await fs.writeFile(\n    `one-shot-benchmark-${new Date().toISOString()}.json`,\n    JSON.stringify(results, null, 2)\n  );\n  \n  return results;\n}\n\nrunBenchmark().then(console.log).catch(console.error);"
+            },
+            {
+                type: "markdown",
+                content: "### Práticas Avançadas para Resultados Confiáveis\n\n* **Qualidade do exemplo é tudo** - Um exemplo mal escolhido pode arruinar seu benchmark. Teste múltiplos seeds para encontrar aquele que melhor representa a distribuição dos dados reais.\n\n* **Cuidado com a contaminação de domínio** - Se você quer medir capacidade de generalização entre domínios (ex: treinar em resenhas de filmes para prever sentimentos em avaliações de produtos), escolha um exemplo neutro ou crie múltiplos benchmarks com seeds diferentes.\n\n* **Considere a eficiência de tokens** - One-shot é mais econômico que few-shot, mas ainda consome tokens. Em tarefas com entradas longas, economize em formatação desnecessária e instruções prolixas.\n\n* **Documente tudo** - Registre o seed escolhido, justificativa, hiperparâmetros e condições do teste. Reprodutibilidade é fundamental para benchmarks sérios.\n\n* **Valide com testes múltiplos** - Execute o mesmo teste com 3-5 seeds diferentes para avaliar a sensibilidade do modelo à escolha do exemplo."
+            },
+            {
+                type: "markdown",
+                content: "### Casos de Uso Práticos\n\n* **Análise de sentimento** - Compare a precisão de modelos em detectar nuances emocionais em diferentes idiomas.\n\n* **Classificação de intenção** - Descubra qual modelo identifica melhor as intenções dos usuários em queries ambíguas.\n\n* **Extração de entidades** - Meça qual modelo é mais preciso em extrair nomes, datas e valores de documentos.\n\n* **Reescrita estilizada** - Avalie qual modelo mantém melhor o sentido original ao adaptar o tom de uma mensagem.\n\n* **Tradução técnica** - Compare modelos para traduções especializadas onde terminologia precisa é fundamental."
+            },
+            {
+                type: "markdown",
+                content: "### Limitações a Considerar\n\n* **Uma amostra não representa o todo** - One-shot é um indicativo rápido, não um substituto para avaliações abrangentes.\n\n* **Sensibilidade ao exemplo escolhido** - A performance pode variar significativamente dependendo do exemplo usado.\n\n* **Não revela consistência** - Para avaliar a confiabilidade ao longo do tempo, você precisará de testes mais extensos."
+            },
+            {
+                type: "markdown",
+                content: "### Conclusão\n\nO One-Shot Prompting é a ferramenta multiuso no arsenal do engenheiro de prompts moderno: abre caminho para avaliações rápidas sem sacrificar completamente a qualidade. É o ponto ideal entre simplicidade e poder informativo.\n\nTeste, ajuste, itere—e compartilhe seus resultados! Como você está usando One-Shot para avaliar modelos? Quais insights inesperados você descobriu? Continue a conversa nos comentários ou me encontre nas redes sociais."
+            }
+        ],
+        sources: [
+            {
+                title: "Learning to Adapt Large Language Models to One-Shot In-Context Intent Classification",
+                url: "https://aclanthology.org/2024.customnlp4u-1.15.pdf",
+                accessed: "2025-05-07"
+            },
+            {
+                title: "In-Context Learning in Large Language Models: A Comprehensive Survey",
+                url: "https://www.researchgate.net/publication/382222768_In-Context_Learning_in_Large_Language_Models_A_Comprehensive_Survey",
+                accessed: "2025-05-07"
+            },
+            {
+                title: "Best Practices for Prompt Engineering with the OpenAI API",
+                url: "https://help.openai.com/en/articles/6654000-best-practices-for-prompt-engineering-with-the-openai-api",
+                accessed: "2025-05-07"
+            },
+            {
+                title: "Prompt Engineering Guide - GPT-4",
+                url: "https://www.promptingguide.ai/models/gpt-4",
+                accessed: "2025-05-07"
+            },
+            {
+                title: "Reasoning Best Practices - OpenAI Docs",
+                url: "https://platform.openai.com/docs/guides/reasoning-best-practices",
+                accessed: "2025-05-07"
+            },
+            {
+                title: "The Effect of Demonstration Choice on In-Context Learning Performance",
+                url: "https://arxiv.org/abs/2305.14128",
+                accessed: "2025-05-07"
+            },
+            {
+                title: "Claude API Documentation - Anthropic",
+                url: "https://docs.anthropic.com/claude/docs",
+                accessed: "2025-05-07"
+            }
+        ]
+    },
+    {
         headline: 'Bots com Livre-Arbítrio: A Nova Força de Trabalho Digital que Já Está Transformando Negócios',
         slug: 'bots-com-livre-arbitrio-transformacao-digital',
         author: {
@@ -117,7 +229,7 @@ export const blogPosts: BlogPost[] = [
                 accessed: '2025-05-05'
             },
             {
-                title: 'Top AI Agent Frameworks in 2025 – LangChain, AutoGen & CrewAI',
+                title: 'Top AI Agent Frameworks in 2025 - LangChain, AutoGen & CrewAI',
                 url: 'https://medium.com/@elisowski/top-ai-agent-frameworks-in-2025-9bcedab2e239',
                 accessed: '2025-05-05'
             },
@@ -164,11 +276,11 @@ export const blogPosts: BlogPost[] = [
             },
             {
                 type: "markdown",
-                "content": "### IA é o novo frete grátis (só que melhor)\n\n1. **Vitrine que vende** – Algoritmos de recomendação comparam histórico de compras, cliques e contexto em tempo real para mostrar o produto certo na hora certa. Resultado: mais conversão e ticket médio maior.\n2. **Logística que adivinha** – Modelos preditivos antecipam demanda, traçam rotas e reduzem estoque encalhado. Menos custo no *last-mile* e entregas mais rápidas.\n3. **Atendimento 24/7 que não cansa** – Chatbots treinados em LLMs já resolvem até **79 %** das perguntas básicas sem escalar para um humano. Cliente contente, CAC lá embaixo.\n4. **Operação enxuta** – IA gera descrição de produto, ajusta preço em tempo real, detecta fraude e faz cadastro automático. Menos tarefas repetitivas, mais gente focada em crescimento."
+                "content": "### IA é o novo frete grátis (só que melhor)\n\n1. **Vitrine que vende** - Algoritmos de recomendação comparam histórico de compras, cliques e contexto em tempo real para mostrar o produto certo na hora certa. Resultado: mais conversão e ticket médio maior.\n2. **Logística que adivinha** - Modelos preditivos antecipam demanda, traçam rotas e reduzem estoque encalhado. Menos custo no *last-mile* e entregas mais rápidas.\n3. **Atendimento 24/7 que não cansa** - Chatbots treinados em LLMs já resolvem até **79 %** das perguntas básicas sem escalar para um humano. Cliente contente, CAC lá embaixo.\n4. **Operação enxuta** - IA gera descrição de produto, ajusta preço em tempo real, detecta fraude e faz cadastro automático. Menos tarefas repetitivas, mais gente focada em crescimento."
             },
             {
                 type: "markdown",
-                "content": "### O recado direto de Tobi Lütke (Shopify)\n\nO CEO da Shopify enviou um memorando com o título **“Usar IA não é bônus, é requisito”**. Três pontos diretos:\n\n* **Métrica de performance** – todo dev, designer e PM agora é avaliado por quanto incorpora IA no dia a dia.\n* **MVP *AI-first*** – nenhum protótipo ganha orçamento se não apontar onde a IA entra.\n* **Compartilhamento de prompts** – achou um prompt que resolve? Espalha pra equipe.\n\n> “Antes de pedir mais gente, prove que a IA não resolve.” – **Tobi, sem rodeios.**"
+                "content": "### O recado direto de Tobi Lütke (Shopify)\n\nO CEO da Shopify enviou um memorando com o título **“Usar IA não é bônus, é requisito”**. Três pontos diretos:\n\n* **Métrica de performance** - todo dev, designer e PM agora é avaliado por quanto incorpora IA no dia a dia.\n* **MVP *AI-first*** - nenhum protótipo ganha orçamento se não apontar onde a IA entra.\n* **Compartilhamento de prompts** - achou um prompt que resolve? Espalha pra equipe.\n\n> “Antes de pedir mais gente, prove que a IA não resolve.” - **Tobi, sem rodeios.**"
             },
             {
                 type: "markdown",
@@ -181,22 +293,22 @@ export const blogPosts: BlogPost[] = [
         ],
         sources: [
             {
-                title: "ABComm – E-commerce pode faturar perto de R$ 235 bilhões em 2025",
+                title: "ABComm - E-commerce pode faturar perto de R$ 235 bilhões em 2025",
                 url: "https://www.ecommercebrasil.com.br/noticias/e-commerce-pode-faturar-perto-de-r-235-bilhoes-em-2025",
                 accessed: "2025-05-04"
             },
             {
-                title: "ABComm – E-commerce brasileiro fatura R$ 204,3 bilhões em 2024",
+                title: "ABComm - E-commerce brasileiro fatura R$ 204,3 bilhões em 2024",
                 url: "https://www.ecommercebrasil.com.br/noticias/e-commerce-resultados-2024-brasil-abcomm",
                 accessed: "2025-05-04"
             },
             {
-                title: "The Verge – Shopify CEO says no new hires without proof AI can’t do the job",
+                title: "The Verge - Shopify CEO says no new hires without proof AI can’t do the job",
                 url: "https://www.theverge.com/news/644943/shopify-ceo-memo-ai-hires-job",
                 accessed: "2025-05-04"
             },
             {
-                title: "Botpress – Key Chatbot Statistics for 2025",
+                title: "Botpress - Key Chatbot Statistics for 2025",
                 url: "https://botpress.com/blog/key-chatbot-statistics",
                 accessed: "2025-05-04"
             }
