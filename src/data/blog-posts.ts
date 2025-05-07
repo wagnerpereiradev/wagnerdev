@@ -21,7 +21,7 @@ export const blogPosts: BlogPost[] = [
             'produtividade'
         ],
         cover_image: {
-            url: '/images/blog/1x1-robot-leader.png',
+            url: 'https://wagnerai.me/images/blog/1x1-robot-leader.png',
             alt: 'Robôs e humanos colaborando em um ambiente de trabalho futurista.',
             caption: 'A era em que humanos se tornam estrategistas e agentes autônomos formam a nova força de trabalho digital (Imagem gerada por GPT 4o)'
         },
