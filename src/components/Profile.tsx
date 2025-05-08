@@ -442,7 +442,7 @@ export default function Profile() {
                                 viewport={{ once: true }}
                                 transition={{ delay: 0.3, duration: 0.5 }}
                             />
-
+                            <img src="https://raw.githubusercontent.com/wagnerpereiradev/wagnerpereiradev/547d10ba55493858a9f58d59f7db365a9ca95674/profile-3d-contrib/profile-night-green.svg" style={{ borderRadius: "2em", border: "1px solid #212121", filter: "blur(50px) saturate(2.5)", position: "absolute", zIndex: -1, opacity: 0.6 }} />
                             {/* Descrição com efeito de digitação */}
                             <motion.p
                                 initial={{ opacity: 0, y: 10 }}
