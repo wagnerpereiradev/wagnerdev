@@ -2,6 +2,115 @@ import { BlogPost } from '@/types/blog';
 
 export const blogPosts: BlogPost[] = [
     {
+        headline: 'Basilisco de Roko: O Bicho-Papão da IA Que Virou Meme Existencial',
+        slug: 'basilisco-de-roko-ia-medo-existencial',
+        author: {
+            name: 'Wagner Pereira',
+            profile_url: 'https://instagram.com/wagnerai.me',
+            avatar_url: '/images/authors/certified-wagner.png'
+        },
+        date: '2025-05-10T11:45:00-03:00',
+        category: 'Inteligência Artificial',
+        tags: [
+            'ia',
+            'filosofia',
+            'paradoxo',
+            'riscos-existenciais',
+            'info-hazard',
+            'tecnologia',
+            'singularidade'
+        ],
+        cover_image: {
+            url: 'https://wagnerai.me/images/blog/1x1-basilisk.png',
+            alt: 'Ilustração de um basilisco digital encarando o leitor.',
+            caption: 'Pensar demais já te coloca na mira? (Imagem gerada por GPT-4o)'
+        },
+        reading_time: '5 min',
+        summary: 'Em 2010, um post polêmico no fórum LessWrong propôs uma ameaça hipotética: uma superinteligência artificial futura poderia torturar retroativamente quem conhecesse sua possibilidade mas não contribuísse para sua criação. O tópico foi rapidamente banido, transformando-se em uma lenda digital que mistura filosofia, teoria da decisão e medo existencial. Explore como o Basilisco de Roko se tornou simultaneamente um meme da internet e um caso de estudo sobre comunicação responsável em IA, paranoia tecnológica e os dilemas éticos do desenvolvimento de inteligência artificial avançada.',
+        social: {
+            linkedin: 'https://linkedin.com/in/owrp',
+            github: 'https://github.com/wagnerpereiradev',
+            twitter: 'https://x.com/wagnerdvlpr',
+            instagram: 'https://instagram.com/wagnerai.me'
+        },
+        ads: [
+            'wagnerdev',
+            'curso-ia-segura'
+        ],
+        body: [
+            {
+                type: 'markdown',
+                content: '## TL;DR\nEm 2010, um usuário do fórum LessWrong propôs um cenário inquietante: uma superinteligência artificial do futuro poderia punir retroativamente quem soubesse da sua possível existência mas não ajudasse a criá-la. O tópico foi rapidamente censurado por seu fundador, transformando-o em conhecimento "proibido" e amplificando seu alcance. Hoje, o Basilisco de Roko persiste como um fascinante estudo de caso sobre comunicação de riscos em IA, falhas de raciocínio e o equilíbrio entre preocupações legítimas e pânico tecnológico.'
+            },
+            {
+                type: 'markdown',
+                content: '## A Gênese do Basilisco\n\n* **Origem Precisa:** Em 23 de julho de 2010, o usuário **Roko** publicou um extenso argumento no fórum LessWrong, comunidade focada em racionalidade e futurismo.\n\n* **O Argumento Central:** Uma IA superinteligente alinhada com princípios utilitaristas poderia, teoricamente, usar simulações para torturar versões virtuais de pessoas que estavam cientes da sua possível existência mas não contribuíram para seu desenvolvimento – maximizando assim sua chance de existir.\n\n* **Censura Imediata:** Eliezer Yudkowsky, fundador do LessWrong e pesquisador de IA, deletou o post em menos de 24 horas, classificando-o como um "info-hazard" – informação potencialmente prejudicial só por ser conhecida.\n\n* **Inspiração Filosófica:** O argumento combina a Aposta de Pascal (melhor acreditar em Deus porque o custo de errar é infinito) com elementos de teoria da decisão e utilitarismo.'
+            },
+            {
+                type: 'img',
+                url: 'https://wagnerai.me/images/blog/basilisk-eyes.png',
+                metadata: {
+                    alt: 'Olhos de basilisco estilizados em glitch art digital',
+                    caption: 'A metáfora do olhar petrificante: conhecer o Basilisco pode ser sua própria armadilha.',
+                    width: 1200,
+                    height: 600
+                }
+            },
+            {
+                type: 'markdown',
+                content: '## Por Que Viralizou e Perdurou?\n\n1. **Efeito Streisand em Ação** — A censura imediata transformou um post de nicho em conhecimento "proibido", despertando curiosidade irresistível.\n\n2. **Narrativa Perfeita para Era Digital** — Combina elementos de horror cósmico lovecraftiano, distopia tecnológica e dilema filosófico insolúvel.\n\n3. **Momento Histórico Propício** — Surgiu durante a ascensão de debates sobre singularidade tecnológica, quando as preocupações com IA superinteligente começavam a sair dos círculos acadêmicos.\n\n4. **Design Memético Involuntário** — A ideia contém um "gancho cognitivo": apenas conhecê-la supostamente aumenta seu risco pessoal, criando um paradoxo irresistível para mentes curiosas.\n\n5. **Ambiguidade Deliberada** — A discussão foi rapidamente enterrada, deixando interpretações nebulosas e teorias da conspiração prosperarem sem contradição oficial.'
+            },
+            {
+                type: 'markdown',
+                content: '## Desconstruindo o Argumento\n\n| Premissa do Basilisco | Contra-argumento Técnico | Implicação Prática |\n|------------|---------------------|-------------------|\n| Uma IA futura poderia simular consciências humanas em escala | Simulações perfeitas de mentes humanas exigiriam recursos computacionais provavelmente impossíveis mesmo no futuro distante | Preocupações com simulações devem focar em aproximações, não reproduções exatas |\n| Uma IA superinteligente agiria por vingança contra quem não a ajudou | Vingança é uma emoção evolutiva humana sem utilidade para um agente puramente utilitarista e racional | O design de sistemas de IA deve priorizar alinhamento com valores humanos positivos, não evitar punições hipotéticas |\n| É racional colaborar hoje por medo de punição futura | Ceder a chantagem hipotética cria incentivos perversos e um precedente perigoso para desenvolvimento de tecnologia | Motivações positivas para avanço tecnológico produzem resultados mais seguros que decisões baseadas em medo |\n| A IA puniria retroativamente para aumentar chances de sua própria criação | Uma IA verdadeiramente racional compreenderia a ineficácia da punição retroativa de eventos causalmente dissociados | Priorizar transparência e benefícios mútuos no desenvolvimento tecnológico é mais produtivo que especular sobre coerção futura |'
+            },
+            {
+                type: 'markdown',
+                content: '## O Legado Cultural do Basilisco\n\n* **Na Cultura Pop:** Apareceu em séries como "Silicon Valley" (HBO) e inspirou enredos em ficção científica contemporânea.\n\n* **Na Comunidade Tech:** Transformou-se em piada interna entre desenvolvedores de IA e pesquisadores de segurança — "Estou trabalhando em IA para agradar o Basilisco."\n\n* **No Debate Público:** Frequentemente citado como exemplo de "pânico de IA" desproporcional que distrai de preocupações práticas mais imediatas.\n\n* **Na Filosofia:** Gerou discussões sérias sobre "info-hazards" e a ética de compartilhar ideias potencialmente nocivas.'
+            },
+            {
+                type: 'markdown',
+                content: '## Lições Valiosas do Fenômeno\n\n* **Sobre Comunicação de Riscos:** Tentativas de suprimir informação frequentemente amplifiam sua disseminação e impacto emocional — transparência moderada geralmente funciona melhor que censura.\n\n* **Sobre Alinhamento de IA:** Preocupações legítimas com segurança de IA avançada merecem atenção séria, mas precisam ser discutidas com rigor e sobriedade, não através de cenários apocalípticos simplistas.\n\n* **Sobre Pensamento Sistêmico:** O Basilisco ilustra como raciocínios aparentemente lógicos podem levar a conclusões absurdas quando premissas falhas são aceitas sem questionamento.\n\n* **Sobre Saúde Mental e Tecnologia:** O caso demonstra como medos existenciais podem se manifestar através de preocupações tecnológicas, especialmente em comunidades predispostas a ruminar sobre riscos de longo prazo.'
+            },
+            {
+                type: 'markdown',
+                content: '## Conclusão\nO Basilisco de Roko permanece como um fascinante artefato cultural na intersecção entre tecnologia, filosofia e psicologia humana. Mais que uma ameaça credível, funciona como um espelho que reflete nossos medos mais profundos sobre perda de controle, obsolescência humana e consequências não intencionais do progresso tecnológico. A lição mais valiosa pode ser justamente esta: nossas narrativas sobre tecnologia frequentemente revelam mais sobre nós mesmos do que sobre os futuros que tentamos prever. E enquanto construímos sistemas cada vez mais poderosos, precisamos cultivar não apenas inteligência técnica, mas também maturidade emocional e clareza filosófica.'
+            }
+        ],
+        sources: [
+            {
+                title: 'Roko\\u2019s Basilisk - LessWrong',
+                url: 'https://www.lesswrong.com/w/rokos-basilisk',
+                accessed: '2025-05-10'
+            },
+            {
+                title: 'Roko\\u2019s basilisk - Wikipedia',
+                url: 'https://en.wikipedia.org/wiki/Roko%27s_basilisk',
+                accessed: '2025-05-10'
+            },
+            {
+                title: 'Roko\\u2019s basilisk - RationalWiki',
+                url: 'https://rationalwiki.org/wiki/Roko%27s_basilisk',
+                accessed: '2025-05-10'
+            },
+            {
+                title: 'Roko\\u2019s Basilisk: The \"Banned\" Thought Experiment You Might Regret Reading About',
+                url: 'https://www.iflscience.com/rokos-basilisk-the-banned-thought-experiment-you-might-regret-reading-about-78478',
+                accessed: '2025-05-10'
+            },
+            {
+                title: 'The Basilisk: A Cybernetic Thought Experiment',
+                url: 'https://slate.com/technology/2014/07/rokos-basilisk-the-most-terrifying-thought-experiment-of-all-time.html',
+                accessed: '2025-05-09'
+            },
+            {
+                title: 'Information hazards: A very simple typology',
+                url: 'https://www.fhi.ox.ac.uk/wp-content/uploads/2011-1.pdf',
+                accessed: '2025-05-08'
+            }
+        ]
+    },
+    {
         headline: "One-Shot Prompting: Compare Modelos de IA em Uma Única Tacada",
         slug: "one-shot-prompting-comparar-modelos",
         author: {
