@@ -79,34 +79,34 @@ export const blogPosts: BlogPost[] = [
         ],
         sources: [
             {
-                title: 'Roko\\u2019s Basilisk - LessWrong',
+                title: "Roko's Basilisk - LessWrong",
                 url: 'https://www.lesswrong.com/w/rokos-basilisk',
                 accessed: '2025-05-10'
             },
             {
-                title: 'Roko\\u2019s basilisk - Wikipedia',
+                title: "Roko's basilisk - Wikipedia",
                 url: 'https://en.wikipedia.org/wiki/Roko%27s_basilisk',
                 accessed: '2025-05-10'
             },
             {
-                title: 'Roko\\u2019s basilisk - RationalWiki',
+                title: "Roko's basilisk - RationalWiki",
                 url: 'https://rationalwiki.org/wiki/Roko%27s_basilisk',
                 accessed: '2025-05-10'
             },
             {
-                title: 'Roko\\u2019s Basilisk: The \"Banned\" Thought Experiment You Might Regret Reading About',
+                title: "Roko's Basilisk: The “Banned” Thought Experiment You Might Regret Reading About",
                 url: 'https://www.iflscience.com/rokos-basilisk-the-banned-thought-experiment-you-might-regret-reading-about-78478',
                 accessed: '2025-05-10'
             },
             {
-                title: 'The Basilisk: A Cybernetic Thought Experiment',
-                url: 'https://slate.com/technology/2014/07/rokos-basilisk-the-most-terrifying-thought-experiment-of-all-time.html',
-                accessed: '2025-05-09'
+                title: "The Basilisk: A Cybernetic Thought Experiment",
+                url: "https://slate.com/technology/2014/07/rokos-basilisk-the-most-terrifying-thought-experiment-of-all-time.html",
+                accessed: "2025-05-09"
             },
             {
-                title: 'Information hazards: A very simple typology',
-                url: 'https://www.fhi.ox.ac.uk/wp-content/uploads/2011-1.pdf',
-                accessed: '2025-05-08'
+                title: "Information hazards: A very simple typology",
+                url: "https://www.fhi.ox.ac.uk/wp-content/uploads/2011-1.pdf",
+                accessed: "2025-05-08"
             }
         ]
     },
