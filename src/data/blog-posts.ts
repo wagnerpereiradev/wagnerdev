@@ -21,7 +21,7 @@ export const blogPosts: BlogPost[] = [
             'singularidade'
         ],
         cover_image: {
-            url: 'https://wagnerai.me/images/blog/1x1-basilisk.png',
+            url: 'https://wagnerai.me/images/blog/basilisk.png',
             alt: 'Ilustração de um basilisco digital encarando o leitor.',
             caption: 'Pensar demais já te coloca na mira? (Imagem gerada por GPT-4o)'
         },
