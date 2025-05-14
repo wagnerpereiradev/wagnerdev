@@ -258,6 +258,11 @@ export default function Contact() {
             setFormData({ name: '', email: '', subject: '', message: '' });
             showToast('Sua mensagem foi enviada com sucesso! Retornarei em breve.', 'success');
 
+            // Evento de conversão do Google Ads
+            if (typeof window !== 'undefined' && (window as any).gtag) {
+                (window as any).gtag('event', 'conversion', { 'send_to': 'AW-17079445553/DQBaCOn3yccaELHQjtA_' });
+            }
+
             // Reset form after 3 seconds
             setTimeout(() => {
                 setFormStatus('idle');
