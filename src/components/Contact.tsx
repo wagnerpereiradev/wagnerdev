@@ -4,6 +4,13 @@ import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion'
 import { useRef, useState, useEffect, useMemo } from 'react';
 import { useToast } from './ui/Toast';
 
+// Declaração de interface para o Google Analytics
+declare global {
+    interface Window {
+        gtag?: (command: string, action: string, config: object) => void;
+    }
+}
+
 // /**
 //  * Interface that defines the structure of contact methods
 //  * @typedef {Object} ContactMethod
@@ -259,8 +266,8 @@ export default function Contact() {
             showToast('Sua mensagem foi enviada com sucesso! Retornarei em breve.', 'success');
 
             // Evento de conversão do Google Ads
-            if (typeof window !== 'undefined' && (window as any).gtag) {
-                (window as any).gtag('event', 'conversion', { 'send_to': 'AW-17079445553/DQBaCOn3yccaELHQjtA_' });
+            if (typeof window !== 'undefined' && window.gtag) {
+                window.gtag('event', 'conversion', { 'send_to': 'AW-17079445553/DQBaCOn3yccaELHQjtA_' });
             }
 
             // Reset form after 3 seconds
