@@ -2,6 +2,7 @@ import { Geist_Mono as GeistMono, Geist as GeistSans } from 'next/font/google';
 import './globals.css';
 import type { Metadata, Viewport } from 'next';
 import Script from 'next/script';
+import ChatBot from '@/components/ChatBot';
 
 // Configuração das fontes
 const geistSans = GeistSans({
@@ -133,6 +134,9 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} font-sans antialiased bg-neutral-950 text-neutral-100`}
       >
         {children}
+
+        {/* Chatbot flutuante */}
+        <ChatBot />
 
         {/* Google Analytics - Movido para o final do body e com configuração lazy */}
         <Script
