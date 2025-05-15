@@ -1,6 +1,6 @@
 'use client';
 
-import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef, useState, useEffect, useMemo } from 'react';
 import { useToast } from './ui/Toast';
 
@@ -38,10 +38,6 @@ export default function Contact() {
     const opacity = useTransform(scrollYProgress, [0, 0.1, 0.9, 1], [0, 1, 1, 0]);
     const y = useTransform(scrollYProgress, [0, 0.1, 0.9, 1], [50, 0, 0, -50]);
 
-    const [hoveredItem, setHoveredItem] = useState<number | null>(null);
-    const [activeTab, setActiveTab] = useState<'social' | 'form'>('social');
-    const [isOpening, setIsOpening] = useState<boolean>(false);
-    const [progress, setProgress] = useState<number>(0);
     const [formStatus, setFormStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
     const [isMobile, setIsMobile] = useState(false);
     const [formData, setFormData] = useState({
@@ -165,51 +161,6 @@ export default function Contact() {
         }
     ], []);
 
-    useEffect(() => {
-        let timer: NodeJS.Timeout;
-        let progressInterval: NodeJS.Timeout;
-
-        if (hoveredItem && !isOpening) {
-            // Timer para abrir após 3 segundos
-            timer = setTimeout(() => {
-                setIsOpening(true);
-            }, 3000);
-
-            // Intervalo para atualizar o progresso a cada 30ms (100 passos em 3 segundos)
-            progressInterval = setInterval(() => {
-                setProgress(prev => {
-                    const newProgress = prev + 1;
-                    return newProgress > 100 ? 100 : newProgress;
-                });
-            }, 30);
-        } else if (!hoveredItem) {
-            setIsOpening(false);
-            setProgress(0); // Resetar o progresso quando não houver item com hover
-        }
-
-        return () => {
-            clearTimeout(timer);
-            clearInterval(progressInterval);
-        };
-    }, [hoveredItem, isOpening]);
-
-    useEffect(() => {
-        if (isOpening && hoveredItem && typeof window !== 'undefined') {
-            const item = contactInfo.find(i => i.id === hoveredItem);
-            if (item) {
-                // Adicionar um pequeno delay antes de abrir realmente a página
-                // para que a animação de conclusão seja visível
-                const timer = setTimeout(() => {
-                    window.open(item.url, '_blank');
-                    setIsOpening(false);
-                    setHoveredItem(null);
-                }, 200);
-
-                return () => clearTimeout(timer);
-            }
-        }
-    }, [isOpening, hoveredItem, contactInfo]);
-
     // Detectar dispositivo móvel no lado do cliente
     useEffect(() => {
         if (typeof window !== 'undefined') {
@@ -310,7 +261,7 @@ export default function Contact() {
             <div className="max-w-7xl mx-auto relative z-10" ref={containerRef}>
                 <motion.div
                     style={{ opacity, y }}
-                    className="mb-16"
+                    className="mb-10 md:mb-16"
                 >
                     {/* Tag decorativa */}
                     <motion.div
@@ -361,287 +312,210 @@ export default function Contact() {
                     </motion.p>
                 </motion.div>
 
-                {/* Seletor de abas estilo Apple */}
-                <div className="flex justify-center mb-12">
-                    <div className="inline-flex p-1 rounded-xl bg-neutral-900/30 backdrop-blur-md border border-white/5 shadow-lg">
-                        <button
-                            onClick={() => setActiveTab('social')}
-                            className={`flex items-center gap-2 px-6 py-3 rounded-lg font-medium text-sm transition-all duration-300 ${activeTab === 'social'
-                                ? 'bg-gradient-to-r from-[#3d43dd] to-[#6366f1] text-white shadow-md'
-                                : 'text-neutral-400 hover:text-white'
-                                }`}
-                        >
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-                                <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z" />
-                            </svg>
-                            Redes Sociais
-                        </button>
-                        <button
-                            onClick={() => setActiveTab('form')}
-                            className={`flex items-center gap-2 px-6 py-3 rounded-lg font-medium text-sm transition-all duration-300 ${activeTab === 'form'
-                                ? 'bg-gradient-to-r from-[#3d43dd] to-[#6366f1] text-white shadow-md'
-                                : 'text-neutral-400 hover:text-white'
-                                }`}
-                        >
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-                                <path fillRule="evenodd" d="M14.243 5.757a6 6 0 10-.986 9.284 1 1 0 111.087 1.678A8 8 0 1118 10a3 3 0 01-4.8 2.401A4 4 0 1114 10a1 1 0 102 0c0-1.537-.586-3.07-1.757-4.243zM12 10a2 2 0 10-4 0 2 2 0 004 0z" clipRule="evenodd" />
-                            </svg>
-                            Mensagem
-                        </button>
-                    </div>
-                </div>
+                {/* Layout de duas colunas para contato */}
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-12">
+                    {/* Coluna esquerda - Redes Sociais */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.3 }}
+                        className="lg:col-span-5 flex flex-col lg:items-start lg:pt-0 mb-8 lg:mb-0"
+                    >
+                        {/* Título da seção de redes sociais */}
+                        <div className="mb-5 md:mb-6">
+                            <h3 className="text-2xl font-medium text-white mb-2">Redes Sociais</h3>
+                            <p className="text-neutral-400">Conecte-se comigo através dos canais abaixo</p>
+                        </div>
 
-                {/* Content Container */}
-                <div style={{ position: 'relative' }}>
-                    <AnimatePresence mode="sync">
-                        {/* Redes Sociais - Estilo Apple, moderno e clean */}
-                        {activeTab === 'social' && (
-                            <motion.div
-                                key="social"
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                exit={{ opacity: 0, y: -20 }}
-                                transition={{ duration: 0.3 }}
-                                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 max-w-5xl mx-auto"
-                            >
-                                {/* Cards de redes sociais ultra minimalistas */}
-                                {contactInfo.map((item) => (
-                                    <motion.div
-                                        key={item.id}
-                                        initial={{ opacity: 0, y: 20 }}
-                                        whileInView={{ opacity: 1, y: 0 }}
-                                        viewport={{ once: true }}
-                                        transition={{ duration: 0.5, delay: 0.2 + item.id * 0.1 }}
-                                        className="h-full"
+                        <div className="grid grid-cols-1 gap-4">
+                            {contactInfo.map((item) => (
+                                <motion.div
+                                    key={item.id}
+                                    initial={{ opacity: 0, y: 10 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    viewport={{ once: true }}
+                                    transition={{ duration: 0.3, delay: 0.05 * item.id }}
+                                    whileHover={{ scale: 1.02 }}
+                                    whileTap={{ scale: 0.98 }}
+                                >
+                                    <a
+                                        href={item.url}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="flex items-center w-full px-4 py-3.5 rounded-xl bg-neutral-900/40 backdrop-blur-sm border border-neutral-800/50 group hover:border-[#3d43dd]/30 hover:bg-neutral-800/20 hover:shadow-lg hover:shadow-[#3d43dd]/5 transition-all duration-300 relative overflow-hidden"
                                     >
-                                        <a
-                                            href={item.url}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="block h-full w-full relative rounded-xl bg-neutral-900/40 backdrop-blur-sm border border-neutral-800/50 group hover:border-[#3d43dd]/30 transition-all duration-300"
-                                            onMouseEnter={() => setHoveredItem(item.id)}
-                                            onMouseLeave={() => setHoveredItem(null)}
-                                        >
-                                            {/* Indicador de progresso circular */}
-                                            {hoveredItem === item.id && (progress > 0 || isOpening) && (
-                                                <div className="absolute top-3 right-3 w-6 h-6">
-                                                    <svg className="w-6 h-6 transform -rotate-90" viewBox="0 0 36 36">
-                                                        <circle
-                                                            cx="18"
-                                                            cy="18"
-                                                            r="16"
-                                                            fill="none"
-                                                            className="stroke-neutral-700"
-                                                            strokeWidth="3"
-                                                        />
-                                                        <circle
-                                                            cx="18"
-                                                            cy="18"
-                                                            r="16"
-                                                            fill="none"
-                                                            stroke={item.color}
-                                                            className={`transition-all duration-100 ease-linear ${isOpening ? 'opacity-70 animate-pulse' : ''}`}
-                                                            strokeWidth="3"
-                                                            strokeDasharray={`${2 * Math.PI * 16}`}
-                                                            strokeDashoffset={isOpening ? '0' : `${2 * Math.PI * 16 * (1 - progress / 100)}`}
-                                                            strokeLinecap="round"
-                                                        />
-                                                    </svg>
-                                                    <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-xs font-medium text-white">
-                                                        {isOpening ? (
-                                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" viewBox="0 0 20 20" fill="currentColor">
-                                                                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                                                            </svg>
-                                                        ) : Math.round(3 - (progress / 100 * 3))}
-                                                    </div>
-                                                </div>
-                                            )}
+                                        {/* Efeito de brilho no hover */}
+                                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent opacity-0 group-hover:opacity-100 -translate-x-full group-hover:translate-x-full transition-all duration-1000 ease-in-out"></div>
 
-                                            {/* Dica textual para segurar o cursor */}
-                                            {hoveredItem === item.id && progress > 0 && progress < 100 && (
-                                                <div className="absolute bottom-3 right-3 left-3 text-center">
-                                                    <div className="px-2 py-1 bg-black/40 backdrop-blur-sm rounded-md text-xs text-neutral-300 animate-fadeIn">
-                                                        Mantenha o cursor ou<br></br>
-                                                        clique para abrir
-                                                    </div>
-                                                </div>
-                                            )}
-
-                                            {/* Conteúdo ultra simplificado */}
-                                            <div className="p-6 flex flex-col h-full">
-                                                {/* Ícone, elegante e clean */}
-                                                <div className={`self-start mb-3 text-white/60 group-hover:text-white transition-colors duration-300`}>
-                                                    {item.icon}
-                                                </div>
-
-                                                {/* Nome da rede em gradiente no hover */}
-                                                <h3 className={`text-xl font-medium mb-1 transition-all duration-300 ${hoveredItem === item.id ? `bg-gradient-to-r ${item.hoverGradient} bg-clip-text text-transparent` : 'text-white'}`}>
-                                                    {item.name}
-                                                </h3>
-
-                                                {/* Username/valor com tamanho reduzido */}
-                                                <p className="text-sm text-neutral-400 mb-4">
-                                                    {item.value}
-                                                </p>
-
-                                                {/* Linha minimalista */}
-                                                <div className="h-px w-12 bg-neutral-800/70 mb-4">
-                                                    <motion.div
-                                                        className={`h-px bg-gradient-to-r ${item.gradient} w-0 group-hover:w-full transition-all duration-300`}
-                                                    />
-                                                </div>
-
-                                                {/* Seta indicativa com animação sutil */}
-                                                <div className="mt-auto flex justify-end">
-                                                    <motion.div
-                                                        className="text-neutral-500 group-hover:text-white transition-colors duration-300"
-                                                        animate={hoveredItem === item.id ? { x: [0, 5, 0] } : {}}
-                                                        transition={{ duration: 2, repeat: Infinity, repeatType: "reverse" }}
-                                                    >
-                                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                                            <path fillRule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
-                                                        </svg>
-                                                    </motion.div>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </motion.div>
-                                ))}
-                            </motion.div>
-                        )}
-
-                        {/* Formulário - Estilo Apple clean */}
-                        {activeTab === 'form' && (
-                            <motion.div
-                                key="form"
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                exit={{ opacity: 0, y: -20 }}
-                                transition={{ duration: 0.3 }}
-                                className="max-w-2xl mx-auto"
-                            >
-                                <div className="bg-neutral-900/30 backdrop-blur-xl rounded-3xl p-8 sm:p-10 border border-white/5 shadow-xl">
-                                    <motion.form
-                                        ref={formRef}
-                                        onSubmit={handleFormSubmit}
-                                        className="space-y-6"
-                                        initial={{ opacity: 0 }}
-                                        animate={{ opacity: 1 }}
-                                        transition={{ delay: 0.2 }}
-                                    >
-                                        <div className="space-y-5">
-                                            <div>
-                                                <label htmlFor="name" className="block text-sm font-medium text-neutral-300 mb-2">
-                                                    Nome
-                                                </label>
-                                                <input
-                                                    type="text"
-                                                    id="name"
-                                                    name="name"
-                                                    value={formData.name}
-                                                    onChange={handleInputChange}
-                                                    className="w-full px-4 py-3 bg-neutral-800/30 backdrop-blur-sm rounded-xl border border-white/5 text-white focus:border-[#3d43dd]/50 focus:ring-1 focus:ring-[#3d43dd]/30 transition-colors"
-                                                    placeholder="Seu nome completo"
-                                                    disabled={formStatus === 'submitting'}
-                                                />
-                                            </div>
-
-                                            <div>
-                                                <label htmlFor="email" className="block text-sm font-medium text-neutral-300 mb-2">
-                                                    Email
-                                                </label>
-                                                <input
-                                                    type="email"
-                                                    id="email"
-                                                    name="email"
-                                                    value={formData.email}
-                                                    onChange={handleInputChange}
-                                                    className="w-full px-4 py-3 bg-neutral-800/30 backdrop-blur-sm rounded-xl border border-white/5 text-white focus:border-[#3d43dd]/50 focus:ring-1 focus:ring-[#3d43dd]/30 transition-colors"
-                                                    placeholder="seu.email@exemplo.com"
-                                                    disabled={formStatus === 'submitting'}
-                                                />
-                                            </div>
-
-                                            <div>
-                                                <label htmlFor="subject" className="block text-sm font-medium text-neutral-300 mb-2">
-                                                    Assunto
-                                                </label>
-                                                <input
-                                                    type="text"
-                                                    id="subject"
-                                                    name="subject"
-                                                    value={formData.subject}
-                                                    onChange={handleInputChange}
-                                                    className="w-full px-4 py-3 bg-neutral-800/30 backdrop-blur-sm rounded-xl border border-white/5 text-white focus:border-[#3d43dd]/50 focus:ring-1 focus:ring-[#3d43dd]/30 transition-colors"
-                                                    placeholder="Assunto do projeto"
-                                                    disabled={formStatus === 'submitting'}
-                                                />
-                                            </div>
-
-                                            <div>
-                                                <label htmlFor="message" className="block text-sm font-medium text-neutral-300 mb-2">
-                                                    Mensagem
-                                                </label>
-                                                <textarea
-                                                    id="message"
-                                                    name="message"
-                                                    value={formData.message}
-                                                    onChange={handleInputChange}
-                                                    rows={5}
-                                                    className="w-full px-4 py-3 bg-neutral-800/30 backdrop-blur-sm rounded-xl border border-white/5 text-white focus:border-[#3d43dd]/50 focus:ring-1 focus:ring-[#3d43dd]/30 transition-colors resize-none"
-                                                    placeholder="Descreva seu projeto ou ideia..."
-                                                    disabled={formStatus === 'submitting'}
-                                                />
+                                        {/* Ícone circular com gradiente */}
+                                        <div className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center bg-gradient-to-br ${item.gradient} shadow-md relative overflow-hidden group-hover:scale-110 transition-transform duration-300`}>
+                                            <div className="absolute inset-0 bg-black/25 group-hover:bg-black/0 transition-colors duration-300"></div>
+                                            <div className="relative z-10 text-white w-5 h-5 flex items-center justify-center">
+                                                {item.icon}
                                             </div>
                                         </div>
 
-                                        <div className="pt-2">
-                                            <motion.button
-                                                type="submit"
-                                                disabled={formStatus === 'submitting'}
-                                                className="w-full relative overflow-hidden"
-                                                whileHover={{ scale: 1.01 }}
-                                                whileTap={{ scale: 0.99 }}
+                                        {/* Informações */}
+                                        <div className="ml-4 flex-grow min-w-0">
+                                            <h3 className="text-base font-medium truncate transition-all duration-300 text-white group-hover:text-white">
+                                                {item.name}
+                                            </h3>
+                                            <p className="text-xs text-neutral-400 group-hover:text-neutral-300 truncate transition-colors duration-300">
+                                                {item.value}
+                                            </p>
+                                        </div>
+
+                                        {/* Ícone de seta */}
+                                        <div className="ml-2 flex-shrink-0 bg-black/20 rounded-full p-1.5 group-hover:bg-[#3d43dd]/20 transition-colors duration-300">
+                                            <motion.div
+                                                className="text-neutral-400 group-hover:text-white transition-colors duration-300"
+                                                animate={{ x: [0, 3, 0] }}
+                                                transition={{ duration: 2, repeat: Infinity, repeatType: "reverse" }}
                                             >
-                                                <div className={`inline-flex items-center justify-center w-full px-6 py-3.5 ${formStatus === 'success' ? 'bg-green-600' : formStatus === 'error' ? 'bg-red-600' : 'bg-gradient-to-r from-[#3d43dd] to-[#6366f1]'} rounded-xl text-white font-medium shadow-lg transition-all duration-300`}>
-                                                    {formStatus === 'submitting' ? (
-                                                        <>
-                                                            <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                                            </svg>
-                                                            Enviando...
-                                                        </>
-                                                    ) : formStatus === 'success' ? (
-                                                        <>
-                                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                                                                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                                                            </svg>
-                                                            Mensagem Enviada!
-                                                        </>
-                                                    ) : formStatus === 'error' ? (
-                                                        <>
-                                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                                                                <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-                                                            </svg>
-                                                            Erro ao enviar
-                                                        </>
-                                                    ) : (
-                                                        <>
-                                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                                                                <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
-                                                            </svg>
-                                                            Enviar Mensagem
-                                                        </>
-                                                    )}
-                                                </div>
-                                            </motion.button>
+                                                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                                    <path fillRule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
+                                                </svg>
+                                            </motion.div>
                                         </div>
-                                    </motion.form>
+                                    </a>
+                                </motion.div>
+                            ))}
+                        </div>
+                    </motion.div>
+
+                    {/* Coluna direita - Formulário */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.3, delay: 0.2 }}
+                        className="lg:col-span-7"
+                    >
+                        <div className="bg-neutral-900/30 backdrop-blur-xl rounded-3xl p-8 sm:p-10 border border-white/5 shadow-xl">
+                            <motion.form
+                                ref={formRef}
+                                onSubmit={handleFormSubmit}
+                                className="space-y-6"
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{ delay: 0.2 }}
+                            >
+                                {/* Título do formulário */}
+                                <div className="mb-6">
+                                    <h3 className="text-2xl font-medium text-white mb-2">Enviar mensagem</h3>
+                                    <p className="text-neutral-400">Preencha o formulário abaixo para entrar em contato diretamente</p>
                                 </div>
-                            </motion.div>
-                        )}
-                    </AnimatePresence>
+
+                                <div className="space-y-5">
+                                    <div>
+                                        <label htmlFor="name" className="block text-sm font-medium text-neutral-300 mb-2">
+                                            Nome
+                                        </label>
+                                        <input
+                                            type="text"
+                                            id="name"
+                                            name="name"
+                                            value={formData.name}
+                                            onChange={handleInputChange}
+                                            className="w-full px-4 py-3 bg-neutral-800/30 backdrop-blur-sm rounded-xl border border-white/5 text-white focus:border-[#3d43dd]/50 focus:ring-1 focus:ring-[#3d43dd]/30 transition-colors"
+                                            placeholder="Seu nome completo"
+                                            disabled={formStatus === 'submitting'}
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <label htmlFor="email" className="block text-sm font-medium text-neutral-300 mb-2">
+                                            Email
+                                        </label>
+                                        <input
+                                            type="email"
+                                            id="email"
+                                            name="email"
+                                            value={formData.email}
+                                            onChange={handleInputChange}
+                                            className="w-full px-4 py-3 bg-neutral-800/30 backdrop-blur-sm rounded-xl border border-white/5 text-white focus:border-[#3d43dd]/50 focus:ring-1 focus:ring-[#3d43dd]/30 transition-colors"
+                                            placeholder="seu.email@exemplo.com"
+                                            disabled={formStatus === 'submitting'}
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <label htmlFor="subject" className="block text-sm font-medium text-neutral-300 mb-2">
+                                            Assunto
+                                        </label>
+                                        <input
+                                            type="text"
+                                            id="subject"
+                                            name="subject"
+                                            value={formData.subject}
+                                            onChange={handleInputChange}
+                                            className="w-full px-4 py-3 bg-neutral-800/30 backdrop-blur-sm rounded-xl border border-white/5 text-white focus:border-[#3d43dd]/50 focus:ring-1 focus:ring-[#3d43dd]/30 transition-colors"
+                                            placeholder="Assunto do projeto"
+                                            disabled={formStatus === 'submitting'}
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <label htmlFor="message" className="block text-sm font-medium text-neutral-300 mb-2">
+                                            Mensagem
+                                        </label>
+                                        <textarea
+                                            id="message"
+                                            name="message"
+                                            value={formData.message}
+                                            onChange={handleInputChange}
+                                            rows={5}
+                                            className="w-full px-4 py-3 bg-neutral-800/30 backdrop-blur-sm rounded-xl border border-white/5 text-white focus:border-[#3d43dd]/50 focus:ring-1 focus:ring-[#3d43dd]/30 transition-colors resize-none"
+                                            placeholder="Descreva seu projeto ou ideia..."
+                                            disabled={formStatus === 'submitting'}
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="pt-2">
+                                    <motion.button
+                                        type="submit"
+                                        disabled={formStatus === 'submitting'}
+                                        className="w-full relative overflow-hidden"
+                                        whileHover={{ scale: 1.01 }}
+                                        whileTap={{ scale: 0.99 }}
+                                    >
+                                        <div className={`inline-flex items-center justify-center w-full px-6 py-3.5 ${formStatus === 'success' ? 'bg-green-600' : formStatus === 'error' ? 'bg-red-600' : 'bg-gradient-to-r from-[#3d43dd] to-[#6366f1]'} rounded-xl text-white font-medium shadow-lg transition-all duration-300`}>
+                                            {formStatus === 'submitting' ? (
+                                                <>
+                                                    <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                                    </svg>
+                                                    Enviando...
+                                                </>
+                                            ) : formStatus === 'success' ? (
+                                                <>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                                                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                                                    </svg>
+                                                    Mensagem Enviada!
+                                                </>
+                                            ) : formStatus === 'error' ? (
+                                                <>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                                                        <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                                                    </svg>
+                                                    Erro ao enviar
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                                                        <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
+                                                    </svg>
+                                                    Enviar Mensagem
+                                                </>
+                                            )}
+                                        </div>
+                                    </motion.button>
+                                </div>
+                            </motion.form>
+                        </div>
+                    </motion.div>
                 </div>
 
                 {/* Área de call-to-action estilo Apple - APRIMORADA */}
@@ -650,7 +524,7 @@ export default function Contact() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.5, delay: 0.6 }}
-                    className="mt-24 mb-4"
+                    className="mt-16 mb-4"
                 >
                     {/* Container com borda de gradiente e efeito de vidro */}
                     <div className="relative overflow-hidden p-0.5 rounded-3xl bg-gradient-to-r from-[#3d43dd]/60 via-[#6366f1]/60 to-[#3d43dd]/60 shadow-2xl">
@@ -669,7 +543,7 @@ export default function Contact() {
                         />
 
                         {/* Conteúdo principal com backdrop blur */}
-                        <div className="bg-black/80 backdrop-blur-xl rounded-[22px] p-12 sm:p-16 md:p-20 relative overflow-hidden">
+                        <div className="bg-black/80 backdrop-blur-xl rounded-[22px] p-8 sm:p-10 md:p-12 relative overflow-hidden">
                             {/* Grade decorativa com linhas sutis */}
                             <div className="absolute inset-0 opacity-10">
                                 <div className="h-full w-full" style={{
@@ -726,7 +600,7 @@ export default function Contact() {
                             {/* Conteúdo do CTA melhorado */}
                             <div className="relative z-10 max-w-4xl mx-auto">
                                 {/* Tag superior para aumentar apelo */}
-                                <div className="flex items-center justify-center gap-2 px-4 py-2 rounded-full bg-[#3d43dd]/10 border border-[#3d43dd]/20 backdrop-blur-sm mb-8 mx-auto w-fit">
+                                <div className="flex items-center justify-center gap-2 px-4 py-2 rounded-full bg-[#3d43dd]/10 border border-[#3d43dd]/20 backdrop-blur-sm mb-6 mx-auto w-fit">
                                     <span className="w-2 h-2 rounded-full bg-[#3d43dd] animate-pulse"></span>
                                     <span className="text-sm font-medium bg-gradient-to-r from-white to-neutral-300 bg-clip-text text-transparent">
                                         Vamos colaborar
@@ -739,10 +613,9 @@ export default function Contact() {
                                     whileInView={{ opacity: 1, y: 0 }}
                                     viewport={{ once: true }}
                                     transition={{ duration: 0.5, delay: 0.2 }}
-                                    className="text-4xl sm:text-5xl lg:text-6xl font-light text-white mb-6 tracking-tight text-center"
+                                    className="text-3xl sm:text-4xl font-light text-white mb-4 tracking-tight text-center"
                                 >
-                                    Vamos <span className="font-semibold text-transparent bg-clip-text bg-gradient-to-r from-[#3d43dd] via-[#6366f1] to-[#818cf8] animate-gradient">transformar</span>
-                                    <br className="hidden md:block" /> suas ideias em realidade
+                                    Vamos <span className="font-semibold text-transparent bg-clip-text bg-gradient-to-r from-[#3d43dd] via-[#6366f1] to-[#818cf8] animate-gradient">transformar</span> suas ideias
                                 </motion.h2>
 
                                 {/* Descrição com melhor formatação */}
@@ -751,10 +624,9 @@ export default function Contact() {
                                     whileInView={{ opacity: 1, y: 0 }}
                                     viewport={{ once: true }}
                                     transition={{ duration: 0.5, delay: 0.3 }}
-                                    className="text-lg text-neutral-300 mb-12 max-w-2xl mx-auto font-light leading-relaxed text-center"
+                                    className="text-base text-neutral-300 mb-8 max-w-2xl mx-auto font-light leading-relaxed text-center"
                                 >
                                     Estou disponível para novos projetos, consultorias e colaborações.
-                                    Vamos criar experiências digitais excepcionais que impressionam e inspiram.
                                 </motion.p>
 
                                 {/* Grupo de botões de ação com mais opções */}
@@ -768,7 +640,6 @@ export default function Contact() {
                                     {/* Botão principal com efeito 3D aprimorado */}
                                     <a
                                         href="#contact"
-                                        onClick={() => setActiveTab('form')}
                                         className="group relative overflow-hidden inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-gradient-to-r from-white to-neutral-100 text-neutral-900 font-medium shadow-xl hover:shadow-2xl hover:-translate-y-0.5 transition-all duration-300"
                                     >
                                         <span className="relative z-10">Iniciar um projeto</span>

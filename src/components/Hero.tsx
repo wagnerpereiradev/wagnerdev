@@ -12,10 +12,11 @@ const VideoBackground = dynamic(() => import('./VideoBackground'), {
     loading: () => null
 });
 
-// Lista reduzida de tecnologias para diminuir o DOM
+// Lista expandida de tecnologias de IA e APIs
 const technologies = [
-    "JavaScript", "React", "Next.js", "TypeScript",
-    "Node.js", "Python", "TailwindCSS", "Mais..."
+    "OpenAI API", "Claude API", "GPT-4.1", "Langchain",
+    "RAG", "Fine-tuning", "Prompt Eng", "Gemini",
+    "LlamaIndex", "Vector DB", "Python", "Next.js"
 ];
 
 export default function Hero() {
@@ -121,13 +122,13 @@ export default function Hero() {
                             </span>
                             <TypeAnimation
                                 sequence={[
-                                    'Desenvolvedor Full Stack',
+                                    'Especialista em IA',
                                     2000,
-                                    'Especialista em Web',
+                                    'Desenvolvedor de WebServices',
                                     2000,
-                                    'UI/UX Designer',
+                                    'Consultor em Automação',
                                     2000,
-                                    'Consultor de IA',
+                                    'Engenheiro de Soluções Digitais',
                                     2000,
                                 ]}
                                 wrapper="span"
@@ -146,7 +147,7 @@ export default function Hero() {
                             transition={{ duration: 0.8, delay: 0.8 }}
                             className="mb-2"
                         >
-                            <span className="text-white font-light">Crio soluções digitais</span>
+                            <span className="text-white font-light">Crio soluções inteligentes</span>
                         </motion.div>
 
                         <motion.div
@@ -156,7 +157,7 @@ export default function Hero() {
                             className="inline-block relative"
                         >
                             <span className="relative z-10 font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-[#3d43dd] via-[#6366f1] to-[#818cf8]">
-                                com elegância
+                                IA e WebServices
                             </span>
                         </motion.div>
 
@@ -165,7 +166,7 @@ export default function Hero() {
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.8, delay: 1.4 }}
                         >
-                            <span className="text-white font-light">e inteligência</span>
+                            <span className="text-white font-light">que transformam negócios</span>
                         </motion.div>
                     </h1>
 

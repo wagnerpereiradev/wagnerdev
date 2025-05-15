@@ -8,7 +8,7 @@ export default function Profile() {
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
     const [cursorVariant, setCursorVariant] = useState('default');
     const [typingText, setTypingText] = useState('');
-    const fullText = 'Desenvolvedor Full Stack especializado em criar experiências digitais modernas e eficientes. Apaixonado por solucionar problemas complexos através de código limpo e interfaces intuitivas.';
+    const fullText = 'Especialista em soluções de Inteligência Artificial e WebServices que transformam o potencial dos negócios. Desenvolvo agentes de IA personalizados, automações inteligentes e APIs que conectam sistemas e elevam a eficiência operacional dos meus clientes.';
     const ref = useRef<HTMLDivElement>(null);
     const sectionRef = useRef<HTMLElement>(null);
     const { scrollY } = useScroll();
@@ -177,22 +177,31 @@ export default function Profile() {
     // Otimização das tecnologias com useMemo
     const technologies = useMemo(() => [
         { name: 'Next.js', logo: 'https://images.ctfassets.net/23aumh6u8s0i/6pjUKboBuFLvCKkE3esaFA/5f2101d6d2add5c615db5e98a553fc44/nextjs.jpeg' },
+        { name: 'LangChain', logo: 'https://registry.npmmirror.com/@lobehub/icons-static-png/latest/files/dark/langchain.png' },
+        { name: 'OpenAI API', logo: 'https://img.icons8.com/fluent-systems-filled/512/FFFFFF/chatgpt.png' },
+        { name: 'Claude API', logo: 'https://registry.npmmirror.com/@lobehub/icons-static-png/latest/files/dark/claude-color.png' },
+        { name: 'DeepSeek API', logo: 'https://registry.npmmirror.com/@lobehub/icons-static-png/latest/files/dark/deepseek-color.png' },
+        { name: 'Qwen API', logo: 'https://registry.npmmirror.com/@lobehub/icons-static-png/latest/files/dark/qwen.png' },
+        { name: 'Google Cloud', logo: 'https://static.wikia.nocookie.net/logopedia/images/f/f4/GCloud_-_%281%29.svg/revision/latest/scale-to-width-down/250?cb=20190828135105' },
+        { name: 'Amazon Web Services', logo: 'https://img.icons8.com/m_outlined/600/FFFFFF/amazon-web-services.png' },
+        { name: 'Git', logo: 'https://pachecoandre.com.br/assets/imgs/posts/git.png' },
+        { name: 'GitHub', logo: 'https://img.icons8.com/ios11/512/FFFFFF/github.png' },
+        { name: 'Docker', logo: 'https://static-00.iconduck.com/assets.00/docker-icon-1024x1024-mv7uzno8.png' },
+        { name: 'Java', logo: 'https://static-00.iconduck.com/assets.00/java-icon-1511x2048-6ikx8301.png' },
+        { name: 'Kotlin', logo: 'https://cdn.worldvectorlogo.com/logos/kotlin-2.svg' },
         { name: 'TypeScript', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Typescript_logo_2020.svg/2048px-Typescript_logo_2020.svg.png' },
         { name: 'Tailwind CSS', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Tailwind_CSS_Logo.svg/2560px-Tailwind_CSS_Logo.svg.png' },
         { name: 'Vite', logo: 'https://raw.githubusercontent.com/vitejs/vite/main/docs/public/logo.svg' },
         { name: 'Electron', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Electron_Software_Framework_Logo.svg/1200px-Electron_Software_Framework_Logo.svg.png' },
         { name: 'Android Studio', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Android_Studio_icon_%282023%29.svg/2048px-Android_Studio_icon_%282023%29.svg.png' },
         { name: 'WordPress', logo: 'https://upload.wikimedia.org/wikipedia/commons/9/93/Wordpress_Blue_logo.png' },
-        { name: 'OpenAI API', logo: 'https://img.icons8.com/fluent-systems-filled/512/FFFFFF/chatgpt.png' },
         { name: 'Node.js', logo: 'https://cdn-icons-png.flaticon.com/512/5968/5968322.png' },
-        { name: 'AWS S3', logo: 'https://img.icons8.com/m_outlined/600/FFFFFF/amazon-web-services.png' },
         { name: 'Figma', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Figma-logo.svg/1200px-Figma-logo.svg.png' },
         { name: 'Adobe Illustrator', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/Adobe_Illustrator_CC_icon.svg/2101px-Adobe_Illustrator_CC_icon.svg.png' },
         { name: 'Adobe Photoshop', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/Adobe_Photoshop_CC_icon.svg/1051px-Adobe_Photoshop_CC_icon.svg.png' },
         { name: 'Framer Motion', logo: 'https://user-images.githubusercontent.com/22095598/123793419-f5528800-d8e1-11eb-8c5f-e2dad45a9c81.png' },
         { name: 'Vercel', logo: 'https://registry.npmmirror.com/@lobehub/icons-static-png/latest/files/dark/vercel.png' },
-        { name: 'GitHub', logo: 'https://img.icons8.com/ios11/512/FFFFFF/github.png' },
-        { name: 'PNPM', logo: 'https://static-00.iconduck.com/assets.00/file-type-light-pnpm-icon-2048x2048-5ykb4rad.png' },
+        { name: 'PNPM', logo: 'https://static-00.iconduck.com/assets.00/file-type-light-pnpm-icon-2048x2048-5ykb4rad.png' }
     ], []);
 
     return (
@@ -403,13 +412,13 @@ export default function Profile() {
                                 <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#3d43dd]/10 border border-[#3d43dd]/20 backdrop-blur-sm">
                                     <span className="w-2 h-2 rounded-full bg-[#3d43dd] animate-pulse"></span>
                                     <span className="text-sm font-medium bg-gradient-to-r from-white to-neutral-300 bg-clip-text text-transparent">
-                                        Desenvolvedor Full Stack
+                                        Especialista em IA
                                     </span>
                                 </div>
                                 <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-purple-500/10 border border-purple-500/20 backdrop-blur-sm">
                                     <span className="w-2 h-2 rounded-full bg-purple-500 animate-pulse"></span>
                                     <span className="text-sm font-medium text-purple-300">
-                                        UX/UI Designer
+                                        Engenheiro de WebServices
                                     </span>
                                 </div>
                             </motion.div>
@@ -442,7 +451,13 @@ export default function Profile() {
                                 viewport={{ once: true }}
                                 transition={{ delay: 0.3, duration: 0.5 }}
                             />
-                            <img src="https://raw.githubusercontent.com/wagnerpereiradev/wagnerpereiradev/547d10ba55493858a9f58d59f7db365a9ca95674/profile-3d-contrib/profile-night-green.svg" style={{ borderRadius: "2em", border: "1px solid #212121", filter: "blur(50px) saturate(2.5)", position: "absolute", zIndex: -1, opacity: 0.6 }} />
+                            <Image
+                                src="https://raw.githubusercontent.com/wagnerpereiradev/wagnerpereiradev/547d10ba55493858a9f58d59f7db365a9ca95674/profile-3d-contrib/profile-night-green.svg"
+                                alt="Gráfico 3D de contribuições GitHub"
+                                width={500}
+                                height={200}
+                                style={{ borderRadius: "2em", border: "1px solid #212121", filter: "blur(50px) saturate(2.5)", position: "absolute", zIndex: -1, opacity: 0.6 }}
+                            />
                             {/* Descrição com efeito de digitação */}
                             <motion.p
                                 initial={{ opacity: 0, y: 10 }}
@@ -465,10 +480,10 @@ export default function Profile() {
                                 className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10"
                             >
                                 {[
-                                    { value: "30+", label: "Projetos" },
-                                    { value: "2020+", label: "Atuando com dev/design" },
-                                    { value: "25+", label: "Clientes Satisfeitos" },
-                                    { value: "100%", label: "Foco em código limpo e UX" }
+                                    { value: "30+", label: "Projetos de IA" },
+                                    { value: "2023+", label: "Atuando com IA Generativa" },
+                                    { value: "25+", label: "APIs Desenvolvidas" },
+                                    { value: "100%", label: "Foco em soluções escaláveis" }
                                 ].map((stat, i) => (
                                     <motion.div
                                         key={`stat-${i}`}
@@ -500,9 +515,9 @@ export default function Profile() {
                                 <h3 className="text-lg font-medium text-white mb-4">Áreas de Atuação</h3>
                                 <div className="flex flex-wrap gap-2">
                                     {[
-                                        "Desenvolvimento Web", "Mobile Apps", "UX/UI Design",
-                                        "APIs RESTful", "Arquitetura de Software", "Inteligência Artificial",
-                                        "Consultorias", "DevOps"
+                                        "Agentes de IA", "APIs e WebServices", "Automação de Processos",
+                                        "Chatbots Avançados", "Fine-tuning de LLMs", "RAG Systems",
+                                        "Integração de APIs", "Big Data"
                                     ].map((area) => (
                                         <span
                                             key={area}
