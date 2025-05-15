@@ -207,8 +207,29 @@ export default function Profile() {
     // Ordenações predefinidas para evitar diferenças de hidratação
     const firstRowTechnologies = useMemo(() => [...technologies], [technologies]);
     const secondRowTechnologies = useMemo(() => {
-        // Ordenação fixa e predeterminada (não aleatória)
-        return [...technologies].reverse();
+        // Ordenação pseudo-aleatória determinística (não usa Math.random())
+        // Usando um algoritmo determinístico baseado no nome das tecnologias
+        return [...technologies].sort((a, b) => {
+            // Calculando um valor hash simples a partir dos nomes
+            const hashA = a.name.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+            const hashB = b.name.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+
+            // Usando o valor hash para determinar a ordem
+            return hashA - hashB;
+        });
+    }, [technologies]);
+
+    // Outra variação de ordenação para elementos duplicados
+    const secondRowDuplicates = useMemo(() => {
+        // Usando uma ordenação diferente para elementos duplicados
+        return [...technologies].sort((a, b) => {
+            // Ordenando pelo comprimento do nome e logo URL (ambos determinísticos)
+            const lengthDiff = a.name.length - b.name.length;
+            if (lengthDiff !== 0) return lengthDiff;
+
+            // Se os nomes tiverem o mesmo tamanho, usa a primeira letra como critério de desempate
+            return a.name.charCodeAt(0) - b.name.charCodeAt(0);
+        });
     }, [technologies]);
 
     return (
@@ -776,8 +797,8 @@ export default function Profile() {
                                             <p className="text-sm font-medium text-neutral-300 group-hover:text-white transition-colors text-center relative z-10">{tech.name}</p>
                                         </motion.div>
                                     ))}
-                                    {/* Itens duplicados em ordem reversa fixa */}
-                                    {secondRowTechnologies.slice(0, 10).map((tech, index) => (
+                                    {/* Itens duplicados em ordem diferente mas determinística */}
+                                    {secondRowDuplicates.slice(0, 10).map((tech, index) => (
                                         <motion.div
                                             key={`${tech.name}-rev-dup-${index}`}
                                             className="flex-shrink-0 w-32 h-32 bg-neutral-900/30 backdrop-blur-sm border border-neutral-800/30 rounded-xl flex flex-col items-center justify-center p-4 relative group"
