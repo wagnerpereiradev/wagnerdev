@@ -75,7 +75,7 @@ const SafeMarkdown = ({ children }: { children: string }) => {
     const parts = processContent();
 
     return (
-        <div className="text-sm leading-relaxed break-words">
+        <div className="text-base sm:text-sm leading-relaxed break-words">
             {parts.map((part, index) => (
                 <div key={index}>
                     {part.type === 'text' ? (
@@ -83,22 +83,22 @@ const SafeMarkdown = ({ children }: { children: string }) => {
                             remarkPlugins={[remarkGfm]}
                             rehypePlugins={[rehypeRaw]}
                             components={{
-                                p: ({ children }) => <p className="mb-2 last:mb-0">{children}</p>,
+                                p: ({ children }) => <p className="mb-2 last:mb-0 text-base sm:text-sm">{children}</p>,
                                 a: ({ href, children }) => (
                                     <a
                                         href={href}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="text-[#3d43dd] hover:text-[#6366f1] transition-colors underline"
+                                        className="text-[#3d43dd] hover:text-[#6366f1] transition-colors underline text-base sm:text-sm"
                                     >
                                         {children}
                                     </a>
                                 ),
-                                ul: ({ children }) => <ul className="mb-3 pl-4 list-disc">{children}</ul>,
-                                ol: ({ children }) => <ol className="mb-3 pl-4 list-decimal">{children}</ol>,
-                                li: ({ children }) => <li className="mb-1">{children}</li>,
+                                ul: ({ children }) => <ul className="mb-3 pl-4 list-disc text-base sm:text-sm">{children}</ul>,
+                                ol: ({ children }) => <ol className="mb-3 pl-4 list-decimal text-base sm:text-sm">{children}</ol>,
+                                li: ({ children }) => <li className="mb-1 text-base sm:text-sm">{children}</li>,
                                 blockquote: ({ children }) => (
-                                    <blockquote className="pl-3 border-l-2 border-[#3d43dd]/50 italic text-neutral-400 my-2">
+                                    <blockquote className="pl-3 border-l-2 border-[#3d43dd]/50 italic text-neutral-400 my-2 text-base sm:text-sm">
                                         {children}
                                     </blockquote>
                                 ),
@@ -107,7 +107,7 @@ const SafeMarkdown = ({ children }: { children: string }) => {
                                     if (inline) {
                                         return (
                                             <code
-                                                className="bg-neutral-800 text-neutral-200 px-1 py-0.5 rounded text-xs font-mono"
+                                                className="bg-neutral-800 text-neutral-200 px-1 py-0.5 rounded text-base sm:text-xs font-mono"
                                                 {...props}
                                             >
                                                 {children}
@@ -127,7 +127,7 @@ const SafeMarkdown = ({ children }: { children: string }) => {
                         // Renderização segura de blocos de código
                         <div className="my-2">
                             <pre style={{ maxWidth: '100%', boxSizing: 'border-box' }} className="bg-neutral-800/50 p-2 rounded-md overflow-x-auto custom-scrollbar">
-                                <code className="text-xs font-mono" style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>
+                                <code className="text-base sm:text-xs font-mono" style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>
                                     {part.content}
                                 </code>
                             </pre>
@@ -681,7 +681,7 @@ export default function ChatBot() {
                                         // Apenas texto com efeito shimmer, estilo semelhante às mensagens do bot
                                         <div className="w-full flex items-start">
                                             <div className="w-full py-2 sm:py-3 px-3 sm:px-4 bg-transparent rounded-2xl rounded-tl-sm">
-                                                <p className="text-xs sm:text-sm leading-relaxed text-transparent bg-clip-text bg-gradient-to-r from-neutral-500 via-neutral-200 to-neutral-500 animate-shimmer-text">
+                                                <p className="text-base sm:text-sm leading-relaxed text-transparent bg-clip-text bg-gradient-to-r from-neutral-500 via-neutral-200 to-neutral-500 animate-shimmer-text">
                                                     {loadingMessages[loadingMessageIndex]}
                                                 </p>
                                             </div>
@@ -690,8 +690,8 @@ export default function ChatBot() {
                                         <>
                                             {/* Mensagem do bot */}
                                             {message.isBot ? (
-                                                <div className="w-full py-2 sm:py-3 px-3 sm:px-4 bg-transparent border border-neutral-700/40 text-white/95 shadow-sm hover:border-neutral-700/60 transition-colors duration-200 rounded-2xl rounded-tl-sm overflow-hidden">
-                                                    <div className="text-xs sm:text-sm">
+                                                <div className="w-full py-2 sm:py-3 px-3 sm:px-4 bg-transparent text-white/95 transition-colors duration-200 rounded-2xl rounded-tl-sm overflow-hidden">
+                                                    <div className="text-base sm:text-sm">
                                                         <SafeMarkdown>
                                                             {message.text}
                                                         </SafeMarkdown>
@@ -700,8 +700,8 @@ export default function ChatBot() {
                                             ) : (
                                                 /* Mensagem do usuário - alinhada à direita com o avatar à direita */
                                                 <div className="w-full flex justify-end items-start">
-                                                    <div className="max-w-[80%] py-2 sm:py-3 px-3 sm:px-4 bg-[#1e1e1e] text-white/95 shadow-md hover:bg-neutral-800 transition-colors duration-200 mr-2 sm:mr-3 rounded-2xl rounded-tr-sm">
-                                                        <p className="text-xs sm:text-sm leading-relaxed">{message.text}</p>
+                                                    <div className="max-w-[80%] py-2 sm:py-3 px-3 sm:px-4 bg-gradient-to-r from-[#3d43dd]/90 to-[#6366f1]/90 text-white shadow-md hover:from-[#3d43dd] hover:to-[#6366f1] transition-colors duration-200 mr-2 sm:mr-3 rounded-2xl rounded-tr-sm">
+                                                        <p className="text-base sm:text-sm leading-relaxed">{message.text}</p>
                                                     </div>
                                                     <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-gradient-to-br from-neutral-700 to-neutral-800 flex items-center justify-center flex-shrink-0 mt-1 shadow-md">
                                                         <span className="text-white text-[10px] sm:text-xs font-medium">EU</span>
