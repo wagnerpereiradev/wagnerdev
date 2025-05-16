@@ -19,23 +19,25 @@ export default function Navbar() {
     const homeClickTimerRef = useRef<NodeJS.Timeout | null>(null);
 
     const isBlogPage = pathname.startsWith('/blog');
+    const isPolicyPage = pathname.startsWith('/privacidade');
+    const isNotHomePage = isBlogPage || isPolicyPage;
 
     // Ajuste nos itens de menu para melhor lidar com a navegação entre páginas
     const menuItems = useMemo(() => [
-        { name: 'Início', href: isBlogPage ? '/' : '#', id: 'hero', isHomePage: true },
-        { name: 'Perfil', href: isBlogPage ? '/#profile' : '#profile', id: 'profile' },
-        { name: 'Processo', href: isBlogPage ? '/#process' : '#process', id: 'process' },
-        { name: 'Projetos', href: isBlogPage ? '/#projects' : '#projects', id: 'projects' },
+        { name: 'Início', href: isNotHomePage ? 'https://wagnerai.me/' : '#', id: 'hero', isHomePage: true },
+        { name: 'Perfil', href: isNotHomePage ? 'https://wagnerai.me/#profile' : '#profile', id: 'profile' },
+        { name: 'Processo', href: isNotHomePage ? 'https://wagnerai.me/#process' : '#process', id: 'process' },
+        { name: 'Projetos', href: isNotHomePage ? 'https://wagnerai.me/#projects' : '#projects', id: 'projects' },
         { name: 'Blog', href: '/blog', id: 'blog', isExternalPage: true },
-    ], [isBlogPage]);
+    ], [isNotHomePage]);
 
     // Usar useCallback para funções que não precisam ser recriadas em cada render
     // Criar referência para armazenar o tempo da última verificação
     const lastCalculationTimeRef = useRef<number>(0);
 
     const handleScroll = useCallback(() => {
-        // Não rastrear seções ativas quando estiver na página do blog
-        if (isBlogPage) return;
+        // Não rastrear seções ativas quando estiver na página do blog ou de política
+        if (isNotHomePage) return;
 
         // Ajusta a transparência com base na rolagem - usando requestAnimationFrame para otimização
         const updateScrollState = () => {
@@ -94,7 +96,7 @@ export default function Navbar() {
 
         // Usando requestAnimationFrame para melhor performance
         window.requestAnimationFrame(updateScrollState);
-    }, [isBlogPage, isScrolled, activeSection, homeClickedRef]);
+    }, [isNotHomePage, isScrolled, activeSection, homeClickedRef]);
 
     const toggleMenu = useCallback(() => {
         setIsMenuOpen(prev => !prev);
@@ -103,7 +105,7 @@ export default function Navbar() {
     // Função melhorada para navegação
     const handleNavigation = useCallback((e: React.MouseEvent<HTMLAnchorElement>, id: string, href: string) => {
         // Forçar a atualização do estado ativo imediatamente
-        if (!isBlogPage && (id === 'hero' || href === '#')) {
+        if (!isNotHomePage && (id === 'hero' || href === '#')) {
             e.preventDefault();
             setActiveSection('hero');
             setIsMenuOpen(false);
@@ -130,8 +132,8 @@ export default function Navbar() {
             return;
         }
 
-        // Se estiver na página do blog e quiser ir para uma seção da página inicial
-        if (isBlogPage && !href.startsWith('/blog')) {
+        // Se estiver na página do blog ou política e quiser ir para uma seção da página inicial
+        if (isNotHomePage && !href.startsWith('/blog')) {
             // Se for apenas para a página inicial sem âncora
             if (href === '/' || href === '') {
                 // Deixe o comportamento padrão do link
@@ -145,8 +147,8 @@ export default function Navbar() {
             }
         }
 
-        // Se não estiver na página do blog (ou seja, na página inicial)
-        if (!isBlogPage) {
+        // Se não estiver na página do blog ou política (ou seja, na página inicial)
+        if (!isNotHomePage) {
             e.preventDefault(); // Prevenir o comportamento padrão
 
             // Atualizar a seção ativa imediatamente, sem esperar pelo scroll
@@ -175,13 +177,13 @@ export default function Navbar() {
                 }
             }
         }
-    }, [isBlogPage]);
+    }, [isNotHomePage]);
 
     // Função especial para o botão de contato
     const handleContactClick = useCallback((e: React.MouseEvent<HTMLAnchorElement>) => {
-        if (isBlogPage) {
-            // Se estiver na página do blog, redirecione para a página inicial com âncora #contact
-            router.push('/#contact');
+        if (isNotHomePage) {
+            // Se estiver na página do blog ou política, redirecione para a página inicial com âncora #contact
+            router.push('https://wagnerai.me/#contact');
             return;
         }
 
@@ -198,7 +200,7 @@ export default function Navbar() {
                 });
             }, 10);
         }
-    }, [isBlogPage, router]);
+    }, [isNotHomePage, router]);
 
     // Determinar qual item deve estar ativo
     const isItemActive = useCallback((item: { id: string, isExternalPage?: boolean, isHomePage?: boolean }) => {

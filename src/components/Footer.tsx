@@ -13,16 +13,15 @@ export default function Footer() {
     const { showToast, ToastComponent } = useToast();
 
     const footerLinks = [
-        { title: 'Início', href: '#hero' },
-        { title: 'Perfil', href: '#profile' },
-        { title: 'Processo', href: '#process' },
-        { title: 'Projetos', href: '#projects' },
-        { title: 'Contato', href: '#contact' },
+        { title: 'Início', href: 'https://wagnerai.me/#hero' },
+        { title: 'Perfil', href: 'https://wagnerai.me/#profile' },
+        { title: 'Processo', href: 'https://wagnerai.me/#process' },
+        { title: 'Projetos', href: 'https://wagnerai.me/#projects' },
+        { title: 'Contato', href: 'https://wagnerai.me/#contact' },
     ];
 
     const legalLinks = [
-        { title: 'Política de Privacidade', href: '#' },
-        { title: 'Termos de Uso', href: '#' },
+        { title: 'Política de Privacidade', href: '/privacidade' }
     ];
 
     const socialLinks = [
@@ -82,8 +81,8 @@ export default function Footer() {
             {/* Fundo moderno com gradiente e partículas */}
             <div className="absolute inset-0 z-0">
                 {/* Gradiente de fundo estilo Apple */}
-                <div className="absolute inset-0 bg-gradient-to-b from-neutral-950 to-black">
-                    <div className="absolute inset-0 opacity-50 bg-[url('/images/grid-pattern.svg')]"></div>
+                <div className="absolute inset-0 bg-black">
+                    <div className="absolute inset-0"></div>
                 </div>
 
                 {/* Camada de gradientes sutis */}
