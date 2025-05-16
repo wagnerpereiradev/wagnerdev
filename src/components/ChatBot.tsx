@@ -493,9 +493,34 @@ export default function ChatBot() {
     // Animações para o botão e o painel de chat
     const buttonVariants = {
         initial: { scale: 0.8, opacity: 0 },
-        animate: { scale: 1, opacity: 1, transition: { type: 'spring', stiffness: 300, damping: 20 } },
-        hover: { scale: 1.1, transition: { duration: 0.2 } },
-        tap: { scale: 0.9, transition: { duration: 0.2 } }
+        animate: {
+            scale: 1,
+            opacity: 1,
+            transition: {
+                type: 'spring',
+                stiffness: 300,
+                damping: 20
+            }
+        },
+        hover: {
+            scale: 1.1,
+            boxShadow: "0px 0px 15px 5px rgba(99, 102, 241, 0.7)",
+            transition: { duration: 0.2 }
+        },
+        tap: { scale: 0.9, transition: { duration: 0.2 } },
+        pulse: {
+            scale: [1, 1.1, 1],
+            boxShadow: [
+                "0px 0px 8px 2px rgba(99, 102, 241, 0.4)",
+                "0px 0px 16px 6px rgba(99, 102, 241, 0.7)",
+                "0px 0px 8px 2px rgba(99, 102, 241, 0.4)"
+            ],
+            transition: {
+                repeat: Infinity,
+                repeatType: "reverse" as const,
+                duration: 2.5
+            }
+        }
     };
 
     const chatPanelVariants = {
@@ -522,48 +547,80 @@ export default function ChatBot() {
 
     return (
         <>
-            {/* Botão flutuante de chat */}
-            <motion.button
-                className="fixed bottom-8 right-8 z-50 flex items-center justify-center w-16 h-16 bg-gradient-to-r from-[#3d43dd] to-[#6366f1] rounded-full shadow-lg shadow-[#3d43dd]/30 text-white floating-chat-button"
-                onClick={(e) => {
-                    e.stopPropagation();
-                    setIsOpen(prevState => !prevState);
-
-                    // Se estiver abrindo, garanta que o scroll vá para o final
-                    if (!isOpen) {
-                        setTimeout(() => {
-                            scrollToBottom();
-                        }, 300);
-                    }
-                }}
-                variants={buttonVariants}
+            {/* Botão flutuante de chat com animações melhoradas */}
+            <motion.div
+                className="fixed bottom-4 right-4 sm:bottom-8 sm:right-8 z-50 h-14 w-14 sm:h-16 sm:w-16 rounded-full cursor-pointer"
                 initial="initial"
-                animate="animate"
+                animate={["animate", "pulse"]}
                 whileHover="hover"
                 whileTap="tap"
-                aria-label={isOpen ? "Fechar chat" : "Abrir chat"}
+                variants={buttonVariants}
             >
-                {!isOpen ? (
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M14 9a2 2 0 0 1-2 2H6l-4 4V4c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2v5Z" />
-                        <path d="M18 9h2a2 2 0 0 1 2 2v11l-4-4h-6a2 2 0 0 1-2-2v-1" />
-                    </svg>
-                ) : (
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M18 6 6 18"></path>
-                        <path d="m6 6 12 12"></path>
-                    </svg>
+                {/* Círculos de efeito de onda ao redor do botão */}
+                <div className="absolute inset-0 rounded-full overflow-hidden">
+                    <span className="absolute inset-0 rounded-full animate-ping-slow opacity-30 bg-[#3d43dd]/30"></span>
+                    <span className="absolute inset-0 rounded-full animate-ping-slower opacity-20 bg-[#6366f1]/20"></span>
+                </div>
+
+                <motion.button
+                    className="absolute inset-0 flex items-center justify-center bg-gradient-to-r from-[#3d43dd] to-[#6366f1] rounded-full shadow-lg shadow-[#3d43dd]/30 text-white floating-chat-button overflow-hidden cursor-pointer"
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        setIsOpen(prevState => !prevState);
+
+                        // Se estiver abrindo, garanta que o scroll vá para o final
+                        if (!isOpen) {
+                            setTimeout(() => {
+                                scrollToBottom();
+                            }, 300);
+                        }
+                    }}
+                    aria-label={isOpen ? "Fechar chat" : "Abrir chat"}
+                >
+                    {/* Fundo com brilho animado */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-[#3d43dd]/80 via-[#5d42f0]/80 to-[#3d43dd]/80 animate-gradient-x"></div>
+
+                    {!isOpen ? (
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" className="relative z-10 sm:w-[28px] sm:h-[28px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M14 9a2 2 0 0 1-2 2H6l-4 4V4c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2v5Z" />
+                            <path d="M18 9h2a2 2 0 0 1 2 2v11l-4-4h-6a2 2 0 0 1-2-2v-1" />
+                        </svg>
+                    ) : (
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" className="relative z-10 sm:w-[28px] sm:h-[28px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M18 6 6 18"></path>
+                            <path d="m6 6 12 12"></path>
+                        </svg>
+                    )}
+                </motion.button>
+
+                {/* Indicador de notificação melhorado - movido para fora do botão para evitar clipping */}
+                <motion.span
+                    className="absolute -top-1.5 -right-1.5 w-4 h-4 sm:w-5 sm:h-5 bg-green-500 rounded-full border-2 border-white z-20"
+                    animate={{
+                        scale: [1, 1.2, 1],
+                        boxShadow: ["0px 0px 0px 0px rgba(34, 197, 94, 0.4)", "0px 0px 8px 2px rgba(34, 197, 94, 0.6)", "0px 0px 0px 0px rgba(34, 197, 94, 0.4)"]
+                    }}
+                    transition={{
+                        repeat: Infinity,
+                        duration: 2,
+                    }}
+                ></motion.span>
+
+                {/* Badge com texto "Fale comigo!" - escondido em telas pequenas */}
+                {!isOpen && (
+                    <div className="hidden sm:block absolute -top-12 right-0 bg-white text-[#3d43dd] px-3 py-1.5 rounded-full text-sm font-bold shadow-lg animate-bounce-slow whitespace-nowrap">
+                        Fale comigo!
+                        <div className="absolute bottom-0 right-5 w-3 h-3 bg-white transform rotate-45 translate-y-1.5"></div>
+                    </div>
                 )}
-                {/* Indicador de notificação */}
-                <span className="absolute -top-1 -right-1 w-4 h-4 bg-green-500 rounded-full animate-pulse"></span>
-            </motion.button>
+            </motion.div>
 
             {/* Painel de chat */}
             <AnimatePresence>
                 {isOpen && (
                     <motion.div
                         ref={chatRef}
-                        className="fixed bottom-28 right-8 z-50 w-[360px] bg-neutral-900/90 backdrop-blur-md border border-neutral-800 rounded-2xl shadow-2xl text-white"
+                        className="fixed bottom-0 right-0 sm:bottom-28 sm:right-8 z-50 w-full sm:w-[360px] md:w-[400px] h-[90vh] sm:h-auto max-h-[calc(100vh-130px)] bg-neutral-900/90 backdrop-blur-md border-t sm:border border-neutral-800 sm:rounded-2xl shadow-2xl text-white flex flex-col"
                         variants={chatPanelVariants}
                         initial="hidden"
                         animate="visible"
@@ -571,16 +628,16 @@ export default function ChatBot() {
                         key="chat-panel"
                     >
                         {/* Cabeçalho do chat */}
-                        <div className="p-4 border-b border-neutral-800 flex items-center gap-4">
-                            <div className="relative w-10 h-10 overflow-hidden">
+                        <div className="p-3 sm:p-4 border-b border-neutral-800 flex items-center gap-3 sm:gap-4 flex-shrink-0">
+                            <div className="relative w-8 h-8 sm:w-10 sm:h-10 overflow-hidden">
                                 <div className="w-full h-full rounded-full flex items-center justify-center bg-gradient-to-br from-[#3d43dd] to-[#6366f1]">
-                                    <span className="text-white text-sm font-medium">IA</span>
+                                    <span className="text-white text-xs sm:text-sm font-medium">IA</span>
                                 </div>
-                                <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-neutral-900"></span>
+                                <span className="absolute bottom-0 right-0 w-2.5 h-2.5 sm:w-3 sm:h-3 bg-green-500 rounded-full border-2 border-neutral-900"></span>
                             </div>
                             <div>
-                                <h3 className="font-medium text-white">Assistente Virtual</h3>
-                                <p className="text-xs text-neutral-400">Respondendo em segundos</p>
+                                <h3 className="font-medium text-white text-sm sm:text-base">Assistente Virtual</h3>
+                                <p className="text-[10px] sm:text-xs text-neutral-400">Respondendo em segundos</p>
                             </div>
                             {/* Botões de ação */}
                             <div className="ml-auto">
@@ -602,7 +659,7 @@ export default function ChatBot() {
                         {/* Corpo do chat com mensagens */}
                         <div
                             ref={messageContainerRef}
-                            className="h-[350px] overflow-y-auto p-4 flex flex-col gap-5 custom-scrollbar relative"
+                            className="flex-1 overflow-y-auto p-3 sm:p-4 flex flex-col gap-3 sm:gap-5 custom-scrollbar relative min-h-[200px] sm:min-h-[250px] sm:max-h-[350px]"
                         >
                             {messages.map((message) => (
                                 <motion.div
@@ -614,8 +671,8 @@ export default function ChatBot() {
                                 >
                                     {/* Avatar do bot - só mostrar quando não estiver no estado de loading */}
                                     {message.isBot && !message.loading && (
-                                        <div className="w-8 h-8 rounded-full flex items-center justify-center bg-gradient-to-br from-[#3d43dd] to-[#6366f1] flex-shrink-0 mt-1 mr-3 shadow-md">
-                                            <span className="text-white text-xs font-medium">IA</span>
+                                        <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center bg-gradient-to-br from-[#3d43dd] to-[#6366f1] flex-shrink-0 mt-1 mr-2 sm:mr-3 shadow-md">
+                                            <span className="text-white text-[10px] sm:text-xs font-medium">IA</span>
                                         </div>
                                     )}
 
@@ -623,8 +680,8 @@ export default function ChatBot() {
                                     {message.loading ? (
                                         // Apenas texto com efeito shimmer, estilo semelhante às mensagens do bot
                                         <div className="w-full flex items-start">
-                                            <div className="w-full py-3 px-4 bg-transparent rounded-2xl rounded-tl-sm">
-                                                <p className="text-sm leading-relaxed text-transparent bg-clip-text bg-gradient-to-r from-neutral-500 via-neutral-200 to-neutral-500 animate-shimmer-text">
+                                            <div className="w-full py-2 sm:py-3 px-3 sm:px-4 bg-transparent rounded-2xl rounded-tl-sm">
+                                                <p className="text-xs sm:text-sm leading-relaxed text-transparent bg-clip-text bg-gradient-to-r from-neutral-500 via-neutral-200 to-neutral-500 animate-shimmer-text">
                                                     {loadingMessages[loadingMessageIndex]}
                                                 </p>
                                             </div>
@@ -633,19 +690,21 @@ export default function ChatBot() {
                                         <>
                                             {/* Mensagem do bot */}
                                             {message.isBot ? (
-                                                <div className="w-full py-3 px-4 bg-transparent border border-neutral-700/40 text-white/95 shadow-sm hover:border-neutral-700/60 transition-colors duration-200 rounded-2xl rounded-tl-sm overflow-hidden">
-                                                    <SafeMarkdown>
-                                                        {message.text}
-                                                    </SafeMarkdown>
+                                                <div className="w-full py-2 sm:py-3 px-3 sm:px-4 bg-transparent border border-neutral-700/40 text-white/95 shadow-sm hover:border-neutral-700/60 transition-colors duration-200 rounded-2xl rounded-tl-sm overflow-hidden">
+                                                    <div className="text-xs sm:text-sm">
+                                                        <SafeMarkdown>
+                                                            {message.text}
+                                                        </SafeMarkdown>
+                                                    </div>
                                                 </div>
                                             ) : (
                                                 /* Mensagem do usuário - alinhada à direita com o avatar à direita */
                                                 <div className="w-full flex justify-end items-start">
-                                                    <div className="max-w-[80%] py-3 px-4 bg-[#1e1e1e] text-white/95 shadow-md hover:bg-neutral-800 transition-colors duration-200 mr-3 rounded-2xl rounded-tr-sm">
-                                                        <p className="text-sm leading-relaxed">{message.text}</p>
+                                                    <div className="max-w-[80%] py-2 sm:py-3 px-3 sm:px-4 bg-[#1e1e1e] text-white/95 shadow-md hover:bg-neutral-800 transition-colors duration-200 mr-2 sm:mr-3 rounded-2xl rounded-tr-sm">
+                                                        <p className="text-xs sm:text-sm leading-relaxed">{message.text}</p>
                                                     </div>
-                                                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-neutral-700 to-neutral-800 flex items-center justify-center flex-shrink-0 mt-1 shadow-md">
-                                                        <span className="text-white text-xs font-medium">EU</span>
+                                                    <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-gradient-to-br from-neutral-700 to-neutral-800 flex items-center justify-center flex-shrink-0 mt-1 shadow-md">
+                                                        <span className="text-white text-[10px] sm:text-xs font-medium">EU</span>
                                                     </div>
                                                 </div>
                                             )}
@@ -666,21 +725,21 @@ export default function ChatBot() {
                                     animate={{ opacity: 1, y: 0 }}
                                     exit={{ opacity: 0, y: 10 }}
                                     transition={{ duration: 0.2 }}
-                                    className="mb-4 absolute bottom-[100px] left-1/2 transform -translate-x-1/2 z-[60] bg-[#3d43dd]/90 backdrop-blur-sm p-3 rounded-full border border-[#6366f1]/50 hover:bg-[#6366f1]/90 transition-colors"
+                                    className="mb-2 sm:mb-4 absolute bottom-[80px] sm:bottom-[100px] left-1/2 transform -translate-x-1/2 z-[60] bg-[#3d43dd]/90 backdrop-blur-sm p-2 sm:p-3 rounded-full border border-[#6366f1]/50 hover:bg-[#6366f1]/90 transition-colors"
                                     onClick={scrollToBottom}
                                     aria-label="Ir para o final"
                                 >
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
-                                        width="22"
-                                        height="22"
+                                        width="18"
+                                        height="18"
                                         viewBox="0 0 24 24"
                                         fill="none"
                                         stroke="currentColor"
                                         strokeWidth="2"
                                         strokeLinecap="round"
                                         strokeLinejoin="round"
-                                        className="text-white"
+                                        className="text-white sm:w-[22px] sm:h-[22px]"
                                     >
                                         <path d="M12 5v14" />
                                         <path d="m19 12-7 7-7-7" />
@@ -690,13 +749,13 @@ export default function ChatBot() {
                         </AnimatePresence>
 
                         {/* Input de mensagem */}
-                        <div className="p-4 border-t border-neutral-800">
+                        <div className="p-3 sm:p-4 border-t border-neutral-800 mt-auto flex-shrink-0">
                             <div className="relative group">
                                 {isTyping && !isLoading && (
-                                    <div className="absolute -top-5 left-4 px-3 py-1 bg-[#3d43dd]/20 backdrop-blur-xl text-[10px] font-medium text-[#6366f1] rounded-full border border-[#6366f1]/20 shadow-sm flex items-center gap-1.5 animate-pulse">
-                                        <span className="relative flex h-2 w-2">
+                                    <div className="absolute -top-5 left-4 px-2 sm:px-3 py-1 bg-[#3d43dd]/20 backdrop-blur-xl text-[8px] sm:text-[10px] font-medium text-[#6366f1] rounded-full border border-[#6366f1]/20 shadow-sm flex items-center gap-1 sm:gap-1.5 animate-pulse">
+                                        <span className="relative flex h-1.5 w-1.5 sm:h-2 sm:w-2">
                                             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#6366f1] opacity-75"></span>
-                                            <span className="relative inline-flex rounded-full h-2 w-2 bg-[#6366f1]"></span>
+                                            <span className="relative inline-flex rounded-full h-1.5 w-1.5 sm:h-2 sm:w-2 bg-[#6366f1]"></span>
                                         </span>
                                         <span>Digitando<span className="dots">...</span></span>
                                     </div>
@@ -704,19 +763,19 @@ export default function ChatBot() {
                                 <input
                                     ref={inputRef}
                                     type="text"
-                                    className="w-full bg-neutral-800/80 rounded-xl py-3.5 px-5 pr-14 text-sm text-white placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-[#3d43dd]/70 border border-neutral-700/50 focus:border-[#6366f1]/60 transition-all shadow-inner shadow-black/10 group-hover:border-neutral-600/70"
+                                    className="w-full bg-neutral-800/80 rounded-xl py-3 sm:py-3.5 px-3 sm:px-5 pr-12 sm:pr-14 text-xs sm:text-sm text-white placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-[#3d43dd]/70 border border-neutral-700/50 focus:border-[#6366f1]/60 transition-all shadow-inner shadow-black/10 group-hover:border-neutral-600/70"
                                     placeholder={isLoading ? "Aguarde a resposta..." : "Digite sua mensagem..."}
                                     value={inputValue}
                                     onChange={handleInputChange}
                                     onKeyDown={handleKeyDown}
                                     disabled={isLoading}
                                 />
-                                <div className="flex absolute right-3 top-1/2 transform -translate-y-1/2 gap-1">
+                                <div className="flex absolute right-2 sm:right-3 top-1/2 transform -translate-y-1/2 gap-1">
                                     <button
                                         className={`${inputValue.trim() === '' || isLoading
                                             ? 'bg-neutral-700/30 text-neutral-500 cursor-not-allowed opacity-70 scale-95'
                                             : 'bg-[#3d43dd] text-white hover:bg-[#6366f1] hover:scale-105 active:scale-95 cursor-pointer focus:ring-2 focus:ring-[#6366f1]/60 focus:ring-offset-1 focus:ring-offset-neutral-800'
-                                            } transition-all duration-200 rounded-lg p-2 shadow-md`}
+                                            } transition-all duration-200 rounded-lg p-1.5 sm:p-2 shadow-md`}
                                         onClick={() => {
                                             if (inputValue.trim() !== '' && !isLoading) {
                                                 const message = inputValue.trim();
@@ -734,12 +793,12 @@ export default function ChatBot() {
                                         aria-label="Enviar mensagem"
                                     >
                                         {isLoading ? (
-                                            <svg className="animate-spin w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                            <svg className="animate-spin w-4 h-4 sm:w-5 sm:h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                                                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                                             </svg>
                                         ) : (
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="sm:w-[18px] sm:h-[18px]">
                                                 <path d="m22 2-7 20-4-9-9-4Z" />
                                                 <path d="M22 2 11 13" />
                                             </svg>
@@ -748,9 +807,9 @@ export default function ChatBot() {
                                 </div>
                             </div>
                             {/* Funcionalidades extras */}
-                            <div className="flex justify-center mt-3 text-xs">
-                                <div className="px-3 py-1.5 bg-[#3d43dd]/15 rounded-full border border-[#6366f1]/20 text-[10px] font-medium text-[#6366f1] shadow-sm shadow-[#3d43dd]/10 flex items-center gap-1.5">
-                                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <div className="flex justify-center mt-2 sm:mt-3 text-xs">
+                                <div className="px-2 sm:px-3 py-1 sm:py-1.5 bg-[#3d43dd]/15 rounded-full border border-[#6366f1]/20 text-[8px] sm:text-[10px] font-medium text-[#6366f1] shadow-sm shadow-[#3d43dd]/10 flex items-center gap-1 sm:gap-1.5">
+                                    <svg width="8" height="8" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="sm:w-[10px] sm:h-[10px]">
                                         <path d="M22.2819 9.8211a5.9847 5.9847 0 0 0-.5157-4.9108 6.0462 6.0462 0 0 0-6.5098-2.9A6.0651 6.0651 0 0 0 4.9807 4.1818a5.9847 5.9847 0 0 0-3.9977 2.9 6.0462 6.0462 0 0 0 .7427 7.0966 5.98 5.98 0 0 0 .511 4.9107 6.051 6.051 0 0 0 6.5146 2.9001A5.9847 5.9847 0 0 0 13.2599 24a6.0557 6.0557 0 0 0 5.7718-4.2058 5.9894 5.9894 0 0 0 3.9977-2.9001 6.0557 6.0557 0 0 0-.7475-7.0729zm-9.022 12.6081a4.4755 4.4755 0 0 1-2.8764-1.0408l.1419-.0804 4.7783-2.7582a.7948.7948 0 0 0 .3927-.6813v-6.7369l2.02 1.1686a.071.071 0 0 1 .038.052v5.5826a4.504 4.504 0 0 1-4.4945 4.4944zm-9.6607-4.1254a4.4708 4.4708 0 0 1-.5346-3.0137l.142.0852 4.783 2.7582a.7712.7712 0 0 0 .7806 0l5.8428-3.3685v2.3324a.0804.0804 0 0 1-.0332.0615L9.74 19.9502a4.4992 4.4992 0 0 1-6.1408-1.6464zM2.3408 7.8956a4.485 4.485 0 0 1 2.3655-1.9728V11.6a.7664.7664 0 0 0 .3879.6765l5.8144 3.3543-2.0201 1.1685a.0757.0757 0 0 1-.071 0l-4.8303-2.7865A4.504 4.504 0 0 1 2.3408 7.872zm16.5963 3.8558L13.1038 8.364 15.1192 7.2a.0757.0757 0 0 1 .071 0l4.8303 2.7913a4.4944 4.4944 0 0 1-.6765 8.1042v-5.6772a.79.79 0 0 0-.407-.667zm2.0107-3.0231l-.142-.0852-4.7735-2.7818a.7759.7759 0 0 0-.7854 0L9.409 9.2297V6.8974a.0662.0662 0 0 1 .0284-.0615l4.8303-2.7866a4.4992 4.4992 0 0 1 6.6802 4.66zM8.3065 12.863l-2.02-1.1638a.0804.0804 0 0 1-.038-.0567V6.0742a4.4992 4.4992 0 0 1 7.3757-3.4537l-.142.0805L8.704 5.459a.7948.7948 0 0 0-.3927.6813zm1.0976-2.3654l2.602-1.4998 2.6069 1.4998v2.9994l-2.5974 1.4997-2.6067-1.4997Z" fill="#6366f1" />
                                     </svg>
                                     <span>Alimentado por OpenAI GPT-4.1</span>
@@ -761,7 +820,7 @@ export default function ChatBot() {
                 )}
             </AnimatePresence>
 
-            {/* Adiciona as animações de shimmer e a animação das reticências para o indicador de digitação */}
+            {/* Adiciona as animações novas */}
             <style jsx global>{`
                 @keyframes shimmer {
                     0% {
@@ -788,6 +847,81 @@ export default function ChatBot() {
                         opacity: 1;
                         transform: scale(1.05);
                     }
+                }
+                
+                /* Animação de ping mais lenta para os círculos externos */
+                @keyframes ping-slow {
+                    0% {
+                        transform: scale(1);
+                        opacity: 0.3;
+                    }
+                    50% {
+                        transform: scale(1.5);
+                        opacity: 0.1;
+                    }
+                    100% {
+                        transform: scale(1);
+                        opacity: 0.3;
+                    }
+                }
+                
+                @keyframes ping-slower {
+                    0% {
+                        transform: scale(1);
+                        opacity: 0.2;
+                    }
+                    50% {
+                        transform: scale(1.8);
+                        opacity: 0.05;
+                    }
+                    100% {
+                        transform: scale(1);
+                        opacity: 0.2;
+                    }
+                }
+                
+                /* Animação de gradiente em movimento */
+                @keyframes gradient-x {
+                    0% {
+                        background-position: 0% 50%;
+                    }
+                    50% {
+                        background-position: 100% 50%;
+                    }
+                    100% {
+                        background-position: 0% 50%;
+                    }
+                }
+                
+                /* Animação de bounce mais lenta */
+                @keyframes bounce-slow {
+                    0%, 20%, 50%, 80%, 100% {
+                        transform: translateY(0);
+                    }
+                    40% {
+                        transform: translateY(-8px);
+                    }
+                    60% {
+                        transform: translateY(-4px);
+                    }
+                }
+                
+                /* Aplicando as animações */
+                .animate-ping-slow {
+                    animation: ping-slow 3s cubic-bezier(0, 0, 0.2, 1) infinite;
+                }
+                
+                .animate-ping-slower {
+                    animation: ping-slower 4s cubic-bezier(0, 0, 0.2, 1) infinite;
+                }
+                
+                .animate-gradient-x {
+                    background-size: 200% 100%;
+                    animation: gradient-x 5s ease infinite;
+                }
+                
+                .animate-bounce-slow {
+                    animation: bounce-slow 4s infinite;
                 }
                 
                 /* Animação para os pontos do indicador de digitação */
