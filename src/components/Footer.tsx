@@ -14,9 +14,9 @@ export default function Footer() {
 
     const footerLinks = [
         { title: 'Início', href: '#hero' },
-        { title: 'Sobre', href: '#about' },
+        { title: 'Perfil', href: '#profile' },
+        { title: 'Processo', href: '#process' },
         { title: 'Projetos', href: '#projects' },
-        { title: 'Tecnologias', href: '#technologies' },
         { title: 'Contato', href: '#contact' },
     ];
 
