@@ -24,6 +24,7 @@ export default function Navbar() {
     const menuItems = useMemo(() => [
         { name: 'Início', href: isBlogPage ? '/' : '#', id: 'hero', isHomePage: true },
         { name: 'Perfil', href: isBlogPage ? '/#profile' : '#profile', id: 'profile' },
+        { name: 'Processo', href: isBlogPage ? '/#process' : '#process', id: 'process' },
         { name: 'Projetos', href: isBlogPage ? '/#projects' : '#projects', id: 'projects' },
         { name: 'Blog', href: '/blog', id: 'blog', isExternalPage: true },
     ], [isBlogPage]);
@@ -69,7 +70,7 @@ export default function Navbar() {
                     return;
                 }
 
-                const sections = ['hero', 'profile', 'projects', 'contact'];
+                const sections = ['hero', 'profile', 'process', 'projects', 'contact'];
                 const sectionPositions = sections.map(id => {
                     const element = document.getElementById(id);
                     if (!element) return null;
@@ -236,7 +237,7 @@ export default function Navbar() {
             const hash = window.location.hash;
             if (hash) {
                 const id = hash.replace('#', '');
-                const validSections = ['hero', 'profile', 'projects', 'contact'];
+                const validSections = ['hero', 'profile', 'process', 'projects', 'contact'];
                 if (validSections.includes(id)) {
                     setActiveSection(id);
                 }

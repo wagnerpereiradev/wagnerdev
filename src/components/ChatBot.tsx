@@ -609,7 +609,7 @@ export default function ChatBot() {
                 {/* Badge com texto "Fale comigo!" - escondido em telas pequenas */}
                 {!isOpen && (
                     <div className="hidden sm:block absolute -top-12 right-0 bg-white text-[#3d43dd] px-3 py-1.5 rounded-full text-sm font-bold shadow-lg animate-bounce-slow whitespace-nowrap">
-                        Fale comigo!
+                        Tem dúvidas?
                         <div className="absolute bottom-0 right-5 w-3 h-3 bg-white transform rotate-45 translate-y-1.5"></div>
                     </div>
                 )}
