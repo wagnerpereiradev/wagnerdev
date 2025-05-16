@@ -763,12 +763,17 @@ export default function ChatBot() {
                                 <input
                                     ref={inputRef}
                                     type="text"
-                                    className="w-full bg-neutral-800/80 rounded-xl py-3 sm:py-3.5 px-3 sm:px-5 pr-12 sm:pr-14 text-xs sm:text-sm text-white placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-[#3d43dd]/70 border border-neutral-700/50 focus:border-[#6366f1]/60 transition-all shadow-inner shadow-black/10 group-hover:border-neutral-600/70"
+                                    className="w-full bg-neutral-800/80 rounded-xl py-3 sm:py-3.5 px-3 sm:px-5 pr-12 sm:pr-14 text-base sm:text-sm text-white placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-[#3d43dd]/70 border border-neutral-700/50 focus:border-[#6366f1]/60 transition-all shadow-inner shadow-black/10 group-hover:border-neutral-600/70"
                                     placeholder={isLoading ? "Aguarde a resposta..." : "Digite sua mensagem..."}
                                     value={inputValue}
                                     onChange={handleInputChange}
                                     onKeyDown={handleKeyDown}
                                     disabled={isLoading}
+                                    autoComplete="off"
+                                    autoCorrect="off"
+                                    autoCapitalize="off"
+                                    spellCheck="false"
+                                    inputMode="text"
                                 />
                                 <div className="flex absolute right-2 sm:right-3 top-1/2 transform -translate-y-1/2 gap-1">
                                     <button
@@ -820,7 +825,7 @@ export default function ChatBot() {
                 )}
             </AnimatePresence>
 
-            {/* Adiciona as animações novas */}
+            {/* Adiciona as animações novas e previne zoom em dispositivos móveis */}
             <style jsx global>{`
                 @keyframes shimmer {
                     0% {
@@ -941,6 +946,13 @@ export default function ChatBot() {
                     animation: dots 1.5s infinite ease-in-out;
                     display: inline-block;
                     width: 12px;
+                }
+                
+                /* Configurações adicionais para evitar zoom no mobile */
+                @media screen and (max-width: 640px) {
+                    input, select, textarea {
+                        font-size: 16px !important;
+                    }
                 }
                 
                 /* Estilos modernos para as barras de rolagem */
