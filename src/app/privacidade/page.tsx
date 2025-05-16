@@ -98,7 +98,7 @@ export default function PrivacyPolicy() {
                     >
                         <h2 className="text-2xl font-bold text-white mb-4">1. Introdução</h2>
                         <p className="text-neutral-300 mb-6">
-                            Esta Política de Privacidade descreve como suas informações pessoais são coletadas, usadas e compartilhadas quando você visita ou interage com o site <span className="text-[#3d43dd]">wagnerai.me</span> ("Site").
+                            Esta Política de Privacidade descreve como suas informações pessoais são coletadas, usadas e compartilhadas quando você visita ou interage com o site <span className="text-[#3d43dd]">wagnerai.me</span> (&quot;Site&quot;).
                         </p>
 
                         <h2 className="text-2xl font-bold text-white mb-4 mt-10">2. Informações que Coletamos</h2>
