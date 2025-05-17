@@ -176,14 +176,6 @@ export default function Profile() {
 
     // Otimização das tecnologias com useMemo
     const technologies = useMemo(() => [
-        { name: 'Next.js', logo: 'https://images.ctfassets.net/23aumh6u8s0i/6pjUKboBuFLvCKkE3esaFA/5f2101d6d2add5c615db5e98a553fc44/nextjs.jpeg' },
-        { name: 'LangChain', logo: 'https://registry.npmmirror.com/@lobehub/icons-static-png/latest/files/dark/langchain.png' },
-        { name: 'OpenAI API', logo: 'https://img.icons8.com/fluent-systems-filled/512/FFFFFF/chatgpt.png' },
-        { name: 'Claude API', logo: 'https://registry.npmmirror.com/@lobehub/icons-static-png/latest/files/dark/claude-color.png' },
-        { name: 'DeepSeek API', logo: 'https://registry.npmmirror.com/@lobehub/icons-static-png/latest/files/dark/deepseek-color.png' },
-        { name: 'Qwen API', logo: 'https://registry.npmmirror.com/@lobehub/icons-static-png/latest/files/dark/qwen.png' },
-        { name: 'Google Cloud', logo: 'https://static.wikia.nocookie.net/logopedia/images/f/f4/GCloud_-_%281%29.svg/revision/latest/scale-to-width-down/250?cb=20190828135105' },
-        { name: 'Amazon Web Services', logo: 'https://img.icons8.com/m_outlined/600/FFFFFF/amazon-web-services.png' },
         { name: 'Git', logo: 'https://pachecoandre.com.br/assets/imgs/posts/git.png' },
         { name: 'GitHub', logo: 'https://img.icons8.com/ios11/512/FFFFFF/github.png' },
         { name: 'Docker', logo: 'https://static-00.iconduck.com/assets.00/docker-icon-1024x1024-mv7uzno8.png' },
@@ -197,11 +189,21 @@ export default function Profile() {
         { name: 'WordPress', logo: 'https://upload.wikimedia.org/wikipedia/commons/9/93/Wordpress_Blue_logo.png' },
         { name: 'Node.js', logo: 'https://cdn-icons-png.flaticon.com/512/5968/5968322.png' },
         { name: 'Figma', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Figma-logo.svg/1200px-Figma-logo.svg.png' },
-        { name: 'Adobe Illustrator', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/Adobe_Illustrator_CC_icon.svg/2101px-Adobe_Illustrator_CC_icon.svg.png' },
-        { name: 'Adobe Photoshop', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/Adobe_Photoshop_CC_icon.svg/1051px-Adobe_Photoshop_CC_icon.svg.png' },
         { name: 'Framer Motion', logo: 'https://user-images.githubusercontent.com/22095598/123793419-f5528800-d8e1-11eb-8c5f-e2dad45a9c81.png' },
         { name: 'Vercel', logo: 'https://registry.npmmirror.com/@lobehub/icons-static-png/latest/files/dark/vercel.png' },
-        { name: 'PNPM', logo: 'https://static-00.iconduck.com/assets.00/file-type-light-pnpm-icon-2048x2048-5ykb4rad.png' }
+        { name: 'PNPM', logo: 'https://static-00.iconduck.com/assets.00/file-type-light-pnpm-icon-2048x2048-5ykb4rad.png' },
+        { name: 'Next.js', logo: 'https://images.ctfassets.net/23aumh6u8s0i/6pjUKboBuFLvCKkE3esaFA/5f2101d6d2add5c615db5e98a553fc44/nextjs.jpeg' },
+        { name: 'LangChain', logo: 'https://registry.npmmirror.com/@lobehub/icons-static-png/latest/files/dark/langchain.png' },
+        { name: 'OpenAI API', logo: 'https://img.icons8.com/fluent-systems-filled/512/FFFFFF/chatgpt.png' },
+        { name: 'Claude API', logo: 'https://registry.npmmirror.com/@lobehub/icons-static-png/latest/files/dark/claude-color.png' },
+        { name: 'DeepSeek API', logo: 'https://registry.npmmirror.com/@lobehub/icons-static-png/latest/files/dark/deepseek-color.png' },
+        { name: 'Qwen API', logo: 'https://registry.npmmirror.com/@lobehub/icons-static-png/latest/files/dark/qwen.png' },
+        { name: 'Google Cloud', logo: 'https://static.wikia.nocookie.net/logopedia/images/f/f4/GCloud_-_%281%29.svg/revision/latest/scale-to-width-down/250?cb=20190828135105' },
+        { name: 'n8n', logo: 'https://meta-q.cdn.bubble.io/f1740327389123x713161792968389100/n8n%20plugin.png' },
+        { name: 'Zapier', logo: 'https://www.svgrepo.com/show/354596/zapier-icon.svg' },
+        { name: 'ManyChat', logo: 'https://cdn-1.webcatalog.io/catalog/manychat/manychat-icon.png?v=1746405116694' },
+        { name: 'BotConversa', logo: 'https://raichu-uploads.s3.amazonaws.com/logo_botconversa_2tLRzY.png' },
+        { name: 'Amazon Web Services', logo: 'https://img.icons8.com/m_outlined/600/FFFFFF/amazon-web-services.png' }
     ], []);
 
     // Ordenações predefinidas para evitar diferenças de hidratação
