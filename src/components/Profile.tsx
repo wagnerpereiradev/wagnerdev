@@ -663,7 +663,7 @@ export default function Profile() {
                     >
                         <h2 className="text-3xl font-bold text-white mb-4">
                             <span className="bg-gradient-to-r from-[#3d43dd] to-[#6366f1] bg-clip-text text-transparent">
-                                Tecnologias
+                                Tecnologias/Tools
                             </span>
                             {" "}
                             <span className="relative inline-block">
