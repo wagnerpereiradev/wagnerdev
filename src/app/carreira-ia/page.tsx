@@ -92,15 +92,15 @@ export default function EbookPage() {
             <Navbar />
 
             {/* Hero Section - Above the fold */}
-            <section className="relative min-h-screen flex items-center pt-24 pb-20 overflow-hidden">
+            <section className="relative min-h-screen flex items-center pt-20 md:pt-24 pb-16 md:pb-20 overflow-hidden">
                 {/* Background effects - mais intensos */}
                 <div className="absolute inset-0 bg-[url('/images/grid-pattern.svg')] bg-repeat opacity-80"></div>
                 <div className="absolute inset-0 bg-gradient-to-b from-neutral-950 via-[#3d43dd]/10 to-neutral-950 opacity-90"></div>
 
                 {/* Decorative lights - mais brilhantes */}
-                <div className="absolute top-1/4 -left-24 w-96 h-96 rounded-full bg-[#3d43dd]/20 blur-[100px] opacity-70"></div>
-                <div className="absolute bottom-1/3 -right-24 w-96 h-96 rounded-full bg-[#3d43dd]/20 blur-[100px] opacity-70"></div>
-                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full bg-[#3d43dd]/5 blur-[80px] opacity-50"></div>
+                <div className="absolute top-1/4 -left-24 w-64 sm:w-96 h-64 sm:h-96 rounded-full bg-[#3d43dd]/20 blur-[80px] sm:blur-[100px] opacity-70"></div>
+                <div className="absolute bottom-1/3 -right-24 w-64 sm:w-96 h-64 sm:h-96 rounded-full bg-[#3d43dd]/20 blur-[80px] sm:blur-[100px] opacity-70"></div>
+                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] rounded-full bg-[#3d43dd]/5 blur-[60px] sm:blur-[80px] opacity-50"></div>
 
                 <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                     {/* Flash message / Limited time offer banner */}
@@ -108,27 +108,27 @@ export default function EbookPage() {
                         initial={{ y: -50, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
                         transition={{ duration: 0.5 }}
-                        className="bg-gradient-to-r from-[#ff5757] to-[#ff9957] py-3 px-5 rounded-lg text-white font-bold text-center mb-12 shadow-lg shadow-[#ff5757]/20"
+                        className="bg-gradient-to-r from-[#ff5757] to-[#ff9957] py-2 sm:py-3 px-3 sm:px-5 rounded-lg text-white font-bold text-center mb-8 sm:mb-12 shadow-lg shadow-[#ff5757]/20"
                     >
-                        <div className="flex flex-col sm:flex-row justify-center items-center gap-2">
-                            <span className="flex items-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <div className="flex flex-col sm:flex-row justify-center items-center gap-1 sm:gap-2">
+                            <span className="flex items-center text-sm sm:text-base">
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 sm:h-5 sm:w-5 mr-1 sm:mr-2 animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
                                 OFERTA RELÂMPAGO:
                             </span>
-                            <span className="font-medium">50% OFF Apenas nas próximas</span>
-                            <div className="flex gap-1 font-mono">
-                                <div className="bg-white/20 px-2 py-1 rounded-md text-white">{countdown.hours.toString().padStart(2, '0')}</div>
+                            <span className="font-medium text-sm sm:text-base">50% OFF Apenas nas próximas</span>
+                            <div className="flex gap-1 font-mono mt-1 sm:mt-0">
+                                <div className="bg-white/20 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-md text-white text-sm sm:text-base">{countdown.hours.toString().padStart(2, '0')}</div>
                                 <span>:</span>
-                                <div className="bg-white/20 px-2 py-1 rounded-md text-white">{countdown.minutes.toString().padStart(2, '0')}</div>
+                                <div className="bg-white/20 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-md text-white text-sm sm:text-base">{countdown.minutes.toString().padStart(2, '0')}</div>
                                 <span>:</span>
-                                <div className="bg-white/20 px-2 py-1 rounded-md text-white">{countdown.seconds.toString().padStart(2, '0')}</div>
+                                <div className="bg-white/20 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-md text-white text-sm sm:text-base">{countdown.seconds.toString().padStart(2, '0')}</div>
                             </div>
                         </div>
                     </motion.div>
 
-                    <div className="grid lg:grid-cols-2 gap-12 items-center">
+                    <div className="grid lg:grid-cols-2 gap-8 md:gap-12 items-center">
                         {/* Left column - Content */}
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
@@ -137,52 +137,52 @@ export default function EbookPage() {
                             className="order-2 lg:order-1"
                         >
                             {/* Tag decorativa */}
-                            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#3d43dd]/10 border border-[#3d43dd]/30 backdrop-blur-sm mb-6">
+                            <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-[#3d43dd]/10 border border-[#3d43dd]/30 backdrop-blur-sm mb-4 sm:mb-6">
                                 <motion.span
-                                    className="w-2 h-2 rounded-full bg-[#3d43dd]"
+                                    className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-[#3d43dd]"
                                     animate={{ scale: [1, 1.5, 1] }}
                                     transition={{ duration: 2, repeat: Infinity, repeatType: "reverse" }}
                                 ></motion.span>
-                                <span className="text-sm font-medium bg-gradient-to-r from-white to-neutral-300 bg-clip-text text-transparent">
+                                <span className="text-xs sm:text-sm font-medium bg-gradient-to-r from-white to-neutral-300 bg-clip-text text-transparent">
                                     Treinamento Exclusivo • Vagas Limitadas
                                 </span>
                             </div>
 
                             {/* Título principal - mais impactante */}
-                            <h1 className="text-4xl sm:text-5xl lg:text-7xl font-extrabold text-white leading-tight mb-6">
+                            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-extrabold text-white leading-tight mb-4 sm:mb-6">
                                 Domine a IA e <span className="bg-gradient-to-r from-[#3d43dd] to-[#6366f1] bg-clip-text text-transparent">dispare na carreira</span> — começando hoje
                             </h1>
 
                             {/* Subtítulo - mais persuasivo */}
-                            <p className="text-xl text-neutral-300 mb-8 leading-relaxed">
+                            <p className="text-base sm:text-lg md:text-xl text-neutral-300 mb-6 sm:mb-8 leading-relaxed">
                                 <span className="font-semibold text-white">Treinamento 100% prático e sem enrolação</span> para iniciantes, profissionais em transição, executivos e freelancers que querem <span className="underline decoration-[#3d43dd] decoration-2 underline-offset-2">produzir mais, aprender mais rápido e faturar mais</span> usando Inteligência Artificial.
                             </p>
 
                             {/* Status de inscrições */}
-                            <div className="mb-8 bg-neutral-900/50 backdrop-blur-sm border border-neutral-800/50 rounded-lg p-4 flex items-center">
-                                <div className="mr-3 relative">
-                                    <div className="w-3 h-3 rounded-full bg-green-500"></div>
-                                    <div className="w-3 h-3 rounded-full bg-green-500 absolute top-0 left-0 animate-ping opacity-75"></div>
+                            <div className="mb-6 sm:mb-8 bg-neutral-900/50 backdrop-blur-sm border border-neutral-800/50 rounded-lg p-3 sm:p-4 flex items-center">
+                                <div className="mr-2 sm:mr-3 relative">
+                                    <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-green-500"></div>
+                                    <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-green-500 absolute top-0 left-0 animate-ping opacity-75"></div>
                                 </div>
                                 <div>
-                                    <p className="text-white font-medium">Inscrições Abertas</p>
-                                    <p className="text-neutral-400 text-sm">Apenas 23 vagas restantes neste lote</p>
+                                    <p className="text-white font-medium text-sm sm:text-base">Inscrições Abertas</p>
+                                    <p className="text-neutral-400 text-xs sm:text-sm">Apenas 23 vagas restantes neste lote</p>
                                 </div>
                             </div>
 
-                            {/* CTA Button - mais chamativo */}
+                            {/* CTA Button - mais chamativo e responsivo */}
                             <motion.div
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.5, delay: 0.4 }}
-                                className="mb-6"
+                                className="mb-4 sm:mb-6"
                             >
                                 <motion.button
-                                    whileHover={{ scale: 1.05 }}
+                                    whileHover={{ scale: 1.03 }}
                                     whileTap={{ scale: 0.98 }}
                                     onMouseEnter={() => setIsHovered(true)}
                                     onMouseLeave={() => setIsHovered(false)}
-                                    className="w-full sm:w-auto px-10 py-6 bg-gradient-to-r from-[#3d43dd] to-[#6366f1] text-white rounded-xl text-xl font-bold shadow-lg shadow-[#3d43dd]/30 hover:shadow-xl hover:shadow-[#3d43dd]/50 transition-all duration-300 relative overflow-hidden"
+                                    className="w-full sm:w-auto px-6 sm:px-8 md:px-10 py-4 sm:py-5 md:py-6 bg-gradient-to-r from-[#3d43dd] to-[#6366f1] text-white rounded-xl text-base sm:text-lg md:text-xl font-bold shadow-lg shadow-[#3d43dd]/30 hover:shadow-xl hover:shadow-[#3d43dd]/50 transition-all duration-300 relative overflow-hidden"
                                 >
                                     {/* Animated gradient background */}
                                     <motion.div
@@ -194,7 +194,7 @@ export default function EbookPage() {
                                     {/* Button content */}
                                     <span className="relative z-10 flex items-center justify-center">
                                         GARANTIR MEU ACESSO AGORA
-                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 sm:h-6 sm:w-6 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                                         </svg>
                                     </span>
@@ -202,21 +202,21 @@ export default function EbookPage() {
                             </motion.div>
 
                             {/* Trust badges */}
-                            <div className="flex flex-wrap gap-4 mb-6">
-                                <div className="flex items-center text-neutral-400 text-sm">
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-1 text-[#3d43dd]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <div className="flex flex-wrap gap-3 sm:gap-4 mb-5 sm:mb-6">
+                                <div className="flex items-center text-neutral-400 text-xs sm:text-sm">
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 sm:h-5 sm:w-5 mr-1 text-[#3d43dd]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                                     </svg>
                                     Pagamento 100% Seguro
                                 </div>
-                                <div className="flex items-center text-neutral-400 text-sm">
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-1 text-[#3d43dd]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <div className="flex items-center text-neutral-400 text-xs sm:text-sm">
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 sm:h-5 sm:w-5 mr-1 text-[#3d43dd]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5-2 3.5 2z" />
                                     </svg>
                                     Garantia de 7 Dias
                                 </div>
-                                <div className="flex items-center text-neutral-400 text-sm">
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-1 text-[#3d43dd]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <div className="flex items-center text-neutral-400 text-xs sm:text-sm">
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 sm:h-5 sm:w-5 mr-1 text-[#3d43dd]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                                     </svg>
                                     Acesso Imediato
@@ -224,7 +224,7 @@ export default function EbookPage() {
                             </div>
 
                             {/* Testimonial slider - prova social */}
-                            <div className="bg-neutral-900/40 backdrop-blur-sm p-4 rounded-lg border border-neutral-800/40">
+                            <div className="bg-neutral-900/40 backdrop-blur-sm p-3 sm:p-4 rounded-lg border border-neutral-800/40">
                                 <div className="overflow-hidden relative">
                                     <div className="flex items-center">
                                         <AnimatePresence mode="wait">
@@ -234,23 +234,23 @@ export default function EbookPage() {
                                                 animate={{ opacity: 1, x: 0 }}
                                                 exit={{ opacity: 0, x: -20 }}
                                                 transition={{ duration: 0.5 }}
-                                                className="flex-shrink-0 w-full flex items-start gap-3"
+                                                className="flex-shrink-0 w-full flex items-start gap-2 sm:gap-3"
                                             >
                                                 <div className="flex-shrink-0">
-                                                    <div className="w-10 h-10 rounded-full bg-gradient-to-r from-[#3d43dd]/60 to-[#6366f1]/60 flex items-center justify-center text-white font-bold">
+                                                    <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-r from-[#3d43dd]/60 to-[#6366f1]/60 flex items-center justify-center text-white font-bold text-xs sm:text-sm">
                                                         {testimonials[currentTestimonialIndex].name.charAt(0)}
                                                     </div>
                                                 </div>
                                                 <div>
                                                     <div className="flex text-yellow-400 mb-1">
                                                         {[...Array(5)].map((_, i) => (
-                                                            <svg key={i} xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                                            <svg key={i} xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 sm:h-4 sm:w-4" viewBox="0 0 20 20" fill="currentColor">
                                                                 <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118l-2.8-2.034c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                                                             </svg>
                                                         ))}
                                                     </div>
-                                                    <p className="text-white font-medium">&quot;{testimonials[currentTestimonialIndex].text}&quot;</p>
-                                                    <div className="text-sm text-neutral-400 mt-1">
+                                                    <p className="text-white font-medium text-xs sm:text-sm md:text-base">&quot;{testimonials[currentTestimonialIndex].text}&quot;</p>
+                                                    <div className="text-xs sm:text-sm text-neutral-400 mt-1">
                                                         {testimonials[currentTestimonialIndex].name}, {testimonials[currentTestimonialIndex].role}
                                                     </div>
                                                 </div>
@@ -268,7 +268,7 @@ export default function EbookPage() {
                             transition={{ duration: 0.7, delay: 0.3 }}
                             className="order-1 lg:order-2 flex justify-center"
                         >
-                            <div className="relative w-full max-w-md rounded-xl shadow-2xl shadow-[#3d43dd]/30 overflow-hidden transform hover:rotate-2 hover:scale-105 transition-transform duration-500">
+                            <div className="relative w-full max-w-xs sm:max-w-sm md:max-w-md rounded-xl shadow-2xl shadow-[#3d43dd]/30 overflow-hidden transform hover:rotate-2 hover:scale-105 transition-transform duration-500">
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent z-10"></div>
 
                                 {/* Brilho ao redor da imagem */}
@@ -276,7 +276,7 @@ export default function EbookPage() {
                                 <div className="absolute -inset-0.5 bg-[#3d43dd]/20 rounded-xl blur-md z-0"></div>
 
                                 <Image
-                                    src="/images/ebook-carreira-5-0.png"
+                                    src="/images/ebook-carreira-5.png"
                                     alt="Capa do Treinamento Carreira 5.0"
                                     width={500}
                                     height={700}
@@ -285,17 +285,17 @@ export default function EbookPage() {
                                 />
 
                                 {/* Badge de promoção */}
-                                <div className="absolute top-5 right-5 z-20 bg-[#ff5757] text-white font-bold px-4 py-2 rounded-full transform rotate-12 shadow-lg">
+                                <div className="absolute top-3 sm:top-5 right-3 sm:right-5 z-20 bg-[#ff5757] text-white font-bold px-3 sm:px-4 py-1 sm:py-2 rounded-full transform rotate-12 shadow-lg text-xs sm:text-sm">
                                     50% OFF
                                 </div>
 
-                                <div className="absolute bottom-0 left-0 right-0 p-6 z-20">
-                                    <div className="flex items-center gap-2 mb-2">
-                                        <div className="w-3 h-3 rounded-full bg-green-500 animate-pulse"></div>
-                                        <span className="text-sm font-medium text-green-300">Inscrições Abertas</span>
+                                <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 z-20">
+                                    <div className="flex items-center gap-1.5 sm:gap-2 mb-1.5 sm:mb-2">
+                                        <div className="w-2 h-2 sm:w-3 sm:h-3 rounded-full bg-green-500 animate-pulse"></div>
+                                        <span className="text-xs sm:text-sm font-medium text-green-300">Inscrições Abertas</span>
                                     </div>
-                                    <h3 className="text-2xl font-bold text-white">Carreira 5.0</h3>
-                                    <p className="text-sm text-neutral-300">Alavanque sua Carreira com IA</p>
+                                    <h3 className="text-xl sm:text-2xl font-bold text-white">Carreira 5.0</h3>
+                                    <p className="text-xs sm:text-sm text-neutral-300">Alavanque sua Carreira com IA</p>
                                 </div>
                             </div>
                         </motion.div>
@@ -304,11 +304,11 @@ export default function EbookPage() {
 
                 {/* Scroll indicator */}
                 <motion.div
-                    className="absolute bottom-10 left-1/2 transform -translate-x-1/2"
-                    animate={{ y: [0, 8, 0] }}
+                    className="absolute bottom-6 sm:bottom-10 left-1/2 transform -translate-x-1/2"
+                    animate={{ y: [0, 6, 0] }}
                     transition={{ duration: 1.5, repeat: Infinity }}
                 >
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-neutral-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 sm:h-6 sm:w-6 text-neutral-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                     </svg>
                 </motion.div>
@@ -410,7 +410,7 @@ export default function EbookPage() {
             </section>
 
             {/* Seção 1 - O Problema */}
-            <section className="py-24 relative bg-neutral-950">
+            <section className="py-16 sm:py-20 md:py-24 relative bg-neutral-950">
                 <div className="absolute inset-0 bg-gradient-to-b from-[#3d43dd]/10 to-transparent opacity-40"></div>
 
                 {/* Padrão de pontos decorativo */}
@@ -422,17 +422,17 @@ export default function EbookPage() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.7 }}
-                        className="bg-gradient-to-br from-neutral-900/90 to-neutral-950/90 backdrop-blur-sm p-8 sm:p-12 rounded-2xl border border-neutral-800/50 shadow-2xl"
+                        className="bg-gradient-to-br from-neutral-900/90 to-neutral-950/90 backdrop-blur-sm p-6 sm:p-8 md:p-12 rounded-2xl border border-neutral-800/50 shadow-2xl"
                     >
                         <SectionTitle number={1} title="O Problema" />
 
-                        <div className="mb-10">
+                        <div className="mb-8 sm:mb-10">
                             <motion.h3
                                 initial={{ opacity: 0, y: 20 }}
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
                                 transition={{ duration: 0.5 }}
-                                className="text-3xl font-bold text-white mb-4"
+                                className="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-3 sm:mb-4 leading-tight"
                             >
                                 A IA está criando <span className="text-[#3d43dd]">duas classes de profissionais</span>
                             </motion.h3>
@@ -442,32 +442,52 @@ export default function EbookPage() {
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
                                 transition={{ duration: 0.5, delay: 0.1 }}
-                                className="text-xl text-neutral-300 mb-8"
+                                className="text-base sm:text-lg md:text-xl text-neutral-300 mb-6 sm:mb-8"
                             >
                                 Os que <span className="text-white font-semibold">dominam a tecnologia</span> e os que serão <span className="text-red-400 font-semibold">substituídos</span> por ela.
                                 Em qual grupo você quer estar?
                             </motion.p>
                         </div>
 
-                        <h3 className="text-2xl font-semibold text-white mb-8">Você sente que...</h3>
+                        <h3 className="text-lg sm:text-xl md:text-2xl font-semibold text-white mb-5 sm:mb-8">Você sente que...</h3>
 
-                        <div className="space-y-6 mb-10">
+                        <div className="space-y-4 sm:space-y-6 mb-8 sm:mb-10">
                             {[
                                 {
                                     question: 'O dia acaba e sua lista de tarefas continua enorme?',
-                                    explanation: 'Enquanto isso, colegas que usam IA entregam o dobro em metade do tempo'
+                                    explanation: 'Enquanto isso, colegas que usam IA entregam o dobro em metade do tempo',
+                                    icon: (
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-[#3d43dd]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                    )
                                 },
                                 {
                                     question: 'O LinkedIn parece uma feira onde só quem "faz barulho" ganha visibilidade?',
-                                    explanation: 'A IA pode transformar qualquer profissional em criador de conteúdo de alto impacto'
+                                    explanation: 'A IA pode transformar qualquer profissional em criador de conteúdo de alto impacto',
+                                    icon: (
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-[#3d43dd]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                        </svg>
+                                    )
                                 },
                                 {
                                     question: 'A cada nova tecnologia surgem mil jargões e você não sabe por onde começar?',
-                                    explanation: 'O ritmo das mudanças acelera e quem não se adapta fica para trás'
+                                    explanation: 'O ritmo das mudanças acelera e quem não se adapta fica para trás',
+                                    icon: (
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-[#3d43dd]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                                        </svg>
+                                    )
                                 },
                                 {
                                     question: 'Entrevistas viraram campo minado e seu currículo nunca passa dos robôs de triagem?',
-                                    explanation: 'Os processos seletivos agora são otimizados por algoritmos que identificam palavras-chave'
+                                    explanation: 'Os processos seletivos agora são otimizados por algoritmos que identificam palavras-chave',
+                                    icon: (
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-[#3d43dd]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                                        </svg>
+                                    )
                                 }
                             ].map((item, index) => (
                                 <motion.div
@@ -476,21 +496,19 @@ export default function EbookPage() {
                                     whileInView={{ opacity: 1, x: 0 }}
                                     viewport={{ once: true }}
                                     transition={{ duration: 0.5, delay: 0.1 * index }}
-                                    className="bg-gradient-to-r from-neutral-900/70 to-neutral-900/40 p-6 rounded-xl border border-neutral-800/30 hover:border-[#3d43dd]/20 transition-all duration-300 shadow-lg"
+                                    className="bg-gradient-to-r from-neutral-900/70 to-neutral-900/40 p-4 sm:p-6 rounded-xl border border-neutral-800/30 hover:border-[#3d43dd]/20 hover:bg-neutral-900/60 transition-all duration-300 shadow-lg"
                                 >
-                                    <div className="flex items-start gap-4">
-                                        <div className="w-10 h-10 rounded-full bg-[#3d43dd]/20 flex items-center justify-center flex-shrink-0 mt-1">
-                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-[#3d43dd]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                            </svg>
+                                    <div className="flex items-start gap-3 sm:gap-4">
+                                        <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-[#3d43dd]/20 flex items-center justify-center flex-shrink-0 mt-1">
+                                            {item.icon}
                                         </div>
                                         <div>
-                                            <p className="text-white text-lg font-semibold mb-2">
+                                            <p className="text-white text-sm sm:text-base md:text-lg font-semibold mb-1 sm:mb-2">
                                                 {item.question}
                                             </p>
                                             <div className="flex items-center">
-                                                <div className="h-px w-10 bg-[#3d43dd]/30 mr-3"></div>
-                                                <p className="text-neutral-400">
+                                                <div className="h-px w-8 sm:w-10 bg-[#3d43dd]/30 mr-2 sm:mr-3"></div>
+                                                <p className="text-neutral-400 text-xs sm:text-sm">
                                                     {item.explanation}
                                                 </p>
                                             </div>
@@ -505,17 +523,17 @@ export default function EbookPage() {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.5, delay: 0.5 }}
-                            className="bg-gradient-to-r from-[#3d43dd]/20 to-[#3d43dd]/5 p-8 rounded-xl border border-[#3d43dd]/30 shadow-lg"
+                            className="bg-gradient-to-r from-[#3d43dd]/20 to-[#3d43dd]/5 p-5 sm:p-8 rounded-xl border border-[#3d43dd]/30 shadow-lg"
                         >
-                            <div className="flex flex-col md:flex-row items-center gap-6">
-                                <div className="w-20 h-20 rounded-full bg-[#3d43dd]/20 flex items-center justify-center flex-shrink-0">
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-[#3d43dd]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <div className="flex flex-col md:flex-row items-center gap-4 sm:gap-6">
+                                <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-[#3d43dd]/20 flex items-center justify-center flex-shrink-0">
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 sm:h-10 sm:w-10 text-[#3d43dd]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                                     </svg>
                                 </div>
-                                <div>
-                                    <h4 className="text-2xl font-bold text-white mb-2">A boa notícia:</h4>
-                                    <p className="text-xl text-white leading-relaxed">
+                                <div className="text-center md:text-left">
+                                    <h4 className="text-xl sm:text-2xl font-bold text-white mb-1 sm:mb-2">A boa notícia:</h4>
+                                    <p className="text-base sm:text-lg md:text-xl text-white leading-tight sm:leading-relaxed">
                                         A IA resolve tudo isso — <span className="text-[#3d43dd] font-bold">se você souber usar</span>. Aqui você aprende como dominar essa tecnologia antes que seja tarde demais.
                                     </p>
                                 </div>
@@ -528,20 +546,20 @@ export default function EbookPage() {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.5, delay: 0.6 }}
-                            className="mt-10 border-t border-neutral-800/50 pt-8"
+                            className="mt-8 sm:mt-10 border-t border-neutral-800/50 pt-6 sm:pt-8"
                         >
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                                <div className="bg-neutral-900/40 backdrop-blur-sm p-5 rounded-xl text-center">
-                                    <div className="text-3xl font-bold text-white mb-2">65%</div>
-                                    <p className="text-neutral-400">dos líderes de RH esperam impacto positivo da IA em até 2 anos</p>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
+                                <div className="bg-neutral-900/40 backdrop-blur-sm p-4 sm:p-5 rounded-xl text-center hover:bg-neutral-900/60 transition-all duration-300 border border-neutral-800/30 hover:border-[#3d43dd]/20">
+                                    <div className="text-2xl sm:text-3xl font-bold text-white mb-1 sm:mb-2">65%</div>
+                                    <p className="text-xs sm:text-sm text-neutral-400">dos líderes de RH esperam impacto positivo da IA em até 2 anos</p>
                                 </div>
-                                <div className="bg-neutral-900/40 backdrop-blur-sm p-5 rounded-xl text-center">
-                                    <div className="text-3xl font-bold text-white mb-2">3x</div>
-                                    <p className="text-neutral-400">mais produtividade para quem domina ferramentas de IA no dia a dia</p>
+                                <div className="bg-neutral-900/40 backdrop-blur-sm p-4 sm:p-5 rounded-xl text-center hover:bg-neutral-900/60 transition-all duration-300 border border-neutral-800/30 hover:border-[#3d43dd]/20">
+                                    <div className="text-2xl sm:text-3xl font-bold text-white mb-1 sm:mb-2">3x</div>
+                                    <p className="text-xs sm:text-sm text-neutral-400">mais produtividade para quem domina ferramentas de IA no dia a dia</p>
                                 </div>
-                                <div className="bg-neutral-900/40 backdrop-blur-sm p-5 rounded-xl text-center">
-                                    <div className="text-3xl font-bold text-white mb-2">52%</div>
-                                    <p className="text-neutral-400">das empresas já priorizam candidatos com habilidades em IA</p>
+                                <div className="bg-neutral-900/40 backdrop-blur-sm p-4 sm:p-5 rounded-xl text-center hover:bg-neutral-900/60 transition-all duration-300 border border-neutral-800/30 hover:border-[#3d43dd]/20 sm:col-span-2 md:col-span-1 sm:mx-auto md:mx-0 sm:max-w-xs md:max-w-none">
+                                    <div className="text-2xl sm:text-3xl font-bold text-white mb-1 sm:mb-2">52%</div>
+                                    <p className="text-xs sm:text-sm text-neutral-400">das empresas já priorizam candidatos com habilidades em IA</p>
                                 </div>
                             </div>
                         </motion.div>
@@ -550,7 +568,7 @@ export default function EbookPage() {
             </section>
 
             {/* Seção 2 - A Solução */}
-            <section className="py-24 relative overflow-hidden">
+            <section className="py-16 sm:py-20 md:py-24 relative overflow-hidden">
                 {/* Efeito de fundo */}
                 <div className="absolute inset-0 bg-gradient-to-t from-[#3d43dd]/10 to-transparent opacity-40"></div>
                 <div className="absolute -bottom-40 -right-40 w-96 h-96 rounded-full bg-[#3d43dd]/10 blur-[80px] opacity-60"></div>
@@ -562,7 +580,7 @@ export default function EbookPage() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.7 }}
-                        className="bg-gradient-to-br from-neutral-900/90 to-[#3d43dd]/5 backdrop-blur-sm p-8 sm:p-12 rounded-2xl border border-neutral-800/60 shadow-2xl"
+                        className="bg-gradient-to-br from-neutral-900/90 to-[#3d43dd]/5 backdrop-blur-sm p-6 sm:p-8 md:p-12 rounded-2xl border border-neutral-800/60 shadow-2xl"
                     >
                         <SectionTitle number={2} title="A Solução" />
 
@@ -571,17 +589,17 @@ export default function EbookPage() {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.5 }}
-                            className="bg-neutral-900/60 border border-neutral-800/50 rounded-xl p-6 mb-12"
+                            className="bg-neutral-900/60 border border-neutral-800/50 rounded-xl p-5 sm:p-6 mb-8 sm:mb-12"
                         >
-                            <h3 className="text-2xl md:text-3xl font-bold text-white mb-4">
+                            <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-3 sm:mb-4">
                                 Apresentando o <span className="bg-gradient-to-r from-[#3d43dd] to-[#6366f1] bg-clip-text text-transparent">Carreira 5.0</span>
                             </h3>
-                            <p className="text-xl text-neutral-300">
+                            <p className="text-base sm:text-lg md:text-xl text-neutral-300">
                                 O primeiro sistema completo que transforma qualquer profissional em um especialista em usar IA para avançar na carreira — mesmo com zero conhecimento técnico.
                             </p>
                         </motion.div>
 
-                        <div className="grid md:grid-cols-2 gap-12 items-center mb-16">
+                        <div className="grid md:grid-cols-2 gap-8 sm:gap-12 items-center mb-10 sm:mb-16">
                             <motion.div
                                 initial={{ opacity: 0, x: -30 }}
                                 whileInView={{ opacity: 1, x: 0 }}
@@ -590,32 +608,32 @@ export default function EbookPage() {
                                 className="relative"
                             >
                                 <div className="absolute -top-10 -left-10 w-40 h-40 bg-[#3d43dd]/10 rounded-full blur-3xl"></div>
-                                <div className="relative bg-gradient-to-br from-[#3d43dd]/20 to-neutral-900/90 p-8 rounded-2xl border border-[#3d43dd]/30 shadow-xl">
-                                    <div className="w-16 h-16 rounded-2xl bg-[#3d43dd]/30 flex items-center justify-center mb-6">
+                                <div className="relative bg-gradient-to-br from-[#3d43dd]/20 to-neutral-900/90 p-6 sm:p-8 rounded-2xl border border-[#3d43dd]/30 shadow-xl">
+                                    <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-[#3d43dd]/30 flex items-center justify-center mb-5 sm:mb-6">
                                         <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-[#3d43dd]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
                                         </svg>
                                     </div>
 
-                                    <h3 className="text-2xl font-bold text-white mb-3">Carreira 5.0:</h3>
-                                    <h4 className="text-xl font-semibold bg-gradient-to-r from-[#3d43dd] to-[#6366f1] bg-clip-text text-transparent mb-4">
+                                    <h3 className="text-xl sm:text-2xl font-bold text-white mb-2 sm:mb-3">Carreira 5.0:</h3>
+                                    <h4 className="text-lg sm:text-xl font-semibold bg-gradient-to-r from-[#3d43dd] to-[#6366f1] bg-clip-text text-transparent mb-3 sm:mb-4">
                                         Alavanque sua Carreira com IA
                                     </h4>
-                                    <div className="h-1 w-24 bg-gradient-to-r from-[#3d43dd] to-[#6366f1] rounded-full mb-6"></div>
+                                    <div className="h-1 w-20 sm:w-24 bg-gradient-to-r from-[#3d43dd] to-[#6366f1] rounded-full mb-4 sm:mb-6"></div>
 
-                                    <p className="text-lg text-neutral-300 mb-6">
+                                    <p className="text-base sm:text-lg text-neutral-300 mb-5 sm:mb-6">
                                         O primeiro treinamento focado em aplicações práticas da IA para desenvolvimento profissional e avanço de carreira — com metodologia testada e aprovada.
                                     </p>
 
                                     <div className="flex items-center gap-3">
                                         <div className="flex -space-x-2">
-                                            {[1, 2, 3].map((i) => (
-                                                <div key={i} className="w-8 h-8 rounded-full bg-gradient-to-r from-[#3d43dd]/80 to-[#6366f1]/80 flex items-center justify-center text-white text-xs border-2 border-neutral-900">
-                                                    {String.fromCharCode(64 + i)}
+                                            {["R", "B", "F", "T", "M"].slice(0, 3).map((letra, i) => (
+                                                <div key={i} className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-gradient-to-r from-[#3d43dd]/80 to-[#6366f1]/80 flex items-center justify-center text-white text-xs border-2 border-neutral-900">
+                                                    {letra}
                                                 </div>
                                             ))}
                                         </div>
-                                        <p className="text-sm text-neutral-400">
+                                        <p className="text-xs sm:text-sm text-neutral-400">
                                             <span className="text-white font-medium">+1.300</span> profissionais transformados
                                         </p>
                                     </div>
@@ -628,15 +646,15 @@ export default function EbookPage() {
                                 viewport={{ once: true }}
                                 transition={{ duration: 0.6, delay: 0.2 }}
                             >
-                                <h3 className="text-2xl font-bold text-white mb-6">
+                                <h3 className="text-xl sm:text-2xl font-bold text-white mb-5 sm:mb-6">
                                     Criado para quem precisa de <span className="text-[#3d43dd]">resultados rápidos</span>
                                 </h3>
 
-                                <div className="space-y-6">
+                                <div className="space-y-4 sm:space-y-6">
                                     {[
                                         {
                                             icon: (
-                                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                                                 </svg>
                                             ),
@@ -645,7 +663,7 @@ export default function EbookPage() {
                                         },
                                         {
                                             icon: (
-                                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                                                 </svg>
                                             ),
@@ -654,7 +672,7 @@ export default function EbookPage() {
                                         },
                                         {
                                             icon: (
-                                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122" />
                                                 </svg>
                                             ),
@@ -663,7 +681,7 @@ export default function EbookPage() {
                                         },
                                         {
                                             icon: (
-                                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                                                 </svg>
                                             ),
@@ -677,16 +695,16 @@ export default function EbookPage() {
                                             whileInView={{ opacity: 1, y: 0 }}
                                             viewport={{ once: true }}
                                             transition={{ duration: 0.4, delay: 0.1 * index }}
-                                            className="flex items-start gap-4 bg-neutral-900/30 p-4 rounded-xl border border-neutral-800/40 hover:border-[#3d43dd]/30 transition-all duration-300"
+                                            className="flex items-start gap-3 sm:gap-4 bg-neutral-900/30 p-3 sm:p-4 rounded-xl border border-neutral-800/40 hover:border-[#3d43dd]/30 transition-all duration-300"
                                         >
-                                            <div className="w-12 h-12 rounded-xl bg-[#3d43dd]/20 flex items-center justify-center flex-shrink-0">
+                                            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-[#3d43dd]/20 flex items-center justify-center flex-shrink-0">
                                                 <div className="text-[#3d43dd]">
                                                     {item.icon}
                                                 </div>
                                             </div>
                                             <div>
-                                                <h4 className="text-white font-semibold mb-1">{item.title}</h4>
-                                                <p className="text-neutral-300">{item.description}</p>
+                                                <h4 className="text-sm sm:text-base text-white font-semibold mb-1">{item.title}</h4>
+                                                <p className="text-xs sm:text-sm md:text-base text-neutral-300">{item.description}</p>
                                             </div>
                                         </motion.div>
                                     ))}
@@ -700,13 +718,13 @@ export default function EbookPage() {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.6 }}
-                            className="mb-10"
+                            className="mb-8 sm:mb-10"
                         >
-                            <h3 className="text-xl font-semibold text-white mb-6 text-center">
+                            <h3 className="text-lg sm:text-xl font-semibold text-white mb-4 sm:mb-6 text-center">
                                 O que nossos alunos estão falando
                             </h3>
 
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4">
                                 {[
                                     {
                                         name: "Ricardo M.",
@@ -724,17 +742,17 @@ export default function EbookPage() {
                                         quote: "As técnicas de automação me fizeram entregar projetos em metade do tempo."
                                     }
                                 ].map((testimonial, i) => (
-                                    <div key={i} className="bg-neutral-900/30 p-5 rounded-xl border border-neutral-800/40">
-                                        <div className="flex text-yellow-400 mb-3">
+                                    <div key={i} className="bg-neutral-900/30 p-4 sm:p-5 rounded-xl border border-neutral-800/40">
+                                        <div className="flex text-yellow-400 mb-2 sm:mb-3">
                                             {[...Array(5)].map((_, i) => (
-                                                <svg key={i} xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                                <svg key={i} xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 sm:h-4 sm:w-4" viewBox="0 0 20 20" fill="currentColor">
                                                     <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118l-2.8-2.034c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                                                 </svg>
                                             ))}
                                         </div>
-                                        <p className="text-neutral-300 mb-3">&quot;{testimonial.quote}&quot;</p>
-                                        <div className="font-medium text-white">{testimonial.name}</div>
-                                        <div className="text-sm text-neutral-400">{testimonial.role}</div>
+                                        <p className="text-xs sm:text-sm md:text-base text-neutral-300 mb-2 sm:mb-3">&quot;{testimonial.quote}&quot;</p>
+                                        <div className="font-medium text-white text-sm sm:text-base">{testimonial.name}</div>
+                                        <div className="text-xs sm:text-sm text-neutral-400">{testimonial.role}</div>
                                     </div>
                                 ))}
                             </div>
@@ -746,16 +764,16 @@ export default function EbookPage() {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.5 }}
-                            className="flex justify-center mt-12"
+                            className="flex justify-center mt-8 sm:mt-12"
                         >
                             <motion.a
                                 href="#pricing"
                                 whileHover={{ scale: 1.03 }}
                                 whileTap={{ scale: 0.98 }}
-                                className="group px-8 py-4 bg-white/5 text-white rounded-xl border border-[#3d43dd]/40 text-lg font-medium hover:bg-[#3d43dd]/20 hover:border-[#3d43dd]/60 transition-all duration-300 flex items-center gap-2"
+                                className="group px-6 sm:px-8 py-3 sm:py-4 bg-white/5 text-white rounded-xl border border-[#3d43dd]/40 text-base sm:text-lg font-medium hover:bg-[#3d43dd]/20 hover:border-[#3d43dd]/60 transition-all duration-300 flex items-center gap-2"
                             >
                                 <span>Quero Garantir Meu Acesso</span>
-                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-[#3d43dd] group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 sm:h-5 sm:w-5 text-[#3d43dd] group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
                                 </svg>
                             </motion.a>
@@ -789,18 +807,18 @@ export default function EbookPage() {
                             transition={{ duration: 0.5 }}
                             className="mb-12"
                         >
-                            <h3 className="text-2xl md:text-3xl font-bold text-white mb-4">
+                            <h3 className="text-2xl md:text-3xl font-bold text-white mb-4 leading-tight">
                                 6 pilares para transformar sua carreira com IA
                             </h3>
-                            <p className="text-xl text-neutral-300">
+                            <p className="text-lg md:text-xl text-neutral-300">
                                 Um sistema completo para você sair da estagnação profissional e dar um salto quântico na carreira, mesmo sem nenhum conhecimento técnico.
                             </p>
                         </motion.div>
 
                         {/* Tabela aprimorada e visualmente mais atraente */}
                         <div className="overflow-hidden rounded-xl border border-neutral-800/50 mb-16 shadow-xl">
-                            {/* Header */}
-                            <div className="grid grid-cols-3 bg-gradient-to-r from-[#3d43dd]/20 to-[#3d43dd]/10 border-b border-neutral-800/50 p-6">
+                            {/* Header - esconde em mobile */}
+                            <div className="hidden md:grid md:grid-cols-3 bg-gradient-to-r from-[#3d43dd]/20 to-[#3d43dd]/10 border-b border-neutral-800/50 p-6">
                                 <div className="text-white font-bold text-lg">Pilar</div>
                                 <div className="text-white font-bold text-lg">O que você recebe</div>
                                 <div className="text-white font-bold text-lg">Resultado prático</div>
@@ -875,16 +893,27 @@ export default function EbookPage() {
                                     whileInView={{ opacity: 1, y: 0 }}
                                     viewport={{ once: true }}
                                     transition={{ duration: 0.3, delay: 0.05 * index }}
-                                    className={`grid grid-cols-3 p-6 ${index % 2 === 0 ? 'bg-neutral-900/40' : 'bg-neutral-900/70'} border-b border-neutral-800/30 hover:bg-neutral-900/90 transition-all duration-300`}
+                                    className={`md:grid md:grid-cols-3 p-6 ${index % 2 === 0 ? 'bg-neutral-900/40' : 'bg-neutral-900/70'} border-b border-neutral-800/30 hover:bg-neutral-900/90 transition-all duration-300`}
                                 >
-                                    <div className="flex items-center gap-3">
+                                    {/* Coluna Pilar - Visível em todos os dispositivos */}
+                                    <div className="flex items-center gap-3 mb-4 md:mb-0">
                                         <div className="w-10 h-10 rounded-lg bg-[#3d43dd]/20 flex items-center justify-center flex-shrink-0">
                                             <div className="text-[#3d43dd]">{row.icon}</div>
                                         </div>
                                         <div className="text-white font-semibold">{row.pilar}</div>
                                     </div>
-                                    <div className="text-neutral-300">{row.recebe}</div>
-                                    <div className="text-[#3d43dd] font-medium">{row.resultado}</div>
+
+                                    {/* Coluna O que recebe - Com label em mobile */}
+                                    <div className="mb-4 md:mb-0">
+                                        <div className="block md:hidden font-medium text-[#3d43dd] text-sm mb-1">O que você recebe:</div>
+                                        <div className="text-neutral-300">{row.recebe}</div>
+                                    </div>
+
+                                    {/* Coluna Resultado - Com label em mobile */}
+                                    <div>
+                                        <div className="block md:hidden font-medium text-[#3d43dd] text-sm mb-1">Resultado prático:</div>
+                                        <div className="text-[#3d43dd] font-medium">{row.resultado}</div>
+                                    </div>
                                 </motion.div>
                             ))}
                         </div>
@@ -902,7 +931,7 @@ export default function EbookPage() {
                                 Benefícios Exclusivos
                             </h3>
 
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                                 {[
                                     {
                                         title: "Aplicação Imediata",
@@ -927,7 +956,7 @@ export default function EbookPage() {
                                         whileInView={{ opacity: 1, y: 0 }}
                                         viewport={{ once: true }}
                                         transition={{ duration: 0.3, delay: 0.1 * i }}
-                                        className="bg-neutral-900/30 p-4 rounded-lg border border-neutral-800/30 flex items-start gap-3"
+                                        className="bg-neutral-900/30 p-4 rounded-lg border border-neutral-800/30 flex items-start gap-3 hover:border-[#3d43dd]/30 transition-all duration-300"
                                     >
                                         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-[#3d43dd] flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
@@ -941,7 +970,7 @@ export default function EbookPage() {
                             </div>
                         </motion.div>
 
-                        {/* CTA mais forte */}
+                        {/* CTA mais forte - agora também responsivo */}
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
@@ -950,7 +979,7 @@ export default function EbookPage() {
                             className="bg-gradient-to-r from-[#3d43dd]/20 to-transparent p-6 rounded-xl border border-[#3d43dd]/30"
                         >
                             <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-                                <div>
+                                <div className="text-center md:text-left">
                                     <h3 className="text-xl font-bold text-white mb-2">Pronto para dar um salto na sua carreira?</h3>
                                     <p className="text-neutral-300">Garanta agora seu acesso com desconto especial.</p>
                                 </div>
@@ -958,7 +987,7 @@ export default function EbookPage() {
                                     href="#pricing"
                                     whileHover={{ scale: 1.03 }}
                                     whileTap={{ scale: 0.98 }}
-                                    className="px-6 py-3 bg-white text-[#3d43dd] rounded-xl text-lg font-bold shadow-lg hover:shadow-xl transition-all duration-300 whitespace-nowrap"
+                                    className="w-full md:w-auto px-6 py-3 bg-white text-[#3d43dd] rounded-xl text-lg font-bold shadow-lg hover:shadow-xl transition-all duration-300 whitespace-nowrap text-center"
                                 >
                                     Ver Preço Promocional
                                 </motion.a>
@@ -980,20 +1009,20 @@ export default function EbookPage() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.5 }}
-                        className="bg-gradient-to-br from-neutral-900/70 to-neutral-950/70 backdrop-blur-sm p-10 rounded-2xl border border-neutral-800/50 shadow-2xl relative"
+                        className="bg-gradient-to-br from-neutral-900/70 to-neutral-950/70 backdrop-blur-sm p-6 sm:p-10 rounded-2xl border border-neutral-800/50 shadow-2xl relative"
                     >
                         {/* Badge decorativo */}
-                        <div className="absolute -top-5 left-10 bg-[#3d43dd] text-white px-4 py-2 rounded-lg shadow-lg">
-                            <span className="font-bold">BÔNUS EXCLUSIVOS</span>
+                        <div className="absolute -top-5 left-5 sm:left-10 bg-[#3d43dd] text-white px-4 py-2 rounded-lg shadow-lg">
+                            <span className="font-bold text-sm sm:text-base">BÔNUS EXCLUSIVOS</span>
                         </div>
 
                         <div className="pt-5">
-                            <h2 className="text-3xl font-bold text-white mb-10 flex items-center">
-                                <span className="w-8 h-8 rounded-full bg-[#3d43dd] flex items-center justify-center mr-3 text-sm">4</span>
+                            <h2 className="text-2xl sm:text-3xl font-bold text-white mb-8 sm:mb-10 flex items-center">
+                                <span className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[#3d43dd] flex items-center justify-center mr-3 text-xs sm:text-sm">4</span>
                                 O que mais você recebe
                             </h2>
 
-                            <div className="grid md:grid-cols-2 gap-8 mb-10">
+                            <div className="grid md:grid-cols-2 gap-6 sm:gap-8 mb-8 sm:mb-10">
                                 <div>
                                     <div className="space-y-6">
                                         <motion.div
@@ -1001,16 +1030,16 @@ export default function EbookPage() {
                                             whileInView={{ opacity: 1, x: 0 }}
                                             viewport={{ once: true }}
                                             transition={{ duration: 0.5, delay: 0.1 }}
-                                            className="flex items-start gap-4 bg-neutral-900/40 p-5 rounded-xl border border-neutral-800/40 hover:border-[#3d43dd]/30 hover:shadow-lg transition-all duration-300"
+                                            className="flex items-start gap-4 bg-neutral-900/40 p-4 sm:p-5 rounded-xl border border-neutral-800/40 hover:border-[#3d43dd]/30 hover:shadow-lg transition-all duration-300"
                                         >
-                                            <div className="w-12 h-12 rounded-full bg-[#3d43dd]/20 flex items-center justify-center flex-shrink-0 mt-1">
-                                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-[#3d43dd]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[#3d43dd]/20 flex items-center justify-center flex-shrink-0 mt-1">
+                                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 sm:h-6 sm:w-6 text-[#3d43dd]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                                                 </svg>
                                             </div>
                                             <div>
-                                                <h3 className="text-white font-semibold text-lg mb-2">+10 seções densas com conteúdo prático</h3>
-                                                <p className="text-neutral-300">
+                                                <h3 className="text-lg sm:text-xl text-white font-semibold mb-2">+10 seções densas com conteúdo prático</h3>
+                                                <p className="text-sm sm:text-base text-neutral-300">
                                                     Tutoriais passo a passo, exemplos detalhados e checklists prontos-para-uso que você pode aplicar imediatamente.
                                                 </p>
                                             </div>
@@ -1021,16 +1050,16 @@ export default function EbookPage() {
                                             whileInView={{ opacity: 1, x: 0 }}
                                             viewport={{ once: true }}
                                             transition={{ duration: 0.5, delay: 0.2 }}
-                                            className="flex items-start gap-4 bg-neutral-900/40 p-5 rounded-xl border border-neutral-800/40 hover:border-[#3d43dd]/30 hover:shadow-lg transition-all duration-300"
+                                            className="flex items-start gap-4 bg-neutral-900/40 p-4 sm:p-5 rounded-xl border border-neutral-800/40 hover:border-[#3d43dd]/30 hover:shadow-lg transition-all duration-300"
                                         >
-                                            <div className="w-12 h-12 rounded-full bg-[#3d43dd]/20 flex items-center justify-center flex-shrink-0 mt-1">
-                                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-[#3d43dd]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[#3d43dd]/20 flex items-center justify-center flex-shrink-0 mt-1">
+                                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 sm:h-6 sm:w-6 text-[#3d43dd]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1M19 8l-7 5-7-5M5 19h14a2 2 0 002-2v-5a2 2 0 00-2-2h-4" />
                                                 </svg>
                                             </div>
                                             <div>
-                                                <h3 className="text-white font-semibold text-lg mb-2">+30 modelos de prompts testados</h3>
-                                                <p className="text-neutral-300">
+                                                <h3 className="text-lg sm:text-xl text-white font-semibold mb-2">+30 modelos de prompts testados</h3>
+                                                <p className="text-sm sm:text-base text-neutral-300">
                                                     Prompts otimizados para ChatGPT, Gemini e Claude que você pode copiar, colar e adaptar para suas necessidades.
                                                 </p>
                                             </div>
@@ -1045,16 +1074,16 @@ export default function EbookPage() {
                                             whileInView={{ opacity: 1, x: 0 }}
                                             viewport={{ once: true }}
                                             transition={{ duration: 0.5, delay: 0.3 }}
-                                            className="flex items-start gap-4 bg-neutral-900/40 p-5 rounded-xl border border-neutral-800/40 hover:border-[#3d43dd]/30 hover:shadow-lg transition-all duration-300"
+                                            className="flex items-start gap-4 bg-neutral-900/40 p-4 sm:p-5 rounded-xl border border-neutral-800/40 hover:border-[#3d43dd]/30 hover:shadow-lg transition-all duration-300"
                                         >
-                                            <div className="w-12 h-12 rounded-full bg-[#3d43dd]/20 flex items-center justify-center flex-shrink-0 mt-1">
-                                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-[#3d43dd]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[#3d43dd]/20 flex items-center justify-center flex-shrink-0 mt-1">
+                                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 sm:h-6 sm:w-6 text-[#3d43dd]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                                                 </svg>
                                             </div>
                                             <div>
-                                                <h3 className="text-white font-semibold text-lg mb-2">Comunidade Premium no Discord</h3>
-                                                <p className="text-neutral-300">
+                                                <h3 className="text-lg sm:text-xl text-white font-semibold mb-2">Comunidade Premium no Discord</h3>
+                                                <p className="text-sm sm:text-base text-neutral-300">
                                                     Acesso exclusivo ao grupo fechado para networking, dúvidas e compartilhamento de estratégias avançadas.
                                                 </p>
                                             </div>
@@ -1065,16 +1094,16 @@ export default function EbookPage() {
                                             whileInView={{ opacity: 1, x: 0 }}
                                             viewport={{ once: true }}
                                             transition={{ duration: 0.5, delay: 0.4 }}
-                                            className="flex items-start gap-4 bg-neutral-900/40 p-5 rounded-xl border border-neutral-800/40 hover:border-[#3d43dd]/30 hover:shadow-lg transition-all duration-300"
+                                            className="flex items-start gap-4 bg-neutral-900/40 p-4 sm:p-5 rounded-xl border border-neutral-800/40 hover:border-[#3d43dd]/30 hover:shadow-lg transition-all duration-300"
                                         >
-                                            <div className="w-12 h-12 rounded-full bg-[#3d43dd]/20 flex items-center justify-center flex-shrink-0 mt-1">
-                                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-[#3d43dd]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[#3d43dd]/20 flex items-center justify-center flex-shrink-0 mt-1">
+                                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 sm:h-6 sm:w-6 text-[#3d43dd]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                                                 </svg>
                                             </div>
                                             <div>
-                                                <h3 className="text-white font-semibold text-lg mb-2">Atualizações Vitalícias</h3>
-                                                <p className="text-neutral-300">
+                                                <h3 className="text-lg sm:text-xl text-white font-semibold mb-2">Atualizações Vitalícias</h3>
+                                                <p className="text-sm sm:text-base text-neutral-300">
                                                     As ferramentas mudam constantemente e nosso conteúdo é atualizado mensalmente com as últimas técnicas e estratégias.
                                                 </p>
                                             </div>
@@ -1089,21 +1118,21 @@ export default function EbookPage() {
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
                                 transition={{ duration: 0.5, delay: 0.5 }}
-                                className="mt-12 pt-10 border-t border-neutral-800/50"
+                                className="mt-10 pt-8 sm:mt-12 sm:pt-10 border-t border-neutral-800/50"
                             >
-                                <div className="bg-neutral-900/50 p-6 rounded-xl border border-neutral-800/50">
-                                    <div className="flex flex-col md:flex-row items-start gap-6">
-                                        <div className="w-16 h-16 rounded-xl bg-[#3d43dd]/20 flex items-center justify-center flex-shrink-0">
-                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-[#3d43dd]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <div className="bg-neutral-900/50 p-5 sm:p-6 rounded-xl border border-neutral-800/50">
+                                    <div className="flex flex-col md:flex-row items-center md:items-start gap-5 sm:gap-6">
+                                        <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-xl bg-[#3d43dd]/20 flex items-center justify-center flex-shrink-0">
+                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7 sm:h-8 sm:w-8 text-[#3d43dd]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                                             </svg>
                                         </div>
                                         <div>
-                                            <h3 className="text-xl font-bold text-white mb-2">Formato Exclusivo</h3>
-                                            <p className="text-neutral-300 text-lg">
+                                            <h3 className="text-xl font-bold text-white mb-2 text-center md:text-left">Formato Exclusivo</h3>
+                                            <p className="text-base sm:text-lg text-neutral-300 mb-4">
                                                 Acesso via página web privada, responsiva e otimizada para todos os dispositivos. Consulte no celular, tablet ou desktop e comece a aplicar imediatamente após a liberação do acesso.
                                             </p>
-                                            <div className="flex gap-4 mt-4">
+                                            <div className="flex flex-col sm:flex-row gap-4 sm:gap-4">
                                                 <div className="flex items-center">
                                                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-[#3d43dd] mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
@@ -1128,13 +1157,13 @@ export default function EbookPage() {
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
                                 transition={{ duration: 0.5, delay: 0.6 }}
-                                className="flex justify-center mt-10"
+                                className="flex justify-center mt-8 sm:mt-10"
                             >
                                 <motion.a
                                     href="#pricing"
                                     whileHover={{ scale: 1.03 }}
                                     whileTap={{ scale: 0.98 }}
-                                    className="px-8 py-4 bg-gradient-to-r from-[#3d43dd]/20 to-[#3d43dd]/10 text-white rounded-xl border border-[#3d43dd]/40 text-lg font-medium hover:bg-[#3d43dd]/20 transition-all duration-300 flex items-center gap-2"
+                                    className="w-full sm:w-auto px-6 py-4 bg-gradient-to-r from-[#3d43dd]/20 to-[#3d43dd]/10 text-white rounded-xl border border-[#3d43dd]/40 text-base sm:text-lg font-medium hover:bg-[#3d43dd]/20 transition-all duration-300 flex items-center justify-center gap-2 text-center"
                                 >
                                     <span>Quero Todos Estes Benefícios</span>
                                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-[#3d43dd]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -1148,7 +1177,7 @@ export default function EbookPage() {
             </section>
 
             {/* Conclusão e CTA */}
-            <section id="pricing" className="py-24 relative overflow-hidden">
+            <section id="pricing" className="py-16 sm:py-20 md:py-24 relative overflow-hidden">
                 {/* Efeitos visuais intensificados */}
                 <div className="absolute inset-0 bg-gradient-to-b from-[#3d43dd]/10 to-neutral-950/90"></div>
                 <div className="absolute top-0 left-0 right-0 h-24 bg-gradient-to-b from-neutral-950 to-transparent"></div>
@@ -1160,14 +1189,14 @@ export default function EbookPage() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.6 }}
-                        className="text-center mb-12"
+                        className="text-center mb-8 sm:mb-12"
                     >
-                        <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
+                        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-4 sm:mb-6 leading-tight">
                             Não deixe a IA ser sua <span className="text-red-400">concorrente</span> — <br className="hidden md:block" />
                             faça dela sua <span className="text-[#3d43dd]">vantagem competitiva</span>
                         </h2>
 
-                        <p className="text-xl md:text-2xl text-neutral-300 font-medium leading-relaxed max-w-3xl mx-auto">
+                        <p className="text-lg sm:text-xl md:text-2xl text-neutral-300 font-medium leading-relaxed max-w-3xl mx-auto">
                             Se você quer ser o profissional que domina a IA (e não o que perde espaço para ela),
                             <span className="text-white font-semibold"> este treinamento é sua virada de chave.</span>
                         </p>
@@ -1179,17 +1208,17 @@ export default function EbookPage() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.5, delay: 0.1 }}
-                        className="max-w-3xl mx-auto mb-12 bg-neutral-900/50 backdrop-blur-sm p-6 rounded-xl border border-neutral-800/50"
+                        className="max-w-3xl mx-auto mb-8 sm:mb-12 bg-neutral-900/50 backdrop-blur-sm p-5 sm:p-6 rounded-xl border border-neutral-800/50"
                     >
-                        <div className="flex flex-col md:flex-row items-center gap-5">
-                            <div className="w-16 h-16 rounded-full bg-green-500/20 flex items-center justify-center flex-shrink-0">
-                                <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-5">
+                            <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-green-500/20 flex items-center justify-center flex-shrink-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7 sm:h-8 sm:w-8 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                                 </svg>
                             </div>
-                            <div className="text-center md:text-left">
-                                <h3 className="text-xl font-bold text-white mb-2">Garantia de Satisfação de 7 Dias</h3>
-                                <p className="text-neutral-300">
+                            <div className="text-center sm:text-left">
+                                <h3 className="text-lg sm:text-xl font-bold text-white mb-2">Garantia de Satisfação de 7 Dias</h3>
+                                <p className="text-sm sm:text-base text-neutral-300">
                                     Se você não ficar satisfeito com o treinamento por qualquer motivo, basta solicitar o reembolso em até 7 dias e devolveremos 100% do seu investimento, sem perguntas.
                                 </p>
                             </div>
@@ -1202,63 +1231,64 @@ export default function EbookPage() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.6, delay: 0.2 }}
-                        className="bg-gradient-to-br from-[#3d43dd]/20 to-[#3d43dd]/5 p-8 md:p-12 rounded-2xl border border-[#3d43dd]/30 shadow-2xl shadow-[#3d43dd]/5 backdrop-blur-sm relative overflow-hidden"
+                        className="bg-gradient-to-br from-[#3d43dd]/20 to-[#3d43dd]/5 p-6 sm:p-8 md:p-12 rounded-2xl border border-[#3d43dd]/30 shadow-2xl shadow-[#3d43dd]/5 backdrop-blur-sm relative overflow-hidden"
                     >
                         {/* Tag de desconto */}
-                        <div className="absolute -right-12 top-10 bg-[#ff5757] text-white px-16 py-2 transform rotate-45 font-bold shadow-lg">
+                        <div className="absolute -right-12 top-10 bg-[#ff5757] text-white px-10 sm:px-16 py-1 sm:py-2 transform rotate-45 font-bold shadow-lg text-sm sm:text-base">
                             50% OFF
                         </div>
 
                         {/* Badge de vagas limitadas */}
-                        <div className="absolute top-6 left-6 bg-black/60 backdrop-blur-md text-white text-sm px-3 py-1 rounded-full border border-white/20 flex items-center">
-                            <div className="w-2 h-2 rounded-full bg-green-500 mr-2 animate-pulse"></div>
+                        <div className="absolute top-4 sm:top-6 left-4 sm:left-6 bg-black/60 backdrop-blur-md text-white text-xs sm:text-sm px-2 sm:px-3 py-1 rounded-full border border-white/20 flex items-center">
+                            <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-green-500 mr-1.5 sm:mr-2 animate-pulse"></div>
                             <span>Apenas 23 vagas restantes</span>
                         </div>
 
-                        <div className="text-center mb-10 pt-6">
-                            <h3 className="text-3xl md:text-4xl font-bold text-white mb-3">
+                        <div className="text-center mb-6 sm:mb-10 pt-5 sm:pt-6">
+                            <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-2 sm:mb-3">
                                 Alavanque sua carreira agora mesmo
                             </h3>
-                            <p className="text-xl text-neutral-300">
+                            <p className="text-lg sm:text-xl text-neutral-300">
                                 Acesso imediato após o pagamento
                             </p>
                         </div>
 
-                        <div className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-10 mb-10">
-                            <div className="bg-black/40 backdrop-blur-md px-6 py-5 rounded-xl border border-neutral-800/50 relative">
-                                <div className="absolute -top-3 -right-3 w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white text-xs">×</div>
-                                <div className="text-neutral-400 text-sm mb-1 uppercase tracking-wider">Preço normal</div>
-                                <div className="text-neutral-300 text-2xl line-through">R$ 197,00</div>
-                                <p className="text-neutral-500 text-sm mt-1">Valor integral</p>
+                        <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-10 mb-6 sm:mb-10">
+                            <div className="bg-black/40 backdrop-blur-md px-4 sm:px-6 py-4 sm:py-5 rounded-xl border border-neutral-800/50 relative">
+                                <div className="absolute -top-3 -right-3 w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-red-500 flex items-center justify-center text-white text-xs">×</div>
+                                <div className="text-neutral-400 text-xs sm:text-sm mb-1 uppercase tracking-wider">Preço normal</div>
+                                <div className="text-neutral-300 text-xl sm:text-2xl line-through">R$ 197,00</div>
+                                <p className="text-neutral-500 text-xs sm:text-sm mt-1">Valor integral</p>
                             </div>
 
-                            <div className="text-4xl text-[#3d43dd]">→</div>
+                            <div className="text-3xl text-[#3d43dd] hidden md:block">→</div>
+                            <div className="text-3xl text-[#3d43dd] rotate-90 md:hidden my-1">↓</div>
 
-                            <div className="bg-[#3d43dd]/30 px-8 py-6 rounded-xl border-2 border-[#3d43dd]/50 backdrop-blur-sm relative shadow-xl">
+                            <div className="bg-[#3d43dd]/30 px-6 sm:px-8 py-5 sm:py-6 rounded-xl border-2 border-[#3d43dd]/50 backdrop-blur-sm relative shadow-xl">
                                 <div className="absolute -top-3 -left-3 bg-green-500 text-white text-xs px-2 py-1 rounded-md">MELHOR OFERTA</div>
-                                <div className="text-[#3d43dd] text-sm mb-1 uppercase tracking-wider font-medium">Oferta por tempo limitado</div>
-                                <div className="text-white text-4xl font-bold mb-2">R$ 97,00</div>
-                                <p className="text-neutral-300 text-sm">Pagamento único e acesso vitalício</p>
+                                <div className="text-[#3d43dd] text-xs sm:text-sm mb-1 uppercase tracking-wider font-medium">Oferta por tempo limitado</div>
+                                <div className="text-white text-3xl sm:text-4xl font-bold mb-2">R$ 97,00</div>
+                                <p className="text-neutral-300 text-xs sm:text-sm">Pagamento único e acesso vitalício</p>
                             </div>
                         </div>
 
                         {/* Countdown element - Using the same state as the hero countdown */}
-                        <div className="mb-8 flex justify-center">
-                            <div className="bg-black/40 backdrop-blur-md px-5 py-3 rounded-lg border border-neutral-800/50">
-                                <div className="text-neutral-400 text-sm text-center mb-2">Esta oferta expira em:</div>
-                                <div className="flex items-center gap-3 justify-center">
+                        <div className="mb-6 sm:mb-8 flex justify-center">
+                            <div className="bg-black/40 backdrop-blur-md px-4 sm:px-5 py-2 sm:py-3 rounded-lg border border-neutral-800/50">
+                                <div className="text-neutral-400 text-xs sm:text-sm text-center mb-2">Esta oferta expira em:</div>
+                                <div className="flex items-center gap-2 sm:gap-3 justify-center">
                                     <div className="flex flex-col items-center">
-                                        <div className="bg-[#3d43dd]/20 text-white font-mono font-bold text-xl px-3 py-1 rounded border border-[#3d43dd]/30">{countdown.hours.toString().padStart(2, '0')}</div>
+                                        <div className="bg-[#3d43dd]/20 text-white font-mono font-bold text-base sm:text-xl px-2 sm:px-3 py-1 rounded border border-[#3d43dd]/30">{countdown.hours.toString().padStart(2, '0')}</div>
                                         <span className="text-neutral-400 text-xs mt-1">Horas</span>
                                     </div>
                                     <div className="text-white">:</div>
                                     <div className="flex flex-col items-center">
-                                        <div className="bg-[#3d43dd]/20 text-white font-mono font-bold text-xl px-3 py-1 rounded border border-[#3d43dd]/30">{countdown.minutes.toString().padStart(2, '0')}</div>
+                                        <div className="bg-[#3d43dd]/20 text-white font-mono font-bold text-base sm:text-xl px-2 sm:px-3 py-1 rounded border border-[#3d43dd]/30">{countdown.minutes.toString().padStart(2, '0')}</div>
                                         <span className="text-neutral-400 text-xs mt-1">Minutos</span>
                                     </div>
                                     <div className="text-white">:</div>
                                     <div className="flex flex-col items-center">
-                                        <div className="bg-[#3d43dd]/20 text-white font-mono font-bold text-xl px-3 py-1 rounded border border-[#3d43dd]/30">{countdown.seconds.toString().padStart(2, '0')}</div>
+                                        <div className="bg-[#3d43dd]/20 text-white font-mono font-bold text-base sm:text-xl px-2 sm:px-3 py-1 rounded border border-[#3d43dd]/30">{countdown.seconds.toString().padStart(2, '0')}</div>
                                         <span className="text-neutral-400 text-xs mt-1">Segundos</span>
                                     </div>
                                 </div>
@@ -1266,17 +1296,17 @@ export default function EbookPage() {
                         </div>
 
                         {/* CTA principal */}
-                        <div className="flex justify-center mb-8">
+                        <div className="flex justify-center mb-6 sm:mb-8">
                             <motion.button
-                                whileHover={{ scale: 1.05 }}
+                                whileHover={{ scale: 1.03 }}
                                 whileTap={{ scale: 0.98 }}
-                                className="relative group"
+                                className="relative group w-full sm:w-auto"
                                 onClick={() => window.open('https://pay.kiwify.com.br/Y3KSd2r', '_blank')}
                             >
                                 <div className="absolute -inset-0.5 bg-gradient-to-r from-[#3d43dd] to-[#6366f1] rounded-xl blur-md opacity-75 group-hover:opacity-100 transition duration-200"></div>
-                                <div className="relative px-10 py-6 bg-gradient-to-r from-[#3d43dd] to-[#6366f1] text-white rounded-xl text-xl font-bold shadow-lg shadow-[#3d43dd]/30 flex items-center gap-2">
+                                <div className="relative px-6 sm:px-10 py-4 sm:py-6 bg-gradient-to-r from-[#3d43dd] to-[#6366f1] text-white rounded-xl text-lg sm:text-xl font-bold shadow-lg shadow-[#3d43dd]/30 flex items-center justify-center gap-2 w-full">
                                     <span>GARANTIR MEU ACESSO AGORA</span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 animate-bounce" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 sm:h-6 sm:w-6 animate-bounce" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                                     </svg>
                                 </div>
@@ -1285,39 +1315,39 @@ export default function EbookPage() {
 
                         {/* Métodos de pagamento e selos de segurança */}
                         <div className="flex flex-col items-center">
-                            <div className="flex items-center justify-center flex-wrap gap-4 mb-5">
-                                <div className="text-neutral-400 text-sm flex items-center">
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-[#3d43dd] mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <div className="flex flex-wrap items-center justify-center gap-3 mb-4 sm:mb-5">
+                                <div className="text-neutral-400 text-xs sm:text-sm flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 sm:h-5 sm:w-5 text-[#3d43dd] mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                                     </svg>
                                     Pagamento 100% Seguro
                                 </div>
-                                <div className="text-neutral-400 text-sm flex items-center">
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-[#3d43dd] mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <div className="text-neutral-400 text-xs sm:text-sm flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 sm:h-5 sm:w-5 text-[#3d43dd] mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                                     </svg>
                                     Acesso Vitalício
                                 </div>
-                                <div className="text-neutral-400 text-sm flex items-center">
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-[#3d43dd] mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <div className="text-neutral-400 text-xs sm:text-sm flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 sm:h-5 sm:w-5 text-[#3d43dd] mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5-2 3.5 2z" />
                                     </svg>
                                     Garantia de 7 Dias
                                 </div>
                             </div>
 
-                            <div className="flex justify-center gap-3 opacity-70">
-                                <div className="p-2 rounded-md">
-                                    <Image src="/images/payment-visa.png" alt="Visa" width={40} height={25} />
+                            <div className="flex justify-center gap-2 sm:gap-3 opacity-70">
+                                <div className="p-1 sm:p-2 rounded-md">
+                                    <Image src="/images/payment-visa.png" alt="Visa" width={35} height={22} className="w-8 sm:w-10 h-auto" />
                                 </div>
-                                <div className="p-2 rounded-md">
-                                    <Image src="/images/payment-mastercard.png" alt="Mastercard" width={40} height={25} />
+                                <div className="p-1 sm:p-2 rounded-md">
+                                    <Image src="/images/payment-mastercard.png" alt="Mastercard" width={35} height={22} className="w-8 sm:w-10 h-auto" />
                                 </div>
-                                <div className="p-2 rounded-md">
-                                    <Image src="/images/payment-amex.png" alt="American Express" width={40} height={25} />
+                                <div className="p-1 sm:p-2 rounded-md">
+                                    <Image src="/images/payment-amex.png" alt="American Express" width={35} height={22} className="w-8 sm:w-10 h-auto" />
                                 </div>
-                                <div className="p-2 rounded-md">
-                                    <Image src="/images/payment-pix.png" alt="Pix" width={40} height={25} />
+                                <div className="p-1 sm:p-2 rounded-md">
+                                    <Image src="/images/payment-pix.png" alt="Pix" width={35} height={22} className="w-8 sm:w-10 h-auto" />
                                 </div>
                             </div>
                         </div>
@@ -1329,11 +1359,11 @@ export default function EbookPage() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.5, delay: 0.4 }}
-                        className="mt-16 max-w-4xl mx-auto"
+                        className="mt-12 sm:mt-16 max-w-4xl mx-auto"
                     >
-                        <h3 className="text-2xl font-bold text-white mb-8 text-center">Perguntas Frequentes</h3>
+                        <h3 className="text-xl sm:text-2xl font-bold text-white mb-6 sm:mb-8 text-center">Perguntas Frequentes</h3>
 
-                        <div className="space-y-4">
+                        <div className="space-y-3 sm:space-y-4">
                             {faqData.map((item, i) => (
                                 <motion.div
                                     key={i}
@@ -1344,17 +1374,17 @@ export default function EbookPage() {
                                     transition={{ duration: 0.3, delay: 0.05 * i }}
                                 >
                                     <div
-                                        className="p-5 cursor-pointer"
+                                        className="p-4 sm:p-5 cursor-pointer"
                                         onClick={() => setExpandedFaq(expandedFaq === i ? -1 : i)}
                                     >
                                         <div className="flex justify-between items-center">
-                                            <h4 className="text-white font-semibold">{item.question}</h4>
+                                            <h4 className="text-sm sm:text-base md:text-lg text-white font-semibold pr-4">{item.question}</h4>
                                             <motion.div
                                                 animate={{ rotate: expandedFaq === i ? 180 : 0 }}
                                                 transition={{ duration: 0.3 }}
-                                                className="w-6 h-6 rounded-full bg-[#3d43dd]/20 flex items-center justify-center"
+                                                className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-[#3d43dd]/20 flex items-center justify-center flex-shrink-0"
                                             >
-                                                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-[#3d43dd]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 sm:h-4 sm:w-4 text-[#3d43dd]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                                                 </svg>
                                             </motion.div>
@@ -1369,7 +1399,7 @@ export default function EbookPage() {
                                             transition={{ duration: 0.3 }}
                                             className="overflow-hidden"
                                         >
-                                            <p className="text-neutral-400">
+                                            <p className="text-xs sm:text-sm text-neutral-400">
                                                 {item.answer}
                                             </p>
                                         </motion.div>
@@ -1384,16 +1414,16 @@ export default function EbookPage() {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.5, delay: 0.6 }}
-                            className="mt-12 text-center"
+                            className="mt-8 sm:mt-12 text-center"
                         >
-                            <p className="text-xl text-neutral-300 mb-6">
+                            <p className="text-base sm:text-lg md:text-xl text-neutral-300 mb-4 sm:mb-6">
                                 Ainda com dúvidas? O melhor investimento que você pode fazer é em você mesmo!
                             </p>
                             <motion.a
                                 href="#pricing"
                                 whileHover={{ scale: 1.03 }}
                                 whileTap={{ scale: 0.98 }}
-                                className="inline-block px-8 py-4 bg-gradient-to-r from-[#3d43dd] to-[#6366f1] text-white rounded-xl text-lg font-bold shadow-lg hover:shadow-xl transition-all duration-300"
+                                className="inline-block px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-[#3d43dd] to-[#6366f1] text-white rounded-xl text-base sm:text-lg font-bold shadow-lg hover:shadow-xl transition-all duration-300"
                             >
                                 Garantir Meu Acesso Agora
                             </motion.a>
